@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>OSLC KM Service Layer</display-name>
+	<!-- <context-param> <description>Scheme used for URI when registering ServiceProvider. 
+		Can be overridden by System property of the same name.</description> <param-name>org.eclipse.lyo.oslc4j.bugzilla.scheme</param-name> 
+		<param-value>http</param-value> </context-param> <context-param> <description>Port 
+		used for URI when registering ServiceProvider. Can be overridden by System 
+		property of the same name.</description> <param-name>org.eclipse.lyo.oslc4j.bugzilla.port</param-name> 
+		<param-value>8080</param-value> </context-param> <listener> <listener-class>org.eclipse.lyo.oslc4j.bugzilla.BugzillaManager</listener-class> 
+		</listener> -->
+	<servlet>
+		<servlet-name>JAX-RS Servlet</servlet-name>
+		<servlet-class>org.apache.wink.server.internal.servlet.RestServlet</servlet-class>
+		<init-param>
+			<param-name>javax.ws.rs.Application</param-name>
+			<param-value>com.reusecompany.oslc.km.services.OSLCKMApplication</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JAX-RS Servlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>restSdkAdmin</servlet-name>
+		<servlet-class>org.apache.wink.server.internal.servlet.AdminServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>restSdkAdmin</servlet-name>
+		<url-pattern>/admin</url-pattern>
+	</servlet-mapping>
+<!-- 
+	<servlet>
+		<servlet-name>Jersey Web Application</servlet-name>
+		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.resourceConfigClass</param-name>
+			<param-value>com.sun.jersey.api.core.PackagesResourceConfig</param-value>
+		</init-param>
+		<init-param>
+			<param-name>com.sun.jersey.config.property.packages</param-name>
+			<param-value>es.uc3m.inf.kr.rm.services.rest</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Jersey Web Application</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+ -->
+
+	<!-- <servlet> <servlet-name>RootServicesService</servlet-name> <servlet-class>org.eclipse.lyo.oslc4j.bugzilla.services.RootServicesService</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>RootServicesService</servlet-name> 
+		<url-pattern>/rootservices</url-pattern> </servlet-mapping> -->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+
+</web-app>

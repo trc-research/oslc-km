@@ -1,0 +1,351 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.reusecompany.oslc.km</groupId>
+	<artifactId>oslc-km-service</artifactId>
+	<packaging>war</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<oslc.lyo.version>3.0.0-SNAPSHOT</oslc.lyo.version>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.reusecompany.oslc.km</groupId>
+			<artifactId>oslc-km-srl</artifactId>
+			<version>[0.0.1-SNAPSHOT,)</version>
+		</dependency>
+
+<!-- https://mvnrepository.com/artifact/net.sourceforge.owlapi/owlapi-distribution -->
+<dependency>
+    <groupId>net.sourceforge.owlapi</groupId>
+    <artifactId>owlapi-distribution</artifactId>
+    <version>4.1.3</version>
+</dependency>
+
+
+		
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.14</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>taglibs</groupId>
+			<artifactId>standard</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>javax.servlet.jsp-api</artifactId>
+			<version>2.2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		
+		<!-- OSLC Legacy -->
+		<dependency>
+			<groupId>org.eclipse.lyo.core.query</groupId>
+			<artifactId>oslc-query</artifactId>
+			<version>[1.1,)</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.lyo.oslc4j.core</groupId>
+			<artifactId>oslc4j-core</artifactId>
+			<version>2.1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.lyo.oslc4j.core</groupId>
+			<artifactId>oslc4j-wink</artifactId>
+			<version>2.1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.lyo.oslc4j.core</groupId>
+			<artifactId>oslc4j-json4j-provider</artifactId>
+			<version>2.1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.eclipse.lyo.oslc4j.core</groupId>
+			<artifactId>oslc4j-jena-provider</artifactId>
+			<version>2.1.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.lyo.server</groupId>
+			<artifactId>oauth-webapp</artifactId>
+			<version>[0.0.1-SNAPSHOT,)</version>
+			<type>war</type>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.lyo.server</groupId>
+			<artifactId>oauth-core</artifactId>
+			<version>[0.0.1-SNAPSHOT,)</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.eclipse.lyo.server</groupId>
+			<artifactId>oauth-consumer-store</artifactId>
+			<version>[0.0.1-SNAPSHOT,)</version>
+		</dependency>
+
+
+		<!--OSCL Public dependencies -->
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-core -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.oslc4j.core</groupId> <artifactId>oslc4j-core</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-json4j-provider -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.oslc4j.core</groupId> <artifactId>oslc4j-json4j-provider</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-jena-provider -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.oslc4j.core</groupId> <artifactId>oslc4j-jena-provider</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-wink -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.oslc4j.core</groupId> <artifactId>oslc4j-wink</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-utils -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.oslc4j.core</groupId> <artifactId>oslc4j-utils</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-registry -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.oslc4j.core</groupId> <artifactId>oslc4j-registry</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.oslc4j.core/oslc4j-core-build -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.oslc4j.core</groupId> <artifactId>oslc4j-core-build</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.clients/oslc-java-client -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.clients</groupId> <artifactId>oslc-java-client</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo/oslc-trs -->
+		<!-- <dependency> <groupId>org.eclipse.lyo</groupId> <artifactId>oslc-trs</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.eclipse.lyo.core.query/oslc-query -->
+		<!-- <dependency> <groupId>org.eclipse.lyo.core.query</groupId> <artifactId>oslc-query</artifactId> 
+			<version>${oslc.lyo.version}</version> </dependency> -->
+
+		<!-- Web Services -->
+		<dependency>
+			<groupId>xml-apis</groupId>
+			<artifactId>xml-apis</artifactId>
+			<version>1.4.01</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-lgpl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-jaxrs</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-lgpl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-xc</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+	</dependencies>
+
+
+	<repositories>
+		<repository>
+			<id>Sun</id>
+			<url>http://download.java.net/maven/2</url>
+		</repository>
+		<repository>
+			<id>central</id>
+			<url>https://repo1.maven.org/maven2</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+		<repository>
+			<id>java.net</id>
+			<name>java.net Maven Repository</name>
+			<url>https://maven-repository.dev.java.net/nonav/repository</url>
+			<layout>legacy</layout>
+		</repository>
+		<repository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for maven</name>
+			<url>http://download.java.net/maven/2/</url>
+		</repository>
+		<repository>
+			<id>sonatype-repo</id>
+			<name>Sonatype Release Repo</name>
+			<url>http://oss.sonatype.org/content/repositories/sourceforge-releases/</url>
+		</repository>
+		<repository>
+			<id>apache-repo-snapshots</id>
+			<url>https://repository.apache.org/content/repositories/snapshots/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mc-release</id>
+			<name>Local Maven repository of releases</name>
+			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+			<comments />
+		</license>
+	</licenses>
+
+	<build>
+		<finalName>oslc-srl</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>main.ValidatorAppServ</mainClass>
+						</manifest>
+					</archive>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+			</plugin>
+			<!-- Jetty 7 plugin See also: http://wiki.eclipse.org/Jetty/Feature/Jetty_Maven_Plugin -->
+			<plugin>
+				<!-- <groupId>org.mortbay.jetty</groupId> -->
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.3.0.M2</version>
+
+				<configuration>
+					<webAppConfig>
+						<contextPath>/oslc-km</contextPath>
+					</webAppConfig>
+
+					<!-- Jetty config adds logging -->
+					<!-- <jettyConfig>${project.build.directory}/classes/jetty.xml</jettyConfig> -->
+
+					<!-- enable hot deploy -->
+					<reload>automatic</reload>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
+					<scanTargets>
+						<scanTarget>WebContent</scanTarget>
+					</scanTargets>
+
+					<systemProperties>
+
+						<systemProperty>
+							<name>config.dir</name>
+							<value>${basedir}/src/main/resources</value>
+						</systemProperty>
+
+						<systemProperty>
+							<name>jetty.logs</name>
+							<value>${basedir}/target</value>
+						</systemProperty>
+						<systemProperty>
+							<name>jetty.port</name>
+							<value>8080</value>
+						</systemProperty>
+					</systemProperties>
+
+				</configuration>
+
+			</plugin>
+
+		</plugins>
+
+
+
+
+	</build>
+</project>

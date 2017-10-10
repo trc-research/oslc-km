@@ -1,0 +1,336 @@
+@prefix : <http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41> .
+
+<http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41> rdf:type owl:Ontology .
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#has
+
+:has rdf:type owl:ObjectProperty ;
+     
+     owl:propertyDisjointWith :has-part .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#has-part
+
+:has-part rdf:type owl:AsymmetricProperty ,
+                   owl:FunctionalProperty ,
+                   owl:InverseFunctionalProperty ,
+                   owl:IrreflexiveProperty ,
+                   owl:ObjectProperty ,
+                   owl:ReflexiveProperty ,
+                   owl:SymmetricProperty ,
+                   owl:TransitiveProperty ;
+          
+          owl:inverseOf :has-part ;
+          
+          rdfs:subPropertyOf :top-property .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#is-part-of
+
+:is-part-of rdf:type owl:AsymmetricProperty ,
+                     owl:FunctionalProperty ,
+                     owl:InverseFunctionalProperty ,
+                     owl:IrreflexiveProperty ,
+                     owl:ObjectProperty ,
+                     owl:ReflexiveProperty ,
+                     owl:SymmetricProperty ,
+                     owl:TransitiveProperty ;
+            
+            rdfs:subPropertyOf :top-property ;
+            
+            rdfs:range [ rdf:type owl:Restriction ;
+                         owl:onProperty :is-part-of ;
+                         owl:allValuesFrom [ rdf:type owl:Class ;
+                                             owl:unionOf ( :BrakePedal
+                                                           :Engine
+                                                         )
+                                           ]
+                       ] ;
+            
+            rdfs:domain [ rdf:type owl:Restriction ;
+                          owl:onProperty :is-part-of ;
+                          owl:allValuesFrom :Vehicle
+                        ] .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#top-property
+
+:top-property rdf:type owl:ObjectProperty .
+
+
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#age
+
+:age rdf:type owl:DatatypeProperty ,
+              owl:FunctionalProperty ;
+     
+     owl:equivalentProperty :old ;
+     
+     rdfs:subPropertyOf :top-data .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#old
+
+:old rdf:type owl:DatatypeProperty ;
+     
+     rdfs:subPropertyOf :top-data ;
+     
+     owl:propertyDisjointWith :young ;
+     
+     rdfs:range xsd:int ;
+     
+     rdfs:domain [ rdf:type owl:Restriction ;
+                   owl:onProperty :age ;
+                   owl:someValuesFrom xsd:anyURI
+                 ] .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#top-data
+
+:top-data rdf:type owl:DatatypeProperty .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#young
+
+:young rdf:type owl:DatatypeProperty ;
+       
+       rdfs:subPropertyOf :top-data .
+
+
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#BrakePedal
+
+:BrakePedal rdf:type owl:Class .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#Bycicle
+
+:Bycicle rdf:type owl:Class ;
+         
+         rdfs:subClassOf :Vehicle ,
+                         [ rdf:type owl:Class ;
+                           owl:intersectionOf ( [ rdf:type owl:Class ;
+                                                  owl:complementOf :Engine
+                                                ]
+                                                [ rdf:type owl:Class ;
+                                                  owl:complementOf [ rdf:type owl:Restriction ;
+                                                                     owl:onProperty :has ;
+                                                                     owl:onClass :Wheel ;
+                                                                     owl:maxQualifiedCardinality "2"^^xsd:nonNegativeInteger
+                                                                   ]
+                                                ]
+                                                [ rdf:type owl:Restriction ;
+                                                  owl:onProperty :has ;
+                                                  owl:onClass :Wheel ;
+                                                  owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger
+                                                ]
+                                              )
+                         ] .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#Car
+
+:Car rdf:type owl:Class ;
+     
+     owl:equivalentClass :MyCar ;
+     
+     rdfs:subClassOf :Vehicle ,
+                     [ rdf:type owl:Class ;
+                       owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                              owl:onProperty :has ;
+                                              owl:onClass :Engine ;
+                                              owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                            ]
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty :has ;
+                                              owl:onClass :Wheel ;
+                                              owl:minQualifiedCardinality "4"^^xsd:nonNegativeInteger
+                                            ]
+                                            [ rdf:type owl:Restriction ;
+                                              owl:onProperty :has ;
+                                              owl:onClass :BrakePedal ;
+                                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                            ]
+                                          )
+                     ] .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#Engine
+
+:Engine rdf:type owl:Class .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#MyCar
+
+:MyCar rdf:type owl:Class ;
+       
+       rdfs:subClassOf :Vehicle .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#Truck
+
+:Truck rdf:type owl:Class ;
+       
+       rdfs:subClassOf :Vehicle ,
+                       [ rdf:type owl:Class ;
+                         owl:intersectionOf ( [ rdf:type owl:Restriction ;
+                                                owl:onProperty :has ;
+                                                owl:onClass :Engine ;
+                                                owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                              ]
+                                              [ rdf:type owl:Restriction ;
+                                                owl:onProperty :has ;
+                                                owl:onClass :Wheel ;
+                                                owl:minQualifiedCardinality "8"^^xsd:nonNegativeInteger
+                                              ]
+                                              [ rdf:type owl:Restriction ;
+                                                owl:onProperty :has ;
+                                                owl:onClass :BrakePedal ;
+                                                owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
+                                              ]
+                                            )
+                       ] ;
+       
+       owl:disjointUnionOf ( :BrakePedal
+                             :Wheel
+                           ) .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#Vehicle
+
+:Vehicle rdf:type owl:Class ;
+         
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :has ;
+                           owl:someValuesFrom :Wheel
+                         ] .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#Wheel
+
+:Wheel rdf:type owl:Class .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#Peugeot
+
+:Peugeot rdf:type :Car ,
+                  owl:NamedIndividual ;
+         
+         :age "18" ;
+         
+         :has-part :PeugeotEngine ;
+         
+         owl:sameAs :PeugetoSpain .
+[ rdf:type owl:NegativePropertyAssertion ;
+  owl:targetValue "10" ;
+  owl:sourceIndividual :Peugeot ;
+  owl:assertionProperty :age
+] .
+[ rdf:type owl:NegativePropertyAssertion ;
+  owl:sourceIndividual :Peugeot ;
+  owl:targetIndividual :Renault ;
+  owl:assertionProperty :is-part-of
+] .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#PeugeotEngine
+
+:PeugeotEngine rdf:type :Engine ,
+                        owl:NamedIndividual .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#PeugetoSpain
+
+:PeugetoSpain rdf:type owl:NamedIndividual .
+
+
+
+###  http://www.semanticweb.org/chema/ontologies/2017/3/untitled-ontology-41#Renault
+
+:Renault rdf:type owl:NamedIndividual .
+
+
+
+
+
+#################################################################
+#
+#    General axioms
+#
+#################################################################
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Bycicle
+                :Car
+                :Truck
+              )
+] .
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( :Peugeot
+                        :Renault
+                      )
+] .
+
+
+
+
+###  Generated by the OWL API (version 3.4.2) http://owlapi.sourceforge.net
+
