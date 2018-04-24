@@ -132,12 +132,12 @@ namespace OSLC_KM_SRL.srl {
         [OslcTitle("Term Type (syntax)")]
         [OslcName("type")]
         [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
-        public Type GetArtifactType() {
+        public Type GetType() {
             return this.type;
         }
 
-        public void SetArtifactType(Type artifactType) {
-            this.type = artifactType;
+        public void SetType(Type type) {
+            this.type = type;
         }
 
 

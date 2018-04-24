@@ -18,6 +18,7 @@ namespace OSLC_KM_SRL.srl {
         Artifact from; //FIXME: list
         Artifact to; //FIXME: list
         Type type;
+        Type subType;
 
         #endregion
 
@@ -86,13 +87,32 @@ namespace OSLC_KM_SRL.srl {
         [OslcTitle("Relationship Type")]
         [OslcName("type")]
         [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
-        public Type GetArtifactType() {
+        public Type GetType() {
             return this.type;
         }
 
-        public void SetArtifactType(Type artifactType) {
-            this.type = artifactType;
+        public void SetType(Type type) {
+            this.type = type;
         }
+
+
+        [OslcDescription("Relationship Type")]
+        [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "subtype")]
+        [OslcReadOnly]
+        [OslcRepresentation(Representation.Inline)]
+        [OslcTitle("Relationship Type")]
+        [OslcName("type")]
+        [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
+        public Type GetSubType() {
+            return this.subType;
+        }
+
+        public void SetSubType(Type subType) {
+            this.subType = subType;
+        }
+
+
+
 
         [OslcDescription("Describes the set of sources that are on the one hand of the relationship.")]
         [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "from")]
