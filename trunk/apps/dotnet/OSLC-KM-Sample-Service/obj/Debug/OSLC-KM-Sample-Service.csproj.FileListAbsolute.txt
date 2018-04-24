@@ -1,3 +1,0 @@
-C:\Users\chema\Documents\Visual Studio 2010\Projects\OSLC-KM\OSCL-Service\obj\Debug\OSLC-KM-Sample-Service.csprojResolveAssemblyReference.cache
-C:\Users\chema\Documents\Visual Studio 2010\Projects\OSLC-KM\OSCL-Service\obj\Debug\OSLC_KM_Sample_Service.Properties.Resources.resources
-C:\Users\chema\Documents\Visual Studio 2010\Projects\OSLC-KM\OSCL-Service\obj\Debug\OSLC-KM-Sample-Service.csproj.GenerateResource.Cache
