@@ -11,7 +11,8 @@
     <RootNamespace>OSLC_KM_Sample</RootNamespace>
     <AssemblyName>OSLC-KM-Sample</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -37,49 +38,52 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="dotNetRDF">
-      <HintPath>G:\develop\OLSC4Net_library_023_snapshot\dotNetRDF.dll</HintPath>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>G:\repositories\RQA-V15\Rqa.Authoring\OSLC\bin\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Common">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\DotNetOpenAuth.OAuth.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="dotNetRDF">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\dotNetRDF.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>G:\develop\OLSC4Net_library_023_snapshot\log4net.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\log4net.dll</HintPath>
     </Reference>
     <Reference Include="OSLC4Net.Client">
-      <HintPath>G:\develop\OLSC4Net_library_023_snapshot\OSLC4Net.Client.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Client.dll</HintPath>
     </Reference>
     <Reference Include="OSLC4Net.Core">
-      <HintPath>G:\develop\OLSC4Net_library_023_snapshot\OSLC4Net.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Core.dll</HintPath>
     </Reference>
     <Reference Include="OSLC4Net.Core.DotNetRdfProvider">
-      <HintPath>G:\develop\OLSC4Net_library_023_snapshot\OSLC4Net.Core.DotNetRdfProvider.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Core.DotNetRdfProvider.dll</HintPath>
     </Reference>
     <Reference Include="OSLC4Net.Core.JsonProvider">
-      <HintPath>G:\develop\OLSC4Net_library_023_snapshot\OSLC4Net.Core.JsonProvider.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Core.JsonProvider.dll</HintPath>
     </Reference>
     <Reference Include="OSLC4Net.Core.Query">
-      <HintPath>G:\develop\OLSC4Net_library_023_snapshot\OSLC4Net.Core.Query.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Core.Query.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Json">
-      <HintPath>G:\repositories\RQA-V15\Rqa.Authoring\OSLC\bin\System.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-    <Reference Include="System.Web.Optimization">
-      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Providers">
-      <HintPath>G:\repositories\RQA-V15\Rqa.Authoring\OSLC\bin\System.Web.Providers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="VDS.Common">
-      <HintPath>G:\develop\OLSC4Net_library_023_snapshot\VDS.Common.dll</HintPath>
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\VDS.Common.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -91,13 +95,13 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\OSLC-KM-SRL\OSLC-KM-SRL.csproj">
       <Project>{DC3DB233-8B15-408B-B7F7-13D2278E3766}</Project>
       <Name>OSLC-KM-SRL</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -29,7 +29,7 @@ namespace OSLC_Sample.test {
             //Assert results.size > 0 
         }
         //[Test]
-        public void TestVisualize() {
+        public void TestVisualize_URI() {
             string uri = string.Empty;
             SystemKnowledgeRepository skr = new SystemKnowledgeRepositoryImpl();
             string result = skr.visualize(uri);

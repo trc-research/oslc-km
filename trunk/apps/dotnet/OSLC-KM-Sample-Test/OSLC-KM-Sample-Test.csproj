@@ -31,13 +31,53 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.Core">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\DotNetOpenAuth.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\DotNetOpenAuth.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Common">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\DotNetOpenAuth.OAuth.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="DotNetOpenAuth.OAuth.Consumer">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
+    </Reference>
+    <Reference Include="dotNetRDF">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\dotNetRDF.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="OSLC4Net.Client">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="OSLC4Net.Core">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="OSLC4Net.Core.DotNetRdfProvider">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Core.DotNetRdfProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="OSLC4Net.Core.JsonProvider">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Core.JsonProvider.dll</HintPath>
+    </Reference>
+    <Reference Include="OSLC4Net.Core.Query">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\OSLC4Net.Core.Query.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="VDS.Common">
+      <HintPath>..\..\..\..\..\Desktop\OSLC-KM-SRL-DLLs\VDS.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -5,14 +5,14 @@ using System.Text;
 using OSLC_KM_SRL.srl;
 
 namespace OSLC_KM_SRL.facade {
-    public abstract class SystemAssetStore {
+    public interface SystemAssetStore {
 
-         public abstract string create(Artifact artifact);
-         public abstract Artifact retrieve(string uri);
-         public abstract bool update(Artifact artifact);
-         public abstract bool delete(string uri);
-         public abstract List<Artifact> list();
-         public abstract List<Artifact> search(SearchContext context);
+           string create(Artifact artifact);
+           Artifact retrieve(string uri);
+           bool update(Artifact artifact);
+           bool delete(string uri);
+           List<Artifact> list();
+           List<Artifact> search(SearchContext context);
 
 
 
