@@ -1,0 +1,84 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="OSLC.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="RQAServerName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">localhost</Value>
+    </Setting>
+    <Setting Name="RQAServerPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">16555</Value>
+    </Setting>
+    <Setting Name="SessionRemovalIntervalMinutes" Type="System.UInt32" Scope="Application">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="MaximumInactiveSessionHours" Type="System.UInt32" Scope="Application">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
+    <Setting Name="LicenseServerSource" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">29000@mufasa.kr.inf.uc3m.es</Value>
+    </Setting>
+    <Setting Name="RMSBlockName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Block name</Value>
+    </Setting>
+    <Setting Name="RMSBlockLocation" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Block location</Value>
+    </Setting>
+    <Setting Name="RMSBlockCode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Block code</Value>
+    </Setting>
+    <Setting Name="RMSDatabase" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Database</Value>
+    </Setting>
+    <Setting Name="RMSProject" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Project</Value>
+    </Setting>
+    <Setting Name="RMSProjectCode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Project code</Value>
+    </Setting>
+    <Setting Name="RMSServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">RMS Server</Value>
+    </Setting>
+    <Setting Name="RMSUser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Administrator</Value>
+    </Setting>
+    <Setting Name="ProjectLocation" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Project Location</Value>
+    </Setting>
+    <Setting Name="JazzUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://localhost:9443/rm</Value>
+    </Setting>
+    <Setting Name="JazzUser" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">chema</Value>
+    </Setting>
+    <Setting Name="JazzPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">estrella</Value>
+    </Setting>
+    <Setting Name="JAZZ_DNG_URI" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://localhost:9443/rm</Value>
+    </Setting>
+    <Setting Name="JAZZ_QM_URI" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://localhost:9443/qm</Value>
+    </Setting>
+    <Setting Name="JAZZ_CCM_URI" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://localhost:9443/ccm</Value>
+    </Setting>
+    <Setting Name="JAZZ_AUTH_URL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://localhost:9443/jts</Value>
+    </Setting>
+    <Setting Name="USER_JAZZ" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">trc</Value>
+    </Setting>
+    <Setting Name="PASSWORD_JAZZ" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">trc</Value>
+    </Setting>
+    <Setting Name="REQUIREMENTS_PROJECT_AREA" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Test (Requirements)</Value>
+    </Setting>
+    <Setting Name="TEST_CASES_PROJECT_AREA" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Test (Quality Management)</Value>
+    </Setting>
+    <Setting Name="TEST_CHANGES_PROJECT_AREA" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Test (Quality Management)</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

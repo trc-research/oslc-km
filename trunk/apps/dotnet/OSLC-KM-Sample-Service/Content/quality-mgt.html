@@ -1,0 +1,712 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>OSLC Adapter by The Reuse Company Inc.</title>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <link href="/Content/demo_page.css" rel="stylesheet"/>
+    <link href="/Content/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/Content/jquery-ui.css" rel="stylesheet"/>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/navbar-fixed-top.css" rel="stylesheet"/>
+    <link href="/Content/shCore.css" rel="stylesheet"/>
+    <link href="/Content/shCoreDefault.css" rel="stylesheet"/>
+
+    <script type="text/javascript" language="javascript"  src="/Scripts/jquery-1.7.1.js"></script>
+    
+	<script type="text/javascript" language="javascript"  src="/Scripts/jquery-ui-1.8.20.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shCore.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shBrushXml.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shAutoloader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+    <script type="text/javascript" src="/Scripts/jsapi.js"></script>
+    <script type="text/javascript" language="javascript">
+        google.load('visualization', '1.0', { 'packages': ['corechart'] });
+        SyntaxHighlighter.all();
+        var aDataSet = [];
+        var metricIds = [];
+        var xmlData;
+        var xmlObservations;
+
+
+        function loadIndicators() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/kpis/list",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    $(xml).find('dataset').each(function () {
+                        xmlData = new XMLSerializer().serializeToString(xml);
+                        var id = $(this).find('identifier').text();
+                        //   var title = $(this).find('title').text();
+                        var description = $(this).find('description').text();
+                        var about = $(this).attr('rdf:about');
+                        var aboutLink = "<a href=\"" + about + "\">" + about + "</a>";
+                        var currentItem = [id, description, aboutLink];
+                        aDataSet.push(currentItem);
+                        metricIds.push(id);
+                    });
+                    updateIndicatorsTable();
+                    $("#metricList").autocomplete({
+                        source: metricIds
+                    });
+                },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+
+        }
+
+        function enableMetricDescribe() {
+            if ($('#metricList').val() != '') {
+                $('#describeMetricBtn').prop('disabled', false);
+            }
+
+        }
+
+        function getMetric() {
+            var id = $('#metricList').val();
+            if (id != '') {
+                $.ajax({
+                    type: "GET",
+                    url: "/oslc/kpis/kpi/" + id,
+                    dataType: "xml",
+                    headers: {
+                        Accept: "application/rdf+xml; charset=utf-8",
+                        "Content-Type": "text/plain; charset=utf-8"
+                    },
+                    success: function (xml) {
+                        $(xml).find('dataset').each(function () {
+                            var id = $(this).find('identifier').text();
+                            if (id != "") {
+                                prettyPrint("metricDescriptionXml", new XMLSerializer().serializeToString(xml));
+                            }
+                        });
+                    },
+                    error: function () {
+                        console.log("An error occurred while processing XML file.");
+                    }
+                });
+            }
+
+        }
+
+        function clearMetricListItem() {
+            $('#metricList').val("");
+            $('#describeMetricBtn').prop('disabled', true);
+            $('#metricDescription').text("");
+        }
+
+        function updateIndicatorsTable() {
+            $('#indicators').dataTable({
+                "aaData": aDataSet,
+                "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Description" },
+                        { "sTitle": "URI" }
+					]
+            });
+        }
+
+
+        function showIndicatorsXml() {
+            prettyPrint("indicatorsXml", xmlData);
+            $('#hideIndicatorsXmlBtn').prop('disabled', false);
+        }
+
+        function hideIndicatorsXml() {
+            prettyPrint("indicatorsXml", "");
+            $('#hideIndicatorsXmlBtn').prop('disabled', true);
+
+        }
+
+
+        function getServiceProviderInfo() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/kpis/info",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    prettyPrint("serviceProviderXml", new XMLSerializer().serializeToString(xml));
+                    $('#serviceProviderXmlBtn').prop('disabled', false);
+                },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+        }
+
+        function hideServiceProviderXml() {
+            prettyPrint("serviceProviderXml", "");
+            $('#serviceProviderXmlBtn').prop('disabled', true);
+        }
+
+        function getResourceShape() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/kpis/resourceShape",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    prettyPrint("resourceShapeXml", new XMLSerializer().serializeToString(xml));
+                    $('#resourceShapeXmlBtn').prop('disabled', false);
+                },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+        }
+
+        function hideResourceShapeXml() {
+            prettyPrint("resourceShapeXml", "");
+            $('#resourceShapeXmlBtn').prop('disabled', true);
+        }
+
+        function prettyPrint(element, data) {
+            var brush = new SyntaxHighlighter.brushes.Xml();
+            brush.init({ toolbar: true });
+            html = brush.getHtml(data);
+            document.getElementById(element).innerHTML = html;
+        }
+
+
+        function enableQuality() {
+            if ($('#requirementTxt').val() != '') {
+                $('#getObservationsBtn').prop('disabled', false);
+                $('#getObservationsUriBtn').prop('disabled', true);
+                $('#getObservationsUriJazzBtn').prop('disabled', true);
+
+            }
+
+        }
+
+        function enableQualityUri() {
+            if ($('#requirementUri').val() != '') {
+                $('#getObservationsBtn').prop('disabled', true);
+                $('#getObservationsUriBtn').prop('disabled', false);
+                $('#getObservationsUriJazzBtn').prop('disabled', true);
+
+            }
+
+        }
+
+
+        function enableQualityUriJazz() {
+            if ($('#requirementUriJazz').val() != '') {
+                $('#getObservationsBtn').prop('disabled', true);
+                $('#getObservationsUriBtn').prop('disabled', false);
+                $('#getObservationsUriJazzBtn').prop('disabled', false);
+
+            }
+
+        }
+
+        function clearTextRequirement() {
+            $('#requirementTxt').val("");
+            $('#getObservationsBtn').prop('disabled', true);
+            refreshTable("#observations", []);
+        }
+
+        function clearUriRequirement() {
+            $('#requirementUri').val("");
+            $('#getObservationsUriBtn').prop('disabled', true);
+            refreshTable("#observations", []);
+        }
+
+        function clearUriJazzRequirement() {
+            $('#requirementUriJazz').val("");
+            $('#getObservationsUriJazzBtn').prop('disabled', true);
+            refreshTable("#observations", []);
+        }
+
+
+        function getObservations(requirement, baseuri, table, requirementTxt) {
+            if (requirement != '') {//FIXME: concatenate
+                var observations = [];
+                $.ajax({
+                    type: "GET",
+                    url: baseuri + requirement,
+                    dataType: "xml",
+                    headers: {
+                        Accept: "application/rdf+xml; charset=utf-8",
+                        "Content-Type": "text/plain; charset=utf-8"
+                    },
+                    success: function (xml) {
+                        var qualityPercentage = new Array();
+                        $(xml).find('Observation').each(function () {
+                            xmlObservations = new XMLSerializer().serializeToString(xml);
+                            var id = $(this).find('identifier').text();
+                            var value = $(this).find('value').text();
+                            var name = $(this).find('name').text();
+                            var quality = $(this).find('quality').text();
+                            var summary = $(this).find('summary').text();
+                            var level = $(this).find('level').text();
+                            var md5 = $(this).find('md5').text();
+                            var timestamp = $(this).find('timestamp').text();
+                            var description = $(this).find('description').text();
+                            var dataset = $(this).find('ref-dataset').attr('rdf:resource');
+                            var datasetId = dataset.split("/kpi/")[1];
+                            var features = "<ul>";
+                            $(this).find('features').each(function () {
+                                features += " <li>" + $(this).text() + "</li>";
+                            });
+                            features += "</ul>";
+                            var about = $(this).attr('rdf:about');
+                            var aboutLink = "<a href=\"" + about + "\">" + id + "</a>";
+                            var datasetLink = "<a href=\"" + dataset + "\">" + "Quality metric " + datasetId + "</a>";
+                            //var currentItem = [id, value, description, md5, timestamp, datasetLink, aboutLink];
+                            var currentItem = [aboutLink, value, name, quality, summary, level, description, features, datasetLink];
+                            if (qualityPercentage[quality] != undefined) {
+                                qualityPercentage[quality] = qualityPercentage[quality] + 1;
+                            } else {
+                                qualityPercentage[quality] = 0;
+                            }
+
+                            observations.push(currentItem);
+                        });
+
+			$('#requirementEval').text('Requirement: '+requirementTxt);
+                        drawChart(qualityPercentage, requirementTxt);
+                        refreshTable(table, observations);
+
+                    },
+                    error: function () {
+                        refreshTable(table, []);
+                        alert("No observations were found for: " + requirementTxt);
+                        console.log("An error occurred while processing XML file.");
+                    }
+                });
+            }
+
+
+
+        }
+
+        function getObservationsQualityUri() {
+            var requirementTxt = $('#requirementUri').val();
+            getObservations(requirementTxt, "/oslc/kpis/observations?uri=", "#observations", requirementTxt);
+        }
+
+        function getObservationsQualityUriJazz() {
+            var requirementTxt = $('#requirementUriJazz').val();
+            var project = $('#projectJazz').val();
+            getObservations(requirementTxt, "/oslc/kpis/observations?" + "project=" + project + "&uri=", "#observations", requirementTxt);
+        }
+
+        function getObservationsQuality() {
+            var requirementTxt = $('#requirementTxt').val();
+            getObservations(requirementTxt, "/oslc/kpis/observations?text=", "#observations", requirementTxt);
+        }
+
+
+        function drawChart(percentageData, inputTxt) {
+ 	if (typeof google.visualization != 'undefined') {//To work without internet connection
+   
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Valid requirement');
+            data.addColumn('number', 'Percentage');
+            for (var key in percentageData) {
+                data.addRow([key, percentageData[key]]);
+            }
+
+            var options = { 'title': 'Percentage (High,Low) of KPIs for: \"' + inputTxt + '\"',
+                'width': 900,
+                'height': 500,
+                pieHole: 0.4
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+ }
+        }
+
+        function showObservationsXml() {
+            prettyPrint("observationsXml", xmlObservations);
+            $('#hideObservationsXmlBtn').prop('disabled', false);
+        }
+
+        function hideObservationsXml() {
+            prettyPrint("observationsXml", "");
+            $('#observationsXmlBtn').prop('disabled', true);
+
+        }
+
+
+        $(document).ready(function () {
+
+            loadIndicators();
+            //Init values
+            $('#observations').dataTable({
+                "aaData": observations,
+                "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Value" },
+                        { "sTitle": "Name" },
+                        { "sTitle": "Quality" },
+                        { "sTitle": "Summary" },
+                        { "sTitle": "Level" },
+                        { "sTitle": "Description" },
+                        { "sTitle": "Features" },
+                        { "sTitle": "Quality Metric" }
+					    ]
+            });
+
+
+
+        });
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">TRC-OSLC Adapter</a>
+        </div>
+        <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Knowledge Management<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="vocabulary-mgt.html">Vocabulary</a>
+                        <li><a href="knowledge-mgt.html">Artifacts</a></li>
+                        <li><a href="rat-pilot.html">RAT Pilot</a></li>
+                    </ul>
+                </li>
+				<li  class="active"><a href="#">KPI Management</a></li>	
+                <li><a href="requirement-mgt.html">Requirements Management</a></li>				
+                <li><a href="contact.html">Contact</a></li>
+               </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+	  <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+
+		
+			<div id="sponsor_logos">
+				<span><strong>Powered by:</strong></span>
+				<a title="The Reuse Company Inc." href="http://www.reusecompany.com/">
+					<img id="btnSponsor" alt="The Reuse Company Inc." style="border-width:0" src="img/logo_reuse.jpg" width="65px" height="30px"/>
+				</a>
+				<a title="Carlos III University of Madrid" href="http://www.uc3m.es">
+					<img id="btnSponsor" alt="Carlos III University of Madrid"  src="img/logo-UC3M.jpg" width="40px" height="30px"/>
+				</a>
+			</div>
+
+		    <h1>OSLC Adapter</h1>
+           
+            <p style="margin-bottom:0.5em">
+               Following a set of OSLC-based services to expose the results of requirements quality analysis are presented with 
+               the aim of:
+            </p>
+            <ul>
+                <li>Exposing requirements quality metrics and features in a standardized way.</li>
+                <li>Checking of requirements quality through an OSLC-based service.</li>
+            </ul>
+            <p>&nbsp;</p>
+		  
+		  
+        </div><!--jumbotron-->
+
+      <hr/>
+
+	  <div>
+           <h2>Service Provider info...</h2>
+           <p>This service exposes both: 1) provider description and 2) metainformation of those methods available through the OSLC-based API to 
+           query quality management services such as: </p>
+           <table class="table table-hover">
+			<thead>
+			<tr>
+				<td>URL</td>
+				<td>Description</td>
+                <td>Service</td>
+			</tr>
+			</thead>
+			<tbody>	
+			<tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/info">http://localhost:31885/oslc/kpis/info</a>
+                </td>
+				<td>Description of the service provider using OSLC.</td>
+                <td>All</td>
+			</tr>
+
+                <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/resourceShape">http://localhost:31885/oslc/kpis/resourceShape</a>
+                </td>
+				<td>Meta-description of the OSLC resource for quality services</td>
+                <td>KPI Management</td>
+			</tr>
+
+             <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/kpis/list">http://localhost:31885/oslc/kpis/list</a>
+                </td>
+				<td>Default list of KPIs</td>
+                <td>KPI Management</td>
+			</tr>
+
+             <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/kpis/list?idBlock=12">http://localhost:31885/oslc/kpis/list?idBlock=12</a>
+                </td>
+				<td>List of KPIs for a block (id)</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/kpis/kpi/1">http://localhost:31885/oslc/kpis/kpi/1</a>
+                </td>
+				<td>Description of a KPI</td>
+                <td>KPI Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/kpis/kpi/1?idBlock=12">http://localhost:31885/oslc/kpis/kpi/1?idBlock=12</a>
+                </td>
+				<td>Description of a KPI within a block (id)</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?text=this is a bad requirement">http://localhost:31885/oslc/kpis/observations?text=this is a bad requirement</a>
+                </td>
+				<td>Default KPIs for a textual requirement...</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+            
+
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?text=this is a bad requirement&idBlock=12">http://localhost:31885/oslc/kpis/observations?text=this is a bad requirement&idBlock=12</a>
+                </td>
+				<td>Default KPIs for a textual requirement within block (id)...</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?uri=http://localhost:31885/oslc/requirements/requirement/1">http://localhost:31885/oslc/kpis/observations?uri=http://localhost:31885/oslc/requirements/requirement/1</a>
+                </td>
+					<td>Default KPIs for a OSLC-based requirement...</td>
+                <td>KPI Management</td>
+			</tr>
+
+            
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?uri=http://localhost:31885/oslc/requirements/requirement/1">http://localhost:31885/oslc/kpis/observations?uri=http://localhost:31885/oslc/requirements/requirement/1&idBlock=12</a>
+                </td>
+					<td>Default KPIs for a OSLC-based requirement within block (id)...</td>
+                <td>KPI Management</td>
+			</tr>
+
+                      <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?uri=https://localhost:9443/rm/resources/_0b7af6d99f45484f9d20db5b263c5e34&project=Interoperability">http://localhost:31885/oslc/kpis/observations?uri=https://localhost:9443/rm/resources/_0b7af6d99f45484f9d20db5b263c5e34&project=Interoperability</a>
+                </td>
+					<td>Default KPIs for a OSLC-based requirement within the Jazz Platform...</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+            
+            
+            
+
+
+
+			</tbody>
+		</table>
+
+	           <button id="Button1" type="button" onclick="getServiceProviderInfo();" class="btn btn-default">Show</button>
+                <button id="serviceProviderXmlBtn" type="button" onclick="hideServiceProviderXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="serviceProviderXml">  </pre>
+               </div>
+	  </div>
+      
+	  <hr/>
+
+
+	  <div>
+           <h2>KPI resource shape...</h2>
+	           <button id="Button2" type="button" onclick="getResourceShape();" class="btn btn-default">Show</button>
+                <button id="resourceShapeXmlBtn" type="button" onclick="hideResourceShapeXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="resourceShapeXml">  </pre>
+               </div>
+	  </div>
+      
+	  <hr/>
+
+	  <div>
+           <h2>Default KPIs...</h2>
+	       <table cellpadding="0" cellspacing="0" border="0" class="display" id="indicators"></table>
+           <div style="margin:1em">
+           <p>&nbsp;</p>
+                <button id="showIndicatorsXmlBtn" type="button" onclick="showIndicatorsXml();" class="btn btn-default">Show</button>
+                <button id="hideIndicatorsXmlBtn" type="button" onclick="hideIndicatorsXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="indicatorsXml">  </pre>
+              </div>
+            </div>
+	  </div>
+
+             <hr/>
+
+      	  <div style="margin:1em">
+            <h2>Describe a KPI...</h2>
+               <div class="ui-widget">
+                 <label for="metricList">By Id: </label>
+                 <input id="metricList" onkeyup="enableMetricDescribe();" type="search">
+                
+                 <button id="describeMetricBtn" type="button" onclick="getMetric();" class="btn btn-default" disabled>Describe</button>
+                 <button type="button" class="btn btn-default" onclick="clearMetricListItem();">Clear</button>
+                
+               </div>
+              
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="metricDescriptionXml">  </pre>
+               </div>
+    	  </div>
+           
+        <hr/>
+
+
+	  <div>
+           <h2>Default KPIs for a requirement...</h2>
+           <div class="ui-widget">
+                 <label for="requirementTxtLabel">Enter a text requirement: </label>
+                 <input id="requirementTxt" onkeyup="enableQuality();" type="search">
+                
+                 <button id="getObservationsBtn" type="button" onclick="getObservationsQuality();" class="btn btn-default" disabled>Calculate quality metrics</button>
+                 <button type="button" class="btn btn-default" onclick="clearTextRequirement();">Clear</button>
+          
+          </div>
+           <hr />
+          <div class="ui-widget">
+                 <label for="requirementUriLabel">Enter a requirement URI (OSLC-based): </label>
+                 <input id="requirementUri" onkeyup="enableQualityUri();" type="search">
+                  <button id="getObservationsUriBtn" type="button" onclick="getObservationsQualityUri();" class="btn btn-default" disabled>Calculate quality metrics</button>
+                 <button type="button" class="btn btn-default" onclick="clearUriRequirement();">Clear</button>
+
+             </div>
+           
+           <hr />
+             <div class="ui-widget">
+                 <label for="requirementUriJazzLabel">Enter a requirement URI (Doors Next and OSLC-based): </label>
+                  <input id="requirementUriJazz" onkeyup="enableQualityUriJazz();" type="search">
+                  <br />
+                  <label>Enter the Jazz project:</label>
+                  <br />
+                  <input id="projectJazz"  type="search">
+                  <button id="getObservationsUriJazzBtn" type="button" onclick="getObservationsQualityUriJazz();" class="btn btn-default" disabled>Calculate quality metrics</button>
+                 <button type="button" class="btn btn-default" onclick="clearUriJazzRequirement();">Clear</button>
+
+             </div>
+	<hr/>
+
+			<div class="alert alert-info">  
+				<strong>
+				 <p id="requirementEval"></p>
+				</strong>
+			</div>
+	<hr/>
+
+
+            <div style="margin:1em">
+		    <p id="requirementEval"></p>
+	            <table cellpadding="0" cellspacing="0" border="0" class="display" id="observations"></table>
+            </div>
+
+
+            <div style="margin:1em">
+                 <div id="chart_div"></div>
+            </div>
+
+
+           <div style="margin:1em">
+           <p>&nbsp;</p>
+                <button id="showObservationsXmlBtn" type="button" onclick="showObservationsXml();" class="btn btn-default">Show</button>
+                <button id="hideObservationsXmlBtn" type="button" onclick="hideObservationsXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="observationsXml">  </pre>
+              </div>
+            </div>
+	  </div>   
+
+      
+
+      <hr />
+
+    <!-- FOOTER -->
+       <div class="footer">
+
+        
+      <p style="text-align:center">
+      The OSLC Adapter on top of <a href="http://www.reusecompany.com">The Reuse Company Inc.</a> tools is a 
+      joint effort in conjuction with the <a href="http://www.uc3m.es">Carlos III University of Madrid</a> and partially funded 
+      by the <a href="http://www.crystal-artemis.eu/">Crystal Project</a>.
+        </p>
+
+        <p style="text-align:center">The research leading to these results has received funding from the ARTEMIS 
+        Joint Undertaking under Grant Agreement N° 332830 and from specific national programs and / or funding authorities. 
+        </p>
+        <p style="text-align:center">
+            <img src="img/fp7.jpg" title="FP7" /> <img src="img/artemis.jpg"  title="ARTEMIS"/> <img src="img/europe.jpg" title="European Union"/>
+        </p>
+	
+
+	
+      </div>
+
+    </div> <!-- /container -->
+
+ 
+	 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/holder.js"></script>
+  </body>
+
+
+</html>

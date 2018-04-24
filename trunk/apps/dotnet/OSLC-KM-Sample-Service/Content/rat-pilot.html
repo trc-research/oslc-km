@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>OSLC Adapter by The Reuse Company Inc.</title>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <link href="/Content/demo_page.css" rel="stylesheet"/>
+    <link href="/Content/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/Content/jquery-ui.css" rel="stylesheet"/>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/navbar-fixed-top.css" rel="stylesheet"/>
+    <link href="/Content/shCore.css" rel="stylesheet"/>
+    <link href="/Content/shCoreDefault.css" rel="stylesheet"/>
+
+    <script type="text/javascript" language="javascript"  src="/Scripts/jquery-1.7.1.js"></script>
+    
+	<script type="text/javascript" language="javascript"  src="/Scripts/jquery-ui-1.8.20.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shCore.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shBrushXml.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shAutoloader.js"></script>
+    <script type="text/javascript" src="/Scripts/jsapi.js"></script>
+    <script src="./vendor/ckeditor/ckeditor.js"></script>
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>-->
+
+    <script type="text/javascript" language="javascript">
+        google.load('visualization', '1.0', { 'packages': ['corechart'] });
+        SyntaxHighlighter.all();
+        var aDataSet = [];
+        var metricIds = [];
+        var xmlData;
+        var xmlObservations;
+
+        function getObservations(requirement, baseuri, table) {
+            if (requirement != '') {//FIXME: concatenate
+                var observations = [];
+                $.ajax({
+                    type: "GET",
+                    url: baseuri + requirement,
+                    dataType: "xml",
+                    headers: {
+                        Accept: "application/rdf+xml; charset=utf-8",
+                        "Content-Type": "text/plain; charset=utf-8"
+                    },
+                    success: function (xml) {
+                        console.log(xml);
+                        var qualityPercentage = new Array();
+                        $(xml).find('Observation').each(function () {
+                            xmlObservations = new XMLSerializer().serializeToString(xml);
+                            var id = $(this).find('identifier').text();
+                            var value = $(this).find('value').text();
+                            var name = $(this).find('name').text();
+                            var quality = $(this).find('quality').text();
+                            var summary = $(this).find('summary').text();
+                            var level = $(this).find('level').text();
+                            var md5 = $(this).find('md5').text();
+                            var timestamp = $(this).find('timestamp').text();
+                            var description = $(this).find('description').text();
+                            var dataset = $(this).find('ref-dataset').attr('rdf:resource');
+                            var datasetId = dataset.split("/kpi/")[1];
+                            var features = "<ul>";
+                            $(this).find('features').each(function () {
+                                features += " <li>" + $(this).text() + "</li>";
+                            });
+                            features += "</ul>";
+                            var about = $(this).attr('rdf:about');
+                            var aboutLink = "<a href=\"" + about + "\">" + id + "</a>";
+                            var datasetLink = "<a href=\"" + dataset + "\">" + "Quality metric " + datasetId + "</a>";
+                            //var currentItem = [id, value, description, md5, timestamp, datasetLink, aboutLink];
+                            var currentItem = [aboutLink, value, name, quality, summary, level, description, features, datasetLink];
+                            if (qualityPercentage[quality] != undefined) {
+                                qualityPercentage[quality] = qualityPercentage[quality] + 1;
+                            } else {
+                                qualityPercentage[quality] = 0;
+                            }
+
+                            observations.push(currentItem);
+                        });
+
+                        console.log(observations);
+                        drawChart(qualityPercentage, requirement);
+                        refreshTable(table, observations);
+
+                    },
+                    error: function () {
+                        refreshTable(table, []);
+                        console.log("No observations were found for: " + requirement);
+                        console.log("An error occurred while processing XML file.");
+                    }
+                });
+            }
+
+
+
+        }
+
+        function getObservationsQuality() {
+            var requirementTxt = $('#requirementTxt').val();
+            getObservations(requirementTxt, "/oslc/kpis/observations?text=", "#observations", requirementTxt);
+        }
+
+
+        function drawChart(percentageData, inputTxt) {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Valid requirement');
+            data.addColumn('number', 'Percentage');
+            for (var key in percentageData) {
+                data.addRow([key, percentageData[key]]);
+            }
+
+            var options = { 'title': 'Percentage (High,Low) of KPIs for: \"' + inputTxt + '\"',
+                'width': 900,
+                'height': 500,
+                pieHole: 0.4
+            };
+
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+
+        $(document).ready(function () {
+            initConcepts();
+
+            $('#observations').dataTable({
+                "aaData": observations,
+                "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Value" },
+                        { "sTitle": "Name" },
+                        { "sTitle": "Quality" },
+                        { "sTitle": "Summary" },
+                        { "sTitle": "Level" },
+                        { "sTitle": "Description" },
+                        { "sTitle": "Features" },
+                        { "sTitle": "Quality Metric" }
+					    ]
+            });
+
+        });
+    </script>
+
+    <script>
+        var Suggestions = [];
+        var lastWord = "";
+        var Concepts = [];
+        function initConcepts() {
+            Concepts = loadConcepts();
+        }
+	</script>
+
+    <script>
+        var editor, html = '';
+
+        function createEditor() {
+            if (editor) return;
+            initEditor();
+            updateConcepts();
+            CKEDITOR.instances.editor1.insertHtml(html);
+        }
+
+        function removeEditor() {
+            if (!editor)
+                return;
+            document.getElementById('editorcontents').innerHTML = html = editor.getData();
+            var text = editor.getData();
+            editor.destroy();
+            editor = null;
+            console.log(text);
+            getObservations(text, "/oslc/kpis/observations?text=", "#observations");
+        }
+
+        function filterList(elements, startWith) {
+            var matcher = new RegExp("^" + startWith, "i");
+            var values = elements.filter(function (suggestion) {
+                return matcher.test(suggestion.label);
+            });
+            return values.slice(0, 10); //FIXME
+        }
+
+
+        function loadConcepts() {
+            var suggestions = [];
+            $.ajax({
+                type: "GET",
+                url: "/oslc/concepts/list",
+                dataType: "json",
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (json) {
+                    var concepts = json["rdfs:member"];
+                    jsonData = JSON.stringify(json);
+                    for (var i = 0, len = concepts.length; i < len; i++) { //len
+                        var concept = concepts[i];
+                        var idConcept = concept["dcterms:identifier"];
+                        var prefLabel = concept["skos:prefLabel"];
+                        suggestions.push({ id: idConcept, label: prefLabel });
+                    }
+                    console.log("Terms loaded: " + len);
+                    //suggestions = filterList(suggestions, "a");
+                    //updateConcepts();
+                },
+                error: function () {
+                    console.log("An error occurred while processing JSON file.");
+                }
+            });
+            return suggestions;
+        }
+
+
+        function getCurrentWord(editor) {
+            var range = editor.getSelection().getRanges()[0],
+			startNode = range.startContainer;
+            if (startNode.type == CKEDITOR.NODE_TEXT && range.startOffset) {
+                var indexPrevSpace = startNode.getText().lastIndexOf(' ', range.startOffset) + 1;
+                var indexNextSpace = startNode.getText().indexOf(' ', range.startOffset);
+                if (indexPrevSpace == -1) {
+                    indexPrevSpace = 0;
+                }
+                if (indexNextSpace == -1) {
+                    indexNextSpace = startNode.getText().length;
+                }
+
+                var filteredWord = startNode.getText().substring(indexPrevSpace, indexNextSpace);
+
+                // Range at the non-zero position of a text node.
+
+                return [startNode, indexPrevSpace, indexNextSpace];
+            }
+            // Selection starts at the 0 index of the text node and/or there's no previous text node in contents.
+            return null;
+        }
+
+        function updateConcepts() {
+            console.log("Upate Concepts");
+            CKEDITOR.instances.editor1.execCommand('reloadSuggetionBox');
+        }
+
+        function initEditor() {
+            console.log("Init editor");
+            CKEDITOR.plugins.addExternal('timestamp', './vendor/ckeditor/plugins/autocomplete', 'plugin.js');
+
+            CKEDITOR.replace('editor1', {
+                extraPlugins: 'autocomplete'
+            });
+
+           
+
+            CKEDITOR.on('instanceReady', function (evt) {
+                CKEDITOR.instances.editor1.execCommand('reloadSuggetionBox');
+                CKEDITOR.instances.editor1.document.on('keyup', function (event) {
+                    CKEDITOR.instances.editor1.execCommand('keyupcommand');
+                });
+           
+            });
+
+            editor = CKEDITOR.instances['editor1'];
+        }
+	</script>
+
+
+    
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">TRC-OSLC Adapter</a>
+        </div>
+        <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Knowledge Management<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="vocabulary-mgt.html">Vocabulary</a>
+                        <li><a href="knowledge-mgt.html">Artifacts</a></li>
+                        <li  class="active"><a href="#">RAT Pilot</a></li>
+                    </ul>
+                </li>
+				<li><a href="quality-mgt.html">KPI Management</a></li>	
+                <li><a href="requirement-mgt.html">Requirements Management</a></li>				
+                <li><a href="contact.html">Contact</a></li>
+               </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+	  <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+
+		
+			<div id="sponsor_logos">
+				<span><strong>Powered by:</strong></span>
+				<a title="The Reuse Company Inc." href="http://www.reusecompany.com/">
+					<img id="btnSponsor" alt="The Reuse Company Inc." style="border-width:0" src="img/logo_reuse.jpg" width="65px" height="30px"/>
+				</a>
+				<a title="Carlos III University of Madrid" href="http://www.uc3m.es">
+					<img id="btnSponsor" alt="Carlos III University of Madrid"  src="img/logo-UC3M.jpg" width="40px" height="30px"/>
+				</a>
+			</div>
+
+		    <h1>RAT-Pilot</h1>
+           
+            <p style="margin-bottom:0.5em">
+               This is a pilot to offer writing assistance for any text-based resource through a web interface.
+            </p>
+            <ul>
+                <li>Simulate the behavior (requesting concepts through OSLC) of the real RAT (Requirements Authoring Tool) to write requirements.</li>
+                <li>Checking of requirements quality through an OSLC-based service.</li>
+            </ul>
+            <p>&nbsp;</p>
+		  
+		  
+        </div><!--jumbotron-->
+
+<hr />
+	  <div>
+         <h2>Requirement text</h2>
+	        <div id="editor1">
+                The system shall speed up.
+	        </div>
+            <p style="margin-top: 2em;">
+                <button type="button" class="btn btn-info btn-sm" onclick="createEditor();">Edit</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="removeEditor();">Done</button>
+	        </p>
+	        <div id="contents" style="display: none">
+		        <div id="editorcontents">       </div>
+	        </div>
+        </div>
+<hr />
+        <div>
+        <h2>Requirement Quality Metrics</h2>
+            <div style="margin:1em">
+	            <table cellpadding="0" cellspacing="0" border="0" class="display" id="observations"></table>
+            </div>
+
+
+            <div style="margin:1em">
+                 <div id="chart_div"></div>
+            </div>
+    </div>
+    
+	  </div>   
+
+      
+
+      <hr />
+
+    <!-- FOOTER -->
+       <div class="footer">
+
+      <p style="text-align:center">
+      The OSLC Adapter on top of <a href="http://www.reusecompany.com">The Reuse Company Inc.</a> tools is a 
+      joint effort in conjuction with the <a href="http://www.uc3m.es">Carlos III University of Madrid</a> and partially funded 
+      by the <a href="http://www.crystal-artemis.eu/">Crystal Project</a>.
+        </p>
+
+        <p style="text-align:center">The research leading to these results has received funding from the ARTEMIS 
+        Joint Undertaking under Grant Agreement N° 332830 and from specific national programs and / or funding authorities. 
+        </p>
+        <p style="text-align:center">
+            <img src="img/fp7.jpg" title="FP7" /> <img src="img/artemis.jpg"  title="ARTEMIS"/> <img src="img/europe.jpg" title="European Union"/>
+        </p>
+	
+   
+	
+      </div>
+
+    </div> <!-- /container -->
+
+ 
+	 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/holder.js"></script>
+  </body>
+
+
+</html>

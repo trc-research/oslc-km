@@ -1,0 +1,4 @@
+C:\Users\chema\documents\visual studio 2010\Projects\OSLC-KM\OSLC-KM-Test\bin\Debug\OSLC-KM-Test.dll
+C:\Users\chema\documents\visual studio 2010\Projects\OSLC-KM\OSLC-KM-Test\bin\Debug\OSLC-KM-Test.pdb
+C:\Users\chema\documents\visual studio 2010\Projects\OSLC-KM\OSLC-KM-Test\obj\Debug\OSLC-KM-Test.dll
+C:\Users\chema\documents\visual studio 2010\Projects\OSLC-KM\OSLC-KM-Test\obj\Debug\OSLC-KM-Test.pdb

@@ -1,0 +1,788 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>OSLC Adapter by The Reuse Company Inc.</title>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <link href="/Content/demo_page.css" rel="stylesheet"/>
+    <link href="/Content/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/Content/jquery-ui.css" rel="stylesheet"/>    <link href="/Content/bootstrap.css" rel="stylesheet"/>    <link href="/Content/navbar-fixed-top.css" rel="stylesheet"/>    <link href="/Content/shCore.css" rel="stylesheet"/>    <link href="/Content/shCoreDefault.css" rel="stylesheet"/>    <script type="text/javascript" language="javascript"  src="/Scripts/jquery-1.7.1.js"></script>    	<script type="text/javascript" language="javascript"  src="/Scripts/jquery-ui-1.8.20.js"></script>    <script type="text/javascript" language="javascript" src="/Scripts/jquery.dataTables.js"></script>    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shCore.js"></script>    <script type="text/javascript" language="javascript" src="/Scripts/shBrushXml.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shAutoloader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+    <script type="text/javascript" language="javascript">
+        SyntaxHighlighter.all();
+        var aDataSet = [];
+        var conceptLabels = [];
+        var patternGroups = [];
+        var jsonData;
+        var xmlStandardizedData;
+
+        function loadPatternGroups() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/patterns/groups",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    $(xml).find('PatternGroup').each(function () {
+                        xmlData = new XMLSerializer().serializeToString(xml);
+                        var id = $(this).find('identifier').text();
+                        var description = $(this).find('prefLabel').text();
+                        //var about = "http://localhost:31885/oslc/quality/indicator/" + id;
+                        var about = $(this).attr('rdf:about');
+                        var aboutLink = "<a href=\"" + about + "\">" + about + "</a>";
+                        var currentItem = [id, description, aboutLink];
+                        patternGroups.push(currentItem);
+                    });
+                    updatePatternsGroupTable();
+                },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+
+        }
+
+
+        function loadPatterns() {
+            var id = $('#patternGroupTxt').val();
+            if (id != '') {
+                $.ajax({
+                    type: "GET",
+                    url: "/oslc/patterns/patternsgroup/" + id,
+                    dataType: "xml",
+                    headers: {
+                        Accept: "application/rdf+xml; charset=utf-8",
+                        "Content-Type": "text/plain; charset=utf-8"
+                    },
+                    success: function (xml) {
+                        var patterns = [];
+                        $(xml).find('Pattern').each(function () {
+                            xmlData = new XMLSerializer().serializeToString(xml);
+                            var id = $(this).find('identifier').text();
+                            var label = $(this).find('prefLabel').text();
+                            var example = $(this).find('example').text();
+                            var comments = $(this).find('definition').text();
+                            var weight = $(this).find('weight').text();
+                            var indexable = $(this).find('indexable').text();
+                            var inScheme = $(this).find('inScheme').attr('rdf:resource');
+                            var inSchemeLink = "<a href=\"" + inScheme + "\">" + "URI Pattern Group" + "</a>";
+                            var about = $(this).attr('rdf:about');
+                            var aboutLink = "<a href=\"" + about + "\">" + id + "</a>";
+                            var currentItem = [aboutLink, label, example, comments, weight, indexable, inSchemeLink];
+                            patterns.push(currentItem);
+                        });
+                        refreshTable("#patternsPerGroup", patterns);
+                    },
+                    error: function () {
+                        refreshTable("#patternsPerGroup", []);
+                        alert("No patterns were found.");
+                        console.log("An error occurred while processing XML file.");
+                    }
+                });
+            }
+
+
+        }
+
+
+
+        function loadConcepts() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/concepts/list",
+                dataType: "json",
+                headers: {
+                    Accept: "application/json; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (json) {
+                    var concepts = json["rdfs:member"];
+                    jsonData = JSON.stringify(json);
+                    for (var i = 0, len = concepts.length; i < len; i++) {
+                        var concept = concepts[i];
+                        var id = concept["dcterms:identifier"];
+                        var prefLabel = concept["skos:prefLabel"];
+                        var about = concept["rdf:about"];
+                        var aboutLink = "<a href=\"" + about + "\">" + about + "</a>";
+                        var currentItem = [id, prefLabel, aboutLink];
+                        aDataSet.push(currentItem);
+                        conceptLabels.push(prefLabel);
+                    }
+                    updateTable();
+                    updateConceptLabels();
+                },
+                error: function () {
+                    console.log("An error occurred while processing JSON file.");
+                }
+            });
+
+
+//            $.ajax({
+//                type: "GET",
+//                url: "/oslc/concepts/list?max=10",
+//                dataType: "xml",
+//                headers: {
+//                    Accept: "application/rdf+xml; charset=utf-8",
+//                    "Content-Type": "text/plain; charset=utf-8"
+//                },
+//                success: function (xml) {
+//                    $(xml).find('Concept').each(function () {
+//                        jsonData = new XMLSerializer().serializeToString(xml);
+//                        var id = $(this).find('identifier').text();
+//                        var prefLabel = $(this).find('prefLabel').text();
+//                        //FIXME: Extract from XML
+//                        var about = "http://localhost:31885/oslc/concepts/concept/" + id;
+//                        var aboutLink = "<a href=\"" + about + "\">" + about + "</a>";
+//                        var currentItem = [id, prefLabel, aboutLink];
+//                        aDataSet.push(currentItem);
+//                        conceptLabels.push(prefLabel);
+//                        
+//                    });
+//                    updateTable();
+//                    updateConceptLabels();
+//                },
+//                error: function () {
+//                    console.log("An error occurred while processing XML file.");
+//                }
+//            });
+
+
+          
+
+
+
+        }
+
+        function showConceptsXml() {
+            prettyPrint("conceptsXml", jsonData);
+            $('#hideConceptsXmlBtn').prop('disabled', false);
+        }
+
+        function hideConceptsXml() {
+            prettyPrint("conceptsXml", "");
+            $('#hideConceptsXmlBtn').prop('disabled', true);
+            
+        }
+
+        function updateConceptLabels() {
+            $("#conceptList").autocomplete({
+                source: conceptLabels
+            });
+        }
+
+
+        function updateTable() {
+            $('#concepts').dataTable({
+                "aaData": aDataSet,
+                "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Preferred Label" },
+                        { "sTitle": "URI" }
+                //{ "sTitle": "Version", "sClass": "center" },
+                //{ "sTitle": "Grade", "sClass": "center" }
+					]
+            });
+        }
+
+        function clearConceptListItem() {
+            $('#conceptList').val("");
+            $('#describeConceptBtn').prop('disabled', true);
+            $('#conceptDescription').text("");
+        }
+
+
+        function enableDescribe() {
+            if ($('#conceptList').val() != '') {
+                $('#describeConceptBtn').prop('disabled', false);
+            }
+
+        }
+
+        function standardizedTermTxtClear() {
+            $('#standardizedTermTxt').val("");
+            $('#standardizedTermBtn').prop('disabled', true);
+        }
+
+
+        function enableStandardize() {
+            if ($('#standardizedTermTxt').val() != '') {
+                $('#standardizedTermBtn').prop('disabled', false);
+            }
+
+        }
+
+        function getServiceProviderInfo() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/concepts/info",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    prettyPrint("serviceProviderXml", new XMLSerializer().serializeToString(xml));
+                    $('#serviceProviderXmlBtn').prop('disabled', false);
+                 },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+        }
+
+        function hideServiceProviderXml() {
+            prettyPrint("serviceProviderXml", "");
+            $('#serviceProviderXmlBtn').prop('disabled', true);
+        }
+
+        function getResourceShape() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/concepts/resourceShape",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    prettyPrint("resourceShapeXml", new XMLSerializer().serializeToString(xml));
+                    $('#resourceShapeXmlBtn').prop('disabled', false);
+                },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+        }
+
+        function hideResourceShapeXml() {
+            prettyPrint("resourceShapeXml", "");
+            $('#resourceShapeXmlBtn').prop('disabled', true);
+        }
+
+        function getConcept() {
+            var term = $('#conceptList').val();
+            if (term != '') {
+                $.ajax({
+                    type: "GET",
+                    url: "/oslc/concepts/pref?q=" + term,
+                    dataType: "xml",
+                    headers: {
+                        Accept: "application/rdf+xml; charset=utf-8",
+                        "Content-Type": "text/plain; charset=utf-8"
+                    },
+                    success: function (xml) {
+                        $(xml).find('Concept').each(function () {
+                            var id = $(this).find('identifier').text();
+                            if (id != "") {
+                               prettyPrint("conceptDescriptionXml", new XMLSerializer().serializeToString(xml));
+                            }
+                        });
+                    },
+                    error: function () {
+                        console.log("An error occurred while processing XML file.");
+                    }
+                });
+            }
+        
+        }
+
+        function getStandardizedConcept() {
+            var term = $('#standardizedTermTxt').val();
+            var standardizedConcepts = [];
+
+            if (term != '') {
+                $.ajax({
+                    type: "GET",
+                    url: "/oslc/concepts/std?q=" + term,
+                    dataType: "xml",
+                    headers: {
+                        Accept: "application/rdf+xml; charset=utf-8",
+                        "Content-Type": "text/plain; charset=utf-8"
+                    },
+                    success: function (xml) {
+                        $(xml).find('Concept').each(function () {
+                            jsonData = new XMLSerializer().serializeToString(xml);
+                            var id = $(this).find('identifier').text();
+                            var prefLabel = $(this).find('prefLabel').text();
+                            //FIXME: Extract from XML
+                            var about = "http://localhost:31885/oslc/concepts/concept/" + id;
+                            var aboutLink = "<a href=\"" + about + "\">" + about + "</a>";
+                            var currentItem = [id, prefLabel, aboutLink];
+                            standardizedConcepts.push(currentItem);
+                        });
+                        xmlStandardizedData = new XMLSerializer().serializeToString(xml);
+                        prettyPrint("standardizedTermXml", xmlStandardizedData);
+                        $('#hideStandardizedConceptsXmlBtn').prop('disabled', false);
+                        //FIXME:
+                        refreshTable("#standardizedConceptsTable", standardizedConcepts);
+                    },
+                    error: function () {
+                        console.log("An error occurred while processing XML file.");
+                    }
+                });
+
+            }
+
+           
+        }
+
+
+
+        function showStandardizedConceptsXml() {
+            prettyPrint("standardizedTermXml", xmlStandardizedData);
+            $('#hideStandardizedConceptsXmlBtn').prop('disabled', false);
+        }
+
+        function hideStandardizedConceptsXml() {
+            prettyPrint("standardizedTermXml", "");
+            $('#hideStandardizedConceptsXmlBtn').prop('disabled', true);
+
+        }
+
+
+   
+        function prettyPrint(element, data) {
+            var brush = new SyntaxHighlighter.brushes.Xml();
+            brush.init({ toolbar: true });
+            html = brush.getHtml(data);
+            document.getElementById(element).innerHTML = html; 
+        }
+
+
+        function enablePatterns() {
+            if ($('#patternGroupTxt').val() != '') {
+                $('#loadPatternsBtn').prop('disabled', false);
+            }
+
+        }
+
+        function clearPatternGroupTxt() {
+            $('#patternGroupTxt').val("");
+            $('#loadPatternsBtn').prop('disabled', true);
+            refreshTable("#patternsPerGroup", []);
+        }
+
+
+
+        function updatePatternsGroupTable() {
+            $('#patternGroups').dataTable({
+                "aaData": patternGroups,
+                "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Description" },
+                        { "sTitle": "URI" }
+					]
+            });
+        }
+
+
+        $(document).ready(function () {
+            loadConcepts();
+            loadPatternGroups();
+            $('#standardizedConceptsTable').dataTable({
+                "aaData": [],
+                "aoColumns": [
+						        { "sTitle": "Id" },
+						        { "sTitle": "Preferred Label" },
+                                { "sTitle": "URI" }
+					        ]
+            });
+
+            $('#patternsPerGroup').dataTable({
+                "aaData": aDataSet,
+                "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Description" },
+                        { "sTitle": "Example" },
+                        { "sTitle": "Comments" },
+                        { "sTitle": "Weight" },
+                        { "sTitle": "Indexable" },
+                        { "sTitle": "Pattern Group" }
+					]
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">TRC-OSLC Adapter</a>
+        </div>
+        <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                 <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Knowledge Management<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li class="active"><a href="#">Vocabulary Management</a></li>
+                        <li><a href="knowledge-mgt.html">Artifacts</a></li>
+                         <li><a href="rat-pilot.html">RAT Pilot</a></li>
+                    </ul>
+                </li>
+				<li><a href="quality-mgt.html">KPI Management</a></li>		
+                <li><a href="requirement-mgt.html">Requirements Management</a></li>			
+                <li><a href="contact.html">Contact</a></li>
+               </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+	  <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+
+		
+			<div id="sponsor_logos">
+				<span><strong>Powered by:</strong></span>
+				<a title="The Reuse Company Inc." href="http://www.reusecompany.com/">
+					<img id="btnSponsor" alt="The Reuse Company Inc." style="border-width:0" src="img/logo_reuse.jpg" width="65px" height="30px"/>
+				</a>
+				<a title="Carlos III University of Madrid" href="http://www.uc3m.es">
+					<img id="btnSponsor" alt="Carlos III University of Madrid"  src="img/logo-UC3M.jpg" width="40px" height="30px"/>
+				</a>
+			</div>
+
+		    <h1>OSLC Adapter</h1>
+           
+            <p style="margin-bottom:0.5em">
+                Following a set of OSLC-based services for the management of domain-based vocabularies are presented with 
+                the aim of:
+            </p>
+            <ul>
+                <li>Accessing all terms and concepts of a vocabulary in the context of a project.</li>
+                <li>Querying specific terms to get a full description including labelling, documenting and hierarchy properties.</li>
+                <li>Checking and suggestion of standardized terms.</li>
+            </ul>
+		  <p>&nbsp;</p>
+		  
+        </div><!--jumbotron-->
+
+      <hr/>
+
+	  <div>
+           <h2>Service Provider info...</h2>
+           <p>This service exposes both: 1) provider description and 2) metainformation of those methods available through the OSLC-based API to 
+           query vocabulary management services such as: </p>
+             <table class="table table-hover">
+			<thead>
+			<tr>
+				<td>URL</td>
+				<td>Description</td>
+                <td>Service</td>
+			</tr>
+			</thead>
+			<tbody>	
+	<tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/info">http://localhost:31885/oslc/concepts/info</a>
+                </td>
+				<td>Description of the vocabulary service provider using OSLC.</td>
+                <td>All</td>
+			</tr>
+
+            <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/resourceShape">http://localhost:31885/oslc/concepts/resourceShape</a>
+                </td>
+				<td>Description of the vocabulary resource shape.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/list">http://localhost:31885/oslc/concepts/list</a>
+                </td>
+				<td>Full description of all concepts in the vocabulary.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/list?max=10">http://localhost:31885/oslc/concepts/list?max=10</a>
+                </td>
+				<td>Full description of all concepts in the vocabulary filtering max values.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+               <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/list?from=10&to=12">http://localhost:31885/oslc/concepts/list?from=10&to=12</a>
+                </td>
+				<td>Full description of all concepts in the vocabulary filtering from a concept (from) to another concept (to).</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/concept/14837">http://localhost:31885/oslc/concepts/concept/14837 </a>
+                </td>
+				<td>Description of a concept using the ID as input parameter.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+               <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/pref?q=store">http://localhost:31885/oslc/concepts/pref?q=store</a>
+                </td>
+				<td>Description of a concept using the preferred label as input parameter.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+            
+
+               <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/std?q=stores">http://localhost:31885/oslc/concepts/std?q=stores</a>
+                </td>
+				<td>Get or suggest the standard form a label.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+            
+            <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/syns?q=stores">http://localhost:31885/oslc/concepts/syns?q=stores</a>
+                </td>
+				<td>Get or suggest the new concepts for a term.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/asoc?q=stores">http://localhost:31885/oslc/concepts/asoc?q=stores</a>
+                </td>
+				<td>Get or suggest associated concepts for a term.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/assist">http://localhost:31885/oslc/concepts/assist</a>
+                </td>
+				<td>Get writing assistance for a concept.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+             <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/slot?q=stores">http://localhost:31885/oslc/concepts/slot?q=stores</a>
+                </td>
+				<td>Get concepts for the next slot (writing assistance.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/groups">http://localhost:31885/oslc/patterns/groups</a>
+                </td>
+				<td>List of pattern groups</td>
+                <td>Patterns Management</td>
+			</tr>
+
+              
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/group/12">http://localhost:31885/oslc/patterns/group/12</a>
+                </td>
+				<td>Get a pattern group</td>
+                <td>Patterns Management</td>
+			</tr>
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/patternsgroup/7">http://localhost:31885/oslc/patterns/patternsgroup/7</a>
+                </td>
+				<td>Get the patterns of a pattern group</td>
+                <td>Patterns Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/pattern/537">http://localhost:31885/oslc/patterns/pattern/537</a>
+                </td>
+				<td>Describe a pattern</td>
+                <td>Patterns Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/pattern/537?pgid=7">http://localhost:31885/oslc/patterns/pattern/537?pgid=7</a>
+                </td>
+				<td>Describe a pattern (including pattern group)</td>
+                <td>Patterns Management</td>
+			</tr>
+
+
+
+			</tbody>
+		</table>
+
+	           <button id="Button1" type="button" onclick="getServiceProviderInfo();" class="btn btn-default">Show</button>
+                <button id="serviceProviderXmlBtn" type="button" onclick="hideServiceProviderXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="serviceProviderXml">  </pre>
+               </div>
+	  </div>
+      
+	  <hr/>
+
+
+	  <div>
+           <h2>Vocabulary resource shape...</h2>
+	           <button id="Button2" type="button" onclick="getResourceShape();" class="btn btn-default">Show</button>
+                <button id="resourceShapeXmlBtn" type="button" onclick="hideResourceShapeXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="resourceShapeXml">  </pre>
+               </div>
+	  </div>
+      
+	  <hr/>
+
+
+	  <div>
+           <h2>List concepts of the vocabulary...</h2>
+	       <table cellpadding="0" cellspacing="0" border="0" class="display" id="concepts"></table>
+           <div style="margin:1em">
+           <p>&nbsp;</p>
+                <button id="showConceptsXmlBtn" type="button" onclick="showConceptsXml();" class="btn btn-default">Show</button>
+                <button id="hideConceptsXmlBtn" type="button" onclick="hideConceptsXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="conceptsXml">  </pre>
+              </div>
+            </div>
+	  </div>
+     
+        <hr/>
+
+      	  <div style="margin:1em">
+            <h2>Search and describe a concept...</h2>
+               <div class="ui-widget">
+                 <label for="conceptList">By preferred label: </label>
+                 <input id="conceptList" onkeyup="enableDescribe();" type="search">
+                
+                 <button id="describeConceptBtn" type="button" onclick="getConcept();" class="btn btn-default" disabled>Describe</button>
+                 <button type="button" class="btn btn-default" onclick="clearConceptListItem();">Clear</button>
+                
+               </div>
+              
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="conceptDescriptionXml">  </pre>
+               </div>
+    	  </div>
+           
+        <hr/>
+
+      	  <div style="margin:1em">
+            <h2>Standardize a concept...</h2>
+               <div class="ui-widget">
+                 <label for="conceptList">Intro a term: </label>
+                 <input id="standardizedTermTxt" onkeyup="enableStandardize();" type="search">
+                
+                 <button id="standardizedTermBtn" type="button" onclick="getStandardizedConcept();" class="btn btn-default" disabled>Standardize</button>
+                 <button type="button" class="btn btn-default" onclick="standardizedTermTxtClear();">Clear</button>
+                
+               </div>
+               <div style="margin:1em">
+                <table cellpadding="0" cellspacing="0" border="0" class="display" id="standardizedConceptsTable"></table>
+               </div>
+            <div style="margin:1em">
+                <p>&nbsp;</p>
+                <button id="showStandardizedConceptsXmlBtn" type="button" onclick="showStandardizedConceptsXml();" class="btn btn-default">Show</button>
+                <button id="hideStandardizedConceptsXmlBtn" type="button" onclick="hideStandardizedConceptsXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="standardizedTermXml">  </pre>
+               </div>
+            </div>
+
+
+
+             
+    	  </div>
+           
+        <hr/>
+
+
+         <div>
+           <h2>Pattern groups...</h2>
+               <div style="margin:1em">
+	            <table cellpadding="0" cellspacing="0" border="0" class="display" id="patternGroups"></table>
+            </div>
+
+            <br />
+             <hr />
+
+              <div class="ui-widget">
+                 <label for="patternGroupLabel">Enter a pattern group ID: </label>
+                 <input id="patternGroupTxt" onkeyup="enablePatterns();" type="search">
+                 <button id="loadPatternsBtn" type="button" onclick="loadPatterns();" class="btn btn-default" disabled>Get patterns...</button>
+                 <button type="button" class="btn btn-default" onclick="clearPatternGroupTxt();">Clear</button>
+             </div>
+
+             
+            <div style="margin:1em">
+	            <table cellpadding="0" cellspacing="0" border="0" class="display" id="patternsPerGroup"></table>
+            </div>
+
+
+      </div>
+
+
+      <hr />
+
+    <!-- FOOTER -->
+       <div class="footer">		<!--
+
+                      <p style="text-align:center">
+      The OSLC Adapter on top of <a href="http://www.reusecompany.com">The Reuse Company Inc.</a> tools is a 
+      joint effort in conjuction with the <a href="http://www.uc3m.es">Carlos III University of Madrid.</a>.
+        </p>
+           -->
+
+      <p style="text-align:center">
+      The OSLC Adapter on top of <a href="http://www.reusecompany.com">The Reuse Company Inc.</a> tools is a 
+      joint effort in conjuction with the <a href="http://www.uc3m.es">Carlos III University of Madrid</a> and partially funded 
+      by the <a href="http://www.crystal-artemis.eu/">Crystal Project</a>.
+        </p>
+
+        <p style="text-align:center">The research leading to these results has received funding from the ARTEMIS 
+        Joint Undertaking under Grant Agreement N° 332830 and from specific national programs and / or funding authorities. 
+        </p>
+        <p style="text-align:center">
+            <img src="img/fp7.jpg" title="FP7" /> <img src="img/artemis.jpg"  title="ARTEMIS"/> <img src="img/europe.jpg" title="European Union"/>
+        </p>
+	
+ 
+	
+      </div>
+
+    </div> <!-- /container -->
+
+ 
+	 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/Scripts/bootstrap.min.js"></script>    <script src="/Scripts/holder.js"></script>
+  </body>
+
+
+</html>

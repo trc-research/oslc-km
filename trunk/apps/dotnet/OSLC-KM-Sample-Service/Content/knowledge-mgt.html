@@ -1,0 +1,777 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>OSLC Adapter by The Reuse Company Inc.</title>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <link href="/Content/demo_page.css" rel="stylesheet"/>
+    <link href="/Content/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/Content/jquery-ui.css" rel="stylesheet"/>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/navbar-fixed-top.css" rel="stylesheet"/>
+    <link href="/Content/shCore.css" rel="stylesheet"/>
+    <link href="/Content/shCoreDefault.css" rel="stylesheet"/>
+
+    <script type="text/javascript" language="javascript"  src="/Scripts/jquery-1.7.1.js"></script>
+    
+	<script type="text/javascript" language="javascript"  src="/Scripts/jquery-ui-1.8.20.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shCore.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shBrushXml.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shAutoloader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+
+    <style>
+      #progress_bar {
+        margin: 10px 0;
+        padding: 3px;
+        border: 1px solid #000;
+        font-size: 14px;
+        clear: both;
+        opacity: 0;
+        -moz-transition: opacity 1s linear;
+        -o-transition: opacity 1s linear;
+        -webkit-transition: opacity 1s linear;
+      }
+      #progress_bar.loading {
+        opacity: 1.0;
+      }
+      #progress_bar .percent {
+        background-color: #99ccff;
+        height: auto;
+        width: 0;
+      }
+ </style> 
+
+
+    <script type="text/javascript" language="javascript">
+     
+        SyntaxHighlighter.all();
+        var artifactList = [];
+        var jsonData = "";
+
+         function loadArtifacts() {
+             $.ajax({
+                 type: "GET",
+                 url: "/oslc/artifacts/list",
+                 dataType: "json",
+                 headers: {
+                     Accept: "application/json; charset=utf-8",
+                     "Content-Type": "text/plain; charset=utf-8"
+                 },
+                 success: function (json) {
+                     var artifacts = json["rdfs:member"];
+                     jsonData = JSON.stringify(json);
+                     for (var i = 0, len = artifacts.length; i < len; i++) {
+                         var artifact = artifacts[i];
+                         var id = artifact["dcterms:identifier"];
+                         var prefLabel = artifact["rshp:term"]["skos:prefLabel"];
+                         var type = artifact["rshp:artifact-type"]["rshp:name"];
+                         var about = artifact["rdf:about"];
+                         var aboutLink = "<a href=\"" + about + "\">" + id + "</a>";
+                         var onClick = "showArtifact('" + prefLabel + "','" + type + "');";
+                         var buttonDescribe = "<button type=\"button\" class=\"btn btn-info btn-xs\" onclick=\""+onClick+"\">Describe</button>";
+                         var currentItem = [aboutLink, prefLabel, type, buttonDescribe];
+                         artifactList.push(currentItem);
+                     }
+                     updateArtifactsTable();
+                 },
+                 error: function () {
+                     console.log("An error occurred while processing JSON file.");
+                 }
+             });
+         }
+
+         function updateArtifactsTable() {
+             $('#artifacts').dataTable({
+                 "aaData": artifactList,
+                 "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Name" },
+                        { "sTitle": "Type" },
+                        { "sTitle": "Describe" }
+					]
+             });
+         }
+
+         function showArtifact(name, type) {
+           if(name!='' && type!=''){
+               $.ajax({
+                   type: "GET",
+                   url: "/oslc/artifacts/artifact?name=" + encodeURIComponent(name) + "&type=" + encodeURIComponent(type),
+                   dataType: "json",
+                   headers: {
+                       Accept: "application/json; charset=utf-8",
+                       "Content-Type": "text/plain; charset=utf-8"
+                   },
+                   success: function (json) {
+                       var rshpsList = [];
+                       var metapropertiesList = [];
+                       var artifactId = json["dcterms:identifier"];
+                       var artifactImg = json["rshp:preferred-visualization"]["rdf:resource"];
+                       var artifactName = json["rshp:term"]["skos:prefLabel"];
+                       var artifactType = json["rshp:artifact-type"]["rshp:name"];
+                       var rshps = json["rshp:rshps"];
+                       var metas = json["rshp:metaproperties"];
+                       if (rshps != null) {
+                           for (var i = 0, len = rshps.length; i < len; i++) {
+                               var rshp = rshps[i];
+                               var id = rshp["dcterms:identifier"];
+                               var from = rshp["rshp:from"]["rshp:term"]["skos:prefLabel"];
+                               var fromLink = "<a href=\"" + rshp["rshp:from"]["rshp:term"]["rdf:about"] + "\">" + from + "</a>";
+                               var to = rshp["rshp:to"]["rshp:term"]["skos:prefLabel"];
+                               var toLink = "<a href=\"" + rshp["rshp:to"]["rshp:term"]["rdf:about"] + "\">" + to + "</a>";
+                               var semantics = rshp["rshp:semantics"]["rshp:name"];
+                               var features = "<ul>";
+                               features += " <li>Annotation: " + rshp["rshp:semantics"]["rshp:AnnotationProperty"] + "</li>";
+                               features += " <li>Data Range: " + rshp["rshp:semantics"]["rshp:DataRange"] + "</li>";
+                               features += " <li>Data Type: " + rshp["rshp:semantics"]["rshp:DataTypeProperty"] + "</li>";
+                               //features += " <li>" + rshp["rshp:semantics"]["rshp:FunctionalProperty"] + "</li>";
+                               //features += " <li>" + rshp["rshp:semantics"]["rshp:InverseFunctionalProperty"] + "</li>";
+                               //features += " <li>" + rshp["rshp:semantics"]["rshp:ObjectProperty"] + "</li>";
+                               features += " <li>Symmetric: " + rshp["rshp:semantics"]["rshp:SymmetricProperty"] + "</li>";
+                               features += " <li>Transitive: " + rshp["rshp:semantics"]["rshp:TransitiveProperty"] + "</li>";
+                               features += "</ul>";
+                               var currentItem = [id, fromLink, toLink, semantics, features];
+                               rshpsList.push(currentItem);
+                           }
+                       }
+
+                       if (metas != null) {
+                           for (var i = 0, len = metas.length; i < len; i++) {
+                               var meta = metas[i];
+                               var tag = "";
+                               var value = "";
+                               if (meta["rshp:tag"]["rshp:term"]["skos:prefLabel"] != undefined) {
+                                   tag = meta["rshp:tag"]["rshp:term"]["skos:prefLabel"];
+                               }
+                               if (meta["rshp:value"]["rshp:term"]["skos:prefLabel"] != undefined) {
+                                   value = meta["rshp:value"]["rshp:term"]["skos:prefLabel"];
+                               }
+                               var currentItem = [tag, value];
+                               metapropertiesList.push(currentItem);
+                           }
+                       }
+
+
+                       $("#artifactId").text(artifactId);
+                       $("#artifactName").text(artifactName);
+                       $("#artifactType").text(artifactType);
+                       $("#artifactImg").attr("src", artifactImg);
+                       $("#artifactImg").attr("alt", "Preferred visualization of " + artifactName);
+                       refreshTable("#rshps", rshpsList);
+                       refreshTable("#metaproperties", metapropertiesList);
+                   },
+                   error: function () {
+                       console.log("An error occurred while processing JSON file.");
+                   }
+               });
+           }
+               
+
+         }
+
+
+
+         function showArtifactsXml() {
+             prettyPrint("artifactsXml", jsonData);
+             $('#hideArtifactsXmlBtn').prop('disabled', false);
+         }
+
+         function hideArtifactsXml() {
+             prettyPrint("artifactsXml", "");
+             $('#hideArtifactsXmlBtn').prop('disabled', true);
+
+         }
+         function hideServiceProviderXml() {
+             prettyPrint("serviceProviderXml", "");
+             $('#serviceProviderXmlBtn').prop('disabled', true);
+         }
+
+         function hideResourceShapeXml() {
+             prettyPrint("resourceShapeXml", "");
+             $('#resourceShapeXmlBtn').prop('disabled', true);
+         }
+
+         function getResourceShape() {
+             $.ajax({
+                 type: "GET",
+                 url: "/oslc/artifacts/resourceShape",
+                 dataType: "xml",
+                 headers: {
+                     Accept: "application/rdf+xml; charset=utf-8",
+                     "Content-Type": "text/plain; charset=utf-8"
+                 },
+                 success: function (xml) {
+                     prettyPrint("resourceShapeXml", new XMLSerializer().serializeToString(xml));
+                     $('#resourceShapeXmlBtn').prop('disabled', false);
+                 },
+                 error: function () {
+                     console.log("An error occurred while processing XML file.");
+                 }
+             });
+         }
+
+         function getServiceProviderInfo() {
+             $.ajax({
+                 type: "GET",
+                 url: "/oslc/artifacts/info",
+                 dataType: "xml",
+                 headers: {
+                     Accept: "application/rdf+xml; charset=utf-8",
+                     "Content-Type": "text/plain; charset=utf-8"
+                 },
+                 success: function (xml) {
+                     prettyPrint("serviceProviderXml", new XMLSerializer().serializeToString(xml));
+                     $('#serviceProviderXmlBtn').prop('disabled', false);
+                 },
+                 error: function () {
+                     console.log("An error occurred while processing XML file.");
+                 }
+             });
+         }
+
+
+
+         function prettyPrint(element, data) {
+             var brush = new SyntaxHighlighter.brushes.Xml();
+             brush.init({ toolbar: true });
+             html = brush.getHtml(data);
+             document.getElementById(element).innerHTML = html;
+         }
+
+         $(document).ready(function () {
+             loadArtifacts();
+             $('#rshps').dataTable({
+                 "aaData": [],
+                 "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "From" },
+                        { "sTitle": "To" },
+                        { "sTitle": "Semantics" },
+                        { "sTitle": "Features" }
+					    ]
+             });
+
+             $('#metaproperties').dataTable({
+                 "aaData": [],
+                 "aoColumns": [
+						{ "sTitle": "Tag" },
+						{ "sTitle": "Value" }
+					    ]
+             });
+
+         });
+
+         /**Add artifact**/
+
+         function validate(event) {
+             event.preventDefault(); //Important otherwise form is submitted and the source code is executed.
+             var resource = $('#uri').val();
+             var data = $('#data').val();
+             if (data != '' || uri == '') {
+                 $.ajax({
+                     type: "POST",
+                     url: "/oslc/artifacts/add",
+                     data: $('#validationForm').serialize(),
+                     dataType: "text",
+                     headers: {
+                         Accept: "application/json; charset=utf-8",
+                         "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
+                     },
+                     success: function (xml) {
+                         updateSuccess(xml);
+                     },
+                     error: function (e) {
+                         updateError(e)
+                     }
+                 });
+             } else {
+                 $(".alert-error").empty();
+                 var errorMessage = "<div class='alert alert-error alert-dismissable'>";
+                 errorMessage += "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>";
+                 errorMessage += "Please introduce a resource name or URI.";
+                 errorMessage += "</div>\n";
+                 $(".alert-error").append(errorMessage);
+
+             }
+
+             $('#report').show();
+
+         }
+
+         function updateError(e) {
+             $(".alert-info").empty();
+             var errorMessage = "<div class='alert alert-info alert-dismissable'>";
+             errorMessage += "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>";
+             errorMessage += JSON.stringify(e);
+             errorMessage += "</div>\n";
+             $(".alert-info").append(errorMessage);
+
+         }
+
+         function updateSuccess(xml) {
+
+             //$(".alert-error").empty();
+             $(".alert-success").empty();
+             $(".alert-info").empty();
+
+             //var valid = $(xml).find('valid').text();
+             //var time = $(xml).find('time').text();
+             //var nanotime = $(xml).find('nanotime').text();
+             //Success Messages
+             var successMessage = "<div class='alert alert-success alert-dismissable'>";
+                 successMessage += "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>";
+                 successMessage += "<strong>The request is being processed, please refresh the page!</strong>";
+                 successMessage += "</div>";
+                 $(".alert-success").append(successMessage);
+              
+              
+             //Info Messages
+             /*
+             var infoMessages = "";
+             var timeMessage = "<div class='alert alert-info alert-dismissable'>";
+             timeMessage += "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>";
+             timeMessage += "<strong>Time (ms): " + time + " Nanotime (ns): " + nanotime + "</strong>";
+             timeMessage += "</div>";
+             infoMessages += timeMessage;
+
+             $(xml).find('info').each(function () {
+                 var text = $(this).find('text').text();
+                 var infoMessage = "<div class='alert alert-info alert-dismissable'>";
+                 infoMessage += "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>";
+                 infoMessage += text;
+                 infoMessage += "</div>";
+                 infoMessages += infoMessage;
+             });
+
+
+             $(".alert-info").append(infoMessages);
+
+             //Error Messages
+
+             var errorMessages = "";
+             if (valid != "true") {
+                 var errorMessage = "<div class='alert alert-error alert-dismissable'>";
+                 errorMessage += "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>";
+                 errorMessage += "<strong>Your SKOS data is not valid!</strong>";
+                 errorMessage += "</div>";
+                 errorMessages += errorMessage;
+             }
+             $(xml).find('errors').each(function () {
+                 var text = $(this).find('text').text();
+                 var errorMessage = "<div class='alert alert-error alert-dismissable'>";
+                 errorMessage += "<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>";
+                 errorMessage += text;
+                 errorMessage += "</div>\n";
+                 errorMessages += errorMessage;
+             });
+
+             $(".alert-error").append(errorMessages);
+             */
+
+         }
+         function enableValidate() {
+             if ($('#uri').val() != '' || $('#data').val() != '') {
+                 $('#validateBtn').prop('disabled', false);
+             }
+
+         }
+
+         function checkValidate() {
+             if ($('#resource').val() != '' || $('#data').val() != '') {
+                 $('#validateBtn').prop('disabled', false);
+             } else {
+                 $('#validateBtn').prop('disabled', true);
+             }
+
+         }
+
+
+
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">TRC-OSLC Adapter</a>
+        </div>
+        <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Knowledge Management<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="vocabulary-mgt.html">Vocabulary</a>
+                        <li class="active"><a href="#">Artifacts</a></li>
+                        <li><a href="rat-pilot.html">RAT Pilot</a></li>
+                    </ul>
+                </li>
+                <li><a href="quality-mgt.html">KPI Management</a></li>	
+                <li><a href="requirement-mgt.html">Requirements Management</a></li>				
+                <li><a href="contact.html">Contact</a></li>
+               </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+	  <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+
+		
+			<div id="sponsor_logos">
+				<span><strong>Powered by:</strong></span>
+				<a title="The Reuse Company Inc." href="http://www.reusecompany.com/">
+					<img id="btnSponsor" alt="The Reuse Company Inc." style="border-width:0" src="img/logo_reuse.jpg" width="65px" height="30px"/>
+				</a>
+				<a title="Carlos III University of Madrid" href="http://www.uc3m.es">
+					<img id="btnSponsor" alt="Carlos III University of Madrid"  src="img/logo-UC3M.jpg" width="40px" height="30px"/>
+				</a>
+			</div>
+
+		    <h1>OSLC Adapter</h1>
+           
+            <p style="margin-bottom:0.5em">
+               Following a set of OSLC-based services to expose artifacts stored in the knowledgeMANAGER tool with the aim of:
+            </p>
+            <ul>
+                <li>Share and exchange knowledge pieces (already created).</li>
+                <li>Index and search knowledge pieces according to a shape (if any) or even RDF raw data.</li>
+            </ul>
+            <p>&nbsp;</p>
+		  
+		  
+        </div><!--jumbotron-->
+
+      <hr/>
+
+	  <div>
+           <h2>Service Provider info...</h2>
+           <p>This service exposes both: 1) provider description and 2) metainformation of those methods available through the OSLC-based API to 
+           query quality management services such as: </p>
+           <table class="table table-hover">
+			<thead>
+			<tr>
+				<td>URL</td>
+				<td>Description</td>
+                <td>Service</td>
+			</tr>
+			</thead>
+			<tbody>	
+			<tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/serviceProvider/info">http://localhost:31885/oslc/serviceProvider/info</a>
+                </td>
+				<td>Description of the service provider using OSLC.</td>
+                <td>All</td>
+			</tr>
+
+                <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/artifacts/resourceShape">http://localhost:31885/oslc/artifacts/resourceShape</a>
+                </td>
+				<td>Meta-description of the OSLC resource for knowledge management</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+             <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/artifacts/list">http://localhost:31885/oslc/artifacts/list</a>
+                </td>
+				<td>List all artifacts</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/artifacts/list">http://localhost:31885/oslc/artifacts/list?full=true</a>
+                </td>
+				<td>List all artifacts (full description)</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/artifacts/artifact?name=DOMAIN&type=DOMAIN">http://localhost:31885/oslc/artifacts/artifact?name=DOMAIN&type=DOMAIN</a>
+                </td>
+				<td>Description of a specific artifact</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+            <tr>
+            	<td>
+                  ...
+                </td>
+				<td>...</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+
+			</tbody>
+		</table>
+
+	           <button id="Button1" type="button" onclick="getServiceProviderInfo();" class="btn btn-default">Show</button>
+                <button id="serviceProviderXmlBtn" type="button" onclick="hideServiceProviderXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="serviceProviderXml">  </pre>
+               </div>
+	  </div>
+      
+	  <hr/>
+
+
+	  <div>
+           <h2>Artifact resource shape...</h2>
+	           <button id="Button2" type="button" onclick="getResourceShape();" class="btn btn-default">Show</button>
+                <button id="resourceShapeXmlBtn" type="button" onclick="hideResourceShapeXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="resourceShapeXml">  </pre>
+               </div>
+	  </div>
+      
+	  <hr/>
+
+	  <div>
+           <h2>List all artifacts...</h2>
+	       <table cellpadding="0" cellspacing="0" border="0" class="display" id="artifacts"></table>
+           <div style="margin:1em">
+           <p>&nbsp;</p>
+                <button id="showArtifactsXmlBtn" type="button" onclick="showArtifactsXml();" class="btn btn-default">Show</button>
+                <button id="hideArtifactsXmlBtn" type="button" onclick="hideArtifactsXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="artifactsXml">  </pre>
+              </div>
+            </div>
+	  </div>
+
+             <hr/>
+
+      	  <div style="margin:1em">
+            <h2>Describe an artifact...</h2>
+            <ul>
+             <li>ID: <strong id="artifactId" class="text-info"></strong></li>
+             <li>Name: <strong id="artifactName" class="text-success"></strong></li>
+             <li>Type: <strong id="artifactType" class="text-warning"></strong></li>
+             <li>Preferred visualization: <p><img id="artifactImg" width="250px" height="200px" style="border:0"/></p></li>
+            </ul>
+        <hr />
+            <h3 class="text-primary">RSHPs:</h3>
+               <table cellpadding="0" cellspacing="0" border="0" class="display" id="rshps"></table>
+<hr />
+             <h3 class="text-success">Metaproperties:</h3>
+               <table cellpadding="0" cellspacing="0" border="0" class="display" id="metaproperties"></table>
+           
+    	  </div>
+           
+        <hr/>
+
+          <div style="margin:1em">
+            <h2>Add an artifact...</h2>
+
+            <h3>Load data...</h3>
+            <p class="help-block">Please enter a RSHP-based resource (URI or content) or even any RDF resource.</p>
+
+		        <form role="form-horizontal" role="form" id="validationForm">
+                 <div class="form-group">
+		            <label for="uriFile">Resource URI:</label>
+		            <input type="url" class="input-xxlarge" id="resource" placeholder="Resource URI..." onfocus="checkValidate();" onkeyup="enableValidate();" name="resource">
+                    <button onclick="clearURI();" class="btn btn-primary btn-sm">Clear Resource URI</button>
+		          </div>
+                 
+                    <div class="form-group">
+                         <label for="shape">Shape format:</label>
+                         <select id="shape" class="form-control" name="shape">
+                          <option>RSHP</option>
+                          <option>OSLC-based Resource Shape</option>
+                          <option>OWL/RDFS</option>
+                          <option>SHACL (not supported)</option>
+                        </select>
+                     </div>
+
+                  <div class="form-group">
+                    <label for="format">Syntax:</label>
+                         <select id="format" class="form-control" name="format">
+                          <option>Turtle</option>
+                          <option>N-Triples</option>
+                          <option>N3</option>
+                          <option>RDF/XML</option>
+                          <option>RDF/JSON</option>
+                          <option>JSON-LD</option>
+                          <option>JSON</option>
+                        </select>
+                     </div>
+
+
+                   <div class="form-group">
+		            <label for="endpoint">SPARQL endpoint:</label>
+		            <input type="url" class="input-xxlarge" id="endpoint" placeholder="SPARQL endpoint..." onfocus="checkValidate();" onkeyup="enableValidate();" name="endpoint">
+                    <button onclick="clearEndpoint();" class="btn btn-primary btn-sm">Clear URI</button>
+		          </div>
+
+			         <div class="form-group">
+				        <textarea class="input-block-level" rows="15" id="data" name="data" onfocus="checkValidate();" onkeyup="enableValidate();" width="auto"></textarea>
+			        </div>
+		        
+
+		          <div class="form-group">
+		            <label for="exampleInputFile">or select a local file: </label>		    
+		            <input type="file" id="files" name="file" />
+			        <button onclick="abortRead();" class="btn btn-primary btn-sm">Clear</button>
+			        <p class="help-block">Select a local file and load in the text area.</p>
+			        <div id="progress_bar"><div class="percent">0%</div></div>
+		          </div>
+		 
+		            <button onclick="validate(event);" type="submit" class="btn btn-success btn-sm btn-block" disabled="disabled" id="validateBtn">Add Artifact</button>
+		  
+		        </form>
+
+                      <div id="report" name="report" style="display:none">
+	 	  	                <h2>Results...</h2>
+	   	
+                                  <div class="alert alert-success">
+			                     </div>
+	       
+	                         <hr/>
+                             <!--
+			                    <div class="alert alert-error">
+				                </div>
+                                      <hr/>
+	   -->
+		    	
+	   
+	                   
+				                <div class="alert alert-info">
+
+				                </div>
+			        </div>
+
+
+          </div>
+
+         
+            </div>
+
+	 
+     <hr />
+
+    <!-- FOOTER -->
+       <div class="footer">
+
+      <p style="text-align:center">
+      The OSLC Adapter on top of <a href="http://www.reusecompany.com">The Reuse Company Inc.</a> tools is a 
+      joint effort in conjuction with the <a href="http://www.uc3m.es">Carlos III University of Madrid</a> and partially funded 
+      by the <a href="http://www.crystal-artemis.eu/">Crystal Project</a>.
+        </p>
+
+        <p style="text-align:center">The research leading to these results has received funding from the ARTEMIS 
+        Joint Undertaking under Grant Agreement N° 332830 and from specific national programs and / or funding authorities. 
+        </p>
+        <p style="text-align:center">
+            <img src="img/fp7.jpg" title="FP7" /> <img src="img/artemis.jpg"  title="ARTEMIS"/> <img src="img/europe.jpg" title="European Union"/>
+        </p>
+	
+    
+	
+      </div>
+
+    </div> <!-- /container -->
+
+ 
+	 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/holder.js"></script>
+
+
+     <script>
+         var reader;
+         var progress = document.querySelector('.percent');
+
+         function clearEndpoint() {
+             $('#endpoint').val = "";
+         }
+
+         function clearURI() {
+             $('#resource').val = "";
+         }
+         function abortRead() {
+             //reader.abort();
+             document.getElementById('data').value = "";
+             $('#validateBtn').prop('disabled', true);
+         }
+
+         function errorHandler(evt) {
+             switch (evt.target.error.code) {
+                 case evt.target.error.NOT_FOUND_ERR:
+                     alert('File Not Found!');
+                     break;
+                 case evt.target.error.NOT_READABLE_ERR:
+                     alert('File is not readable');
+                     break;
+                 case evt.target.error.ABORT_ERR:
+                     break; // noop
+                 default:
+                     alert('An error occurred reading this file.');
+             };
+         }
+
+         function updateProgress(evt) {
+             // evt is an ProgressEvent.
+             if (evt.lengthComputable) {
+                 var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+                 // Increase the progress bar length.
+                 if (percentLoaded < 100) {
+                     progress.style.width = percentLoaded + '%';
+                     progress.textContent = percentLoaded + '%';
+                 }
+             }
+         }
+
+         function handleFileSelect(evt) {
+             // Reset progress indicator on new file selection.
+             progress.style.width = '0%';
+             progress.textContent = '0%';
+
+             reader = new FileReader();
+             reader.onerror = errorHandler;
+             reader.onprogress = updateProgress;
+             reader.onabort = function (e) {
+                 alert('File read cancelled');
+             };
+             reader.onloadstart = function (e) {
+                 document.getElementById('progress_bar').className = 'loading';
+             };
+             reader.onload = function (e) {
+                 // Ensure that the progress bar displays 100% at the end.
+                 progress.style.width = '100%';
+                 progress.textContent = '100%';
+                 setTimeout("document.getElementById('progress_bar').className='';", 2000);
+                 if (e.target.readyState == FileReader.DONE) { // DONE == 2
+                     document.getElementById('data').value = e.target.result;
+                     $('#validateBtn').prop('disabled', false);
+                 }
+             }
+
+             reader.readAsText(evt.target.files[0], "UTF-8");
+         }
+
+         document.getElementById('files').addEventListener('change', handleFileSelect, false);
+</script>
+
+
+  </body>
+
+
+</html>

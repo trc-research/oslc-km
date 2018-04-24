@@ -1,0 +1,475 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>OSLC Adapter by The Reuse Company Inc.</title>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <link href="/Content/demo_page.css" rel="stylesheet"/>
+    <link href="/Content/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/Content/jquery-ui.css" rel="stylesheet"/>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/navbar-fixed-top.css" rel="stylesheet"/>
+ 
+
+    <script src="/Scripts/jquery-1.7.1.js"></script>
+    <script src="/Scripts/jquery-ui-1.8.20.js"></script>
+
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">TRC-OSLC Adapter</a>
+        </div>
+        <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li class="active"><a href="#">Services</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Knowledge Management<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="vocabulary-mgt.html">Vocabulary</a>
+                        <li><a href="knowledge-mgt.html">Artifacts</a></li>
+                        <li><a href="rat-pilot.html">RAT Pilot</a></li>
+                    </ul>
+                </li>
+				<li><a href="quality-mgt.html">KPI Management</a></li>		
+                <li><a href="requirement-mgt.html">Requirements Management</a></li>				
+                <li><a href="contact.html">Contact</a></li>
+               </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+	  <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+
+		
+			<div id="sponsor_logos">
+				<span><strong>Powered by:</strong></span>
+				<a title="The Reuse Company Inc." href="http://www.reusecompany.com/">
+					<img id="btnSponsor" alt="The Reuse Company Inc." style="border-width:0" src="img/logo_reuse.jpg" width="65px" height="30px"/>
+				</a>
+				<a title="Carlos III University of Madrid" href="http://www.uc3m.es">
+					<img id="btnSponsor" alt="Carlos III University of Madrid"  src="img/logo-UC3M.jpg" width="40px" height="30px"/>
+				</a>
+			</div>
+
+		<h1>OSLC Adapter-Services</h1>
+        <p class="lead">
+         As a compilation of all methods provided by this adapter the following table lists a description and 
+         a call example for each OSLC-based method.
+        </p>
+	<p>&nbsp;</p>	  
+        </div>
+	  
+
+      <hr/>
+
+       <table class="table table-hover">
+			<thead>
+			<tr>
+				<td>URL</td>
+				<td>Description</td>
+                <td>Service</td>
+			</tr>
+			</thead>
+			<tbody>	
+			<tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/info">http://localhost:31885/oslc/concepts/info</a>
+                </td>
+				<td>Description of the vocabulary service provider using OSLC.</td>
+                <td>All</td>
+			</tr>
+
+            <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/resourceShape">http://localhost:31885/oslc/concepts/resourceShape</a>
+                </td>
+				<td>Description of the vocabulary resource shape.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/list">http://localhost:31885/oslc/concepts/list</a>
+                </td>
+				<td>Full description of all concepts in the vocabulary.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/list?max=10">http://localhost:31885/oslc/concepts/list?max=10</a>
+                </td>
+				<td>Full description of all concepts in the vocabulary filtering max values.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+               <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/list?from=10&to=12">http://localhost:31885/oslc/concepts/list?from=10&to=12</a>
+                </td>
+				<td>Full description of all concepts in the vocabulary filtering from a concept (from) to another concept (to).</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/concept/14837">http://localhost:31885/oslc/concepts/concept/14837 </a>
+                </td>
+				<td>Description of a concept using the ID as input parameter.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+               <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/pref?q=store">http://localhost:31885/oslc/concepts/pref?q=store</a>
+                </td>
+				<td>Description of a concept using the preferred label as input parameter.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+            
+
+               <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/std?q=stores">http://localhost:31885/oslc/concepts/std?q=stores</a>
+                </td>
+				<td>Get or suggest the standard form a label.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+            
+            <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/syns?q=stores">http://localhost:31885/oslc/concepts/syns?q=stores</a>
+                </td>
+				<td>Get or suggest the new concepts for a term.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/asoc?q=stores">http://localhost:31885/oslc/concepts/asoc?q=stores</a>
+                </td>
+				<td>Get or suggest associated concepts for a term.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/assist">http://localhost:31885/oslc/concepts/assist</a>
+                </td>
+				<td>Get writing assistance for a concept.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+             <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/concepts/slot?q=stores">http://localhost:31885/oslc/concepts/slot?q=stores</a>
+                </td>
+				<td>Get concepts for the next slot (writing assistance.</td>
+                <td>Vocabulary Management</td>
+			</tr>
+
+
+            		<tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/serviceProvider/info">http://localhost:31885/oslc/serviceProvider/info</a>
+                </td>
+				<td>Description of the service provider using OSLC.</td>
+                <td>All</td>
+			</tr>
+
+                <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/artifacts/resourceShape">http://localhost:31885/oslc/artifacts/resourceShape</a>
+                </td>
+				<td>Meta-description of the OSLC resource for knowledge management</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+             <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/artifacts/list">http://localhost:31885/oslc/artifacts/list</a>
+                </td>
+				<td>List all artifacts</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/artifacts/list">http://localhost:31885/oslc/artifacts/list?full=true</a>
+                </td>
+				<td>List all artifacts (full description)</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/artifacts/artifact?name=DOMAIN&type=DOMAIN">http://localhost:31885/oslc/artifacts/artifact?name=DOMAIN&type=DOMAIN</a>
+                </td>
+				<td>Description of a specific artifact</td>
+                <td>Knowledge Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/info">http://localhost:31885/oslc/kpis/info</a>
+                </td>
+				<td>Description of the service provider using OSLC.</td>
+                <td>All</td>
+			</tr>
+
+                <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/resourceShape">http://localhost:31885/oslc/kpis/resourceShape</a>
+                </td>
+				<td>Meta-description of the OSLC resource for quality services</td>
+                <td>KPI Management</td>
+			</tr>
+
+             <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/kpis/list">http://localhost:31885/oslc/kpis/list</a>
+                </td>
+				<td>Default list of KPIs</td>
+                <td>KPI Management</td>
+			</tr>
+
+             <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/kpis/list?idBlock=12">http://localhost:31885/oslc/kpis/list?idBlock=12</a>
+                </td>
+				<td>List of KPIs for a block (id)</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/kpis/kpi/1">http://localhost:31885/oslc/kpis/kpi/1</a>
+                </td>
+				<td>Description of a KPI</td>
+                <td>KPI Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/kpis/kpi/1?idBlock=12">http://localhost:31885/oslc/kpis/kpi/1?idBlock=12</a>
+                </td>
+				<td>Description of a KPI within a block (id)</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?text=this is a bad requirement">http://localhost:31885/oslc/kpis/observations?text=this is a bad requirement</a>
+                </td>
+				<td>Default KPIs for a textual requirement...</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+            
+
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?text=this is a bad requirement&idBlock=12">http://localhost:31885/oslc/kpis/observations?text=this is a bad requirement&idBlock=12</a>
+                </td>
+				<td>Default KPIs for a textual requirement within block (id)...</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?uri=http://localhost:31885/oslc/requirements/requirement/1">http://localhost:31885/oslc/kpis/observations?uri=http://localhost:31885/oslc/requirements/requirement/1</a>
+                </td>
+					<td>Default KPIs for a OSLC-based requirement...</td>
+                <td>KPI Management</td>
+			</tr>
+
+            
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?uri=http://localhost:31885/oslc/requirements/requirement/1&idBlock=12">http://localhost:31885/oslc/kpis/observations?uri=http://localhost:31885/oslc/requirements/requirement/1&idBlock=12</a>
+                </td>
+					<td>Default KPIs for a OSLC-based requirement within block (id)...</td>
+                <td>KPI Management</td>
+			</tr>
+
+
+                 <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/kpis/observations?uri=https://localhost:9443/rm/resources/_0b7af6d99f45484f9d20db5b263c5e34&project=Interoperability">http://localhost:31885/oslc/kpis/observations?uri=https://localhost:9443/rm/resources/_0b7af6d99f45484f9d20db5b263c5e34&project=Interoperability</a>
+                </td>
+					<td>Default KPIs for a OSLC-based requirement within the Jazz Platform...</td>
+                <td>KPI Management</td>
+			</tr>
+
+            
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/groups">http://localhost:31885/oslc/patterns/groups</a>
+                </td>
+				<td>List of pattern groups</td>
+                <td>Patterns Management</td>
+			</tr>
+
+              
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/group/12">http://localhost:31885/oslc/patterns/group/12</a>
+                </td>
+				<td>Get a pattern group</td>
+                <td>Patterns Management</td>
+			</tr>
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/patternsgroup/7">http://localhost:31885/oslc/patterns/patternsgroup/7</a>
+                </td>
+				<td>Get the patterns of a pattern group</td>
+                <td>Patterns Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/pattern/537">http://localhost:31885/oslc/patterns/pattern/537</a>
+                </td>
+				<td>Describe a pattern</td>
+                <td>Patterns Management</td>
+			</tr>
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/patterns/pattern/537?pgid=7">http://localhost:31885/oslc/patterns/pattern/537?pgid=7</a>
+                </td>
+				<td>Describe a pattern (including pattern group)</td>
+                <td>Patterns Management</td>
+			</tr>
+
+
+
+              <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/requirements/resourceShape">http://localhost:31885/oslc/requirements/resourceShape</a>
+                </td>
+				<td>Meta-description of the OSLC resource for requirements management</td>
+                <td>Requirement Management</td>
+			</tr>
+
+             <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirements/list">http://localhost:31885/oslc/requirements/list</a>
+                </td>
+				<td>Get all requirements</td>
+                <td>Requirement Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirements/requirement/1">http://localhost:31885/oslc/requirements/requirement/1</a>
+                </td>
+				<td>Get a requirement by id</td>
+                <td>Requirement Management</td>
+			</tr>
+
+
+          <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirements/similar?text=an example of similar requirement">http://localhost:31885/oslc/requirements/similar?text=an example of similar requirement</a>
+                </td>
+				<td>Find a similar requirement by text</td>
+                <td>Requirement Management</td>
+			</tr>
+          
+
+              <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirements/similar?uri=http://localhost:31885/oslc/requirements/requirement/1">http://localhost:31885/oslc/requirements/similar?uri=http://localhost:31885/oslc/requirements/requirement/1</a>
+                </td>
+				<td>Find a similar requirement by URI</td>
+                <td>Requirement Management</td>
+			</tr>
+
+
+            
+              <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirements/similar?uri=https://localhost:9443/rm/resources/_0b7af6d99f45484f9d20db5b263c5e34&project=Interoperability">http://localhost:31885/oslc/requirements/similar?uri=https://localhost:9443/rm/resources/_0b7af6d99f45484f9d20db5b263c5e34&project=Interoperability</a>
+                </td>
+				<td>Find a similar requirement by URI in a Jazz Project</td>
+                <td>Requirement Management</td>
+			</tr>
+
+
+
+            <tr>
+            	<td>
+                  ...
+                </td>
+				<td>...</td>
+                <td>...</td>
+			</tr>
+
+
+
+
+			</tbody>
+		</table>
+
+<hr />
+
+
+
+	  
+    <!-- FOOTER -->
+       <div class="footer">
+
+      <p style="text-align:center">
+      The OSLC Adapter on top of <a href="http://www.reusecompany.com">The Reuse Company Inc.</a> tools is a 
+      joint effort in conjuction with the <a href="http://www.uc3m.es">Carlos III University of Madrid</a> and partially funded 
+      by the <a href="http://www.crystal-artemis.eu/">Crystal Project</a>.
+        </p>
+
+        <p style="text-align:center">The research leading to these results has received funding from the ARTEMIS 
+        Joint Undertaking under Grant Agreement N° 332830 and from specific national programs and / or funding authorities. 
+        </p>
+        <p style="text-align:center">
+            <img src="img/fp7.jpg" title="FP7" /> <img src="img/artemis.jpg"  title="ARTEMIS"/> <img src="img/europe.jpg" title="European Union"/>
+        </p>
+	
+    
+	
+      </div>
+       
+    </div> <!-- /container -->
+
+ 
+	 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/holder.js"></script>
+  </body>
+
+
+</html>

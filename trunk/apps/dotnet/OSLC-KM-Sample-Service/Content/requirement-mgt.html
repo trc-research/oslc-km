@@ -1,0 +1,586 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>OSLC Adapter by The Reuse Company Inc.</title>
+    <link href="/Content/site.css" rel="stylesheet"/>
+    <link href="/Content/demo_page.css" rel="stylesheet"/>
+    <link href="/Content/jquery.dataTables.css" rel="stylesheet"/>
+    <link href="/Content/jquery-ui.css" rel="stylesheet"/>
+    <link href="/Content/bootstrap.css" rel="stylesheet"/>
+    <link href="/Content/navbar-fixed-top.css" rel="stylesheet"/>
+    <link href="/Content/shCore.css" rel="stylesheet"/>
+    <link href="/Content/shCoreDefault.css" rel="stylesheet"/>
+
+    <script type="text/javascript" language="javascript"  src="/Scripts/jquery-1.7.1.js"></script>
+    
+	<script type="text/javascript" language="javascript"  src="/Scripts/jquery-ui-1.8.20.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shCore.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shBrushXml.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/shAutoloader.js"></script>
+    <script type="text/javascript" language="javascript" src="/Scripts/oslc-loader.js"></script>
+    <script type="text/javascript" language="javascript">
+        SyntaxHighlighter.all();
+        var aDataSet = [];
+        var requirementIds = [];
+        var xmlData;
+      
+        function loadRequirements() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/requirements/list",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    $(xml).find('Requirement').each(function () {
+                        xmlData = new XMLSerializer().serializeToString(xml);
+                        var id = $(this).find('identifier').text();
+                        var title = $(this).find('title').text();
+                        var description = $(this).find('description').text();
+                        var definition = $(this).find('definition').text();
+                        var about = $(this).attr('rdf:about');
+                        var aboutLink = "<a href=\"" + about + "\">" + about + "</a>";
+                        var currentItem = [id, title, description, aboutLink];
+                        aDataSet.push(currentItem);
+                        requirementIds.push(id);
+                        console.log(currentItem);
+                    });
+                    updateRequirementsTable();
+                    $("#requirementList").autocomplete({
+                        source: requirementIds
+                    });
+                },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+
+        }
+
+        function enableRequirementDescribe() {
+            if ($('#requirementList').val() != '') {
+                $('#describeRequirementBtn').prop('disabled', false);
+            }
+
+        }
+
+        function getRequirementByID() {
+            var id = $('#requirementList').val();
+            if (id != '') {
+                $.ajax({
+                    type: "GET",
+                    url: "/oslc/requirements/requirement/" + id,
+                    dataType: "xml",
+                    headers: {
+                        Accept: "application/rdf+xml; charset=utf-8",
+                        "Content-Type": "text/plain; charset=utf-8"
+                    },
+                    success: function (xml) {
+                        $(xml).find('Requirement').each(function () {
+                            var id = $(this).find('identifier').text();
+                            if (id != "") {
+                                prettyPrint("requirementDescriptionXml", new XMLSerializer().serializeToString(xml));
+                            }
+                        });
+                    },
+                    error: function () {
+                        console.log("An error occurred while processing XML file.");
+                    }
+                });
+            }
+
+        }
+
+        function clearRequirementListItem() {
+            $('#requirementList').val("");
+            $('#describeRequirementBtn').prop('disabled', true);
+            $('#metricDescription').text("");
+        }
+
+        function updateRequirementsTable() {
+            $('#requirements').dataTable({
+                "aaData": aDataSet,
+                "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Title" },
+                        { "sTitle": "Description" },
+                        { "sTitle": "URI" }
+					]
+            });
+        }
+
+
+   
+
+
+        function showRequirementsXml() {
+            prettyPrint("requirementsXml", xmlData);
+            $('#hideRequirementsXmlBtn').prop('disabled', false);
+        }
+
+        function hideRequirementsXml() {
+            prettyPrint("requirementsXml", "");
+            $('#hideRequirementsXmlBtn').prop('disabled', true);
+
+        }
+
+
+        function getServiceProviderInfo() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/requirements/info",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    prettyPrint("serviceProviderXml", new XMLSerializer().serializeToString(xml));
+                    $('#serviceProviderXmlBtn').prop('disabled', false);
+                },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+        }
+
+        function hideServiceProviderXml() {
+            prettyPrint("serviceProviderXml", "");
+            $('#serviceProviderXmlBtn').prop('disabled', true);
+        }
+
+        function getResourceShape() {
+            $.ajax({
+                type: "GET",
+                url: "/oslc/requirements/resourceShape",
+                dataType: "xml",
+                headers: {
+                    Accept: "application/rdf+xml; charset=utf-8",
+                    "Content-Type": "text/plain; charset=utf-8"
+                },
+                success: function (xml) {
+                    prettyPrint("resourceShapeXml", new XMLSerializer().serializeToString(xml));
+                    $('#resourceShapeXmlBtn').prop('disabled', false);
+                },
+                error: function () {
+                    console.log("An error occurred while processing XML file.");
+                }
+            });
+        }
+
+        function hideResourceShapeXml() {
+            prettyPrint("resourceShapeXml", "");
+            $('#resourceShapeXmlBtn').prop('disabled', true);
+        }
+
+        function prettyPrint(element, data) {
+            var brush = new SyntaxHighlighter.brushes.Xml();
+            brush.init({ toolbar: true });
+            html = brush.getHtml(data);
+            document.getElementById(element).innerHTML = html;
+        }
+
+
+        function enableSimilar() {
+            if ($('#requirementTxt').val() != '') {
+                $('#getSimilarBtn').prop('disabled', false);
+                $('#getSimilarUriBtn').prop('disabled', true);
+                $('#getSimilarUriJazzBtn').prop('disabled', true);
+
+            }
+
+        }
+
+        function enableSimilarUri() {
+            if ($('#requirementUri').val() != '') {
+                $('#getSimilarBtn').prop('disabled', true);
+                $('#getSimilarUriBtn').prop('disabled', false);
+                $('#getSimilarUriJazzBtn').prop('disabled', true);
+
+            }
+
+        }
+
+
+        function enableSimilarUriJazz() {
+            if ($('#requirementUriJazz').val() != '') {
+                $('#getSimilarBtn').prop('disabled', true);
+                $('#getSimilarUriBtn').prop('disabled', false);
+                $('#getSimilarUriJazzBtn').prop('disabled', false);
+
+            }
+
+        }
+
+
+
+        function getRequirements(id, baseuri, table) {
+            if (id != '') {
+                var requirements = [];
+                $.ajax({
+                    type: "GET",
+                    url: baseuri + id,
+                    dataType: "xml",
+                    headers: {
+                        Accept: "application/rdf+xml; charset=utf-8",
+                        "Content-Type": "text/plain; charset=utf-8"
+                    },
+                    success: function (xml) {
+                        $(xml).find('Requirement').each(function () {
+                            xmlData = new XMLSerializer().serializeToString(xml);
+                            var id = $(this).find('identifier').text();
+                            var title = $(this).find('title').text();
+                            var description = $(this).find('description').text();
+                            var definition = $(this).find('definition').text();
+                            var about = $(this).attr('rdf:about');
+                            var aboutLink = "<a href=\"" + about + "\">" + about + "</a>";
+                            var currentItem = [id, title, description, aboutLink];
+                            requirements.push(currentItem);
+                        });
+                        refreshTable(table, requirements);
+                    },
+                    error: function () {
+                        console.log("An error occurred while processing XML file.");
+                    }
+                });
+            }
+
+        }
+
+        function getSuggestions() {
+            var id = $('#requirementTxt').val();
+            getRequirements(id, "/oslc/requirements/similar?text=", "#suggestions");
+        
+        }
+
+
+
+        function getSuggestionsUri() {
+            var id = $('#requirementTxtUri').val();
+            getRequirements(id, "/oslc/requirements/similar?uri=", "#suggestions");
+        }
+
+        function getSuggestionsUriJazz() {
+            var id = $('#requirementUriJazz').val();
+            var project = $('#projectJazz').val();
+            getRequirements(id, "/oslc/requirements/similar?project="+project+"&uri=", "#suggestions");
+        }
+
+        function clearTextRequirement() {
+            $('#requirementTxt').val("");
+            $('#getSimilarBtn').prop('disabled', true);
+            refreshTable("#suggestions", []);
+        }
+
+        function clearUriRequirement() {
+            $('#requirementTxtUri').val("");
+            $('#getSimilarUriBtn').prop('disabled', true);
+            refreshTable("#suggestions", []);
+        }
+
+
+        function clearUriJazzRequirement() {
+            $('#requirementUriJazz').val("");
+            $('#getSimilarUriJazzBtn').prop('disabled', true);
+            refreshTable("#suggestions", []);
+        }
+
+
+      $(document).ready(function () {
+          loadRequirements();
+          $('#suggestions').dataTable({
+              "aaData": aDataSet,
+              "aoColumns": [
+						{ "sTitle": "Id" },
+						{ "sTitle": "Title" },
+                        { "sTitle": "Description" },
+                        { "sTitle": "URI" }
+					]
+          });
+
+        });
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">TRC-OSLC Adapter</a>
+        </div>
+        <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Knowledge Management<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="vocabulary-mgt.html">Vocabulary</a>
+                        <li><a href="knowledge-mgt.html">Artifacts</a></li>
+                        <li><a href="rat-pilot.html">RAT Pilot</a></li>
+                    </ul>
+                </li>
+				<li><a href="quality-mgt.html">KPI Management</a></li>	
+                <li  class="active"><a href="#">Requirements Management</a></li>				
+                <li><a href="contact.html">Contact</a></li>
+               </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+	  <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+
+		
+			<div id="sponsor_logos">
+				<span><strong>Powered by:</strong></span>
+				<a title="The Reuse Company Inc." href="http://www.reusecompany.com/">
+					<img id="btnSponsor" alt="The Reuse Company Inc." style="border-width:0" src="img/logo_reuse.jpg" width="65px" height="30px"/>
+				</a>
+				<a title="Carlos III University of Madrid" href="http://www.uc3m.es">
+					<img id="btnSponsor" alt="Carlos III University of Madrid"  src="img/logo-UC3M.jpg" width="40px" height="30px"/>
+				</a>
+			</div>
+
+		    <h1>OSLC Adapter</h1>
+           
+            <p style="margin-bottom:0.5em">
+               Following a set of OSLC-based services to expose requirements as an implementation of the OSLC Requirements Management (RM) Specification with the aim of:
+            </p>
+            <ul>
+                <li>Exposing requirements features in a standardized way.</li>
+                <li>Serving as reference implementation of the OSLC RM specification.</li>
+            </ul>
+            <p>&nbsp;</p>
+		  
+		  
+        </div><!--jumbotron-->
+
+      <hr/>
+
+	  <div>
+           <h2>Service Provider info...</h2>
+           <p>This service exposes both: 1) provider description and 2) metainformation of those methods available through the OSLC-based API to 
+           query quality management services such as: </p>
+           <table class="table table-hover">
+			<thead>
+			<tr>
+				<td>URL</td>
+				<td>Description</td>
+                <td>Service</td>
+			</tr>
+			</thead>
+			<tbody>	
+			<tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/serviceProvider/info">http://localhost:31885/oslc/serviceProvider/info</a>
+                </td>
+				<td>Description of the service provider using OSLC.</td>
+                <td>All</td>
+			</tr>
+
+                <tr>
+				<td>
+                    <a href="http://localhost:31885/oslc/requirements/resourceShape">http://localhost:31885/oslc/requirements/resourceShape</a>
+                </td>
+				<td>Meta-description of the OSLC resource for requirements management</td>
+                <td>Requirements Management</td>
+			</tr>
+
+             <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirement/requirements">http://localhost:31885/oslc/requirement/requirements</a>
+                </td>
+				<td>List all requirements</td>
+                <td>Requirements Management</td>
+			</tr>
+
+            <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirement/requirement/1">http://localhost:31885/oslc/requirement/requirement/1</a>
+                </td>
+				<td>Description of a specific requirement</td>
+                <td>Requirements Management</td>
+			</tr>
+
+               <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirements/similar?text=an example of similar requirement">http://localhost:31885/oslc/requirements/similar?text=an example of similar requirement</a>
+                </td>
+				<td>Find a similar requirement by text</td>
+                <td>Requirement Management</td>
+			</tr>
+          
+
+              <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirements/similar?uri=http://localhost:31885/oslc/requirements/requirement/1">http://localhost:31885/oslc/requirements/similar?uri=http://localhost:31885/oslc/requirements/requirement/1</a>
+                </td>
+				<td>Find a similar requirement by URI</td>
+                <td>Requirement Management</td>
+			</tr>
+
+                
+              <tr>
+				<td>
+                     <a href="http://localhost:31885/oslc/requirements/similar?uri=https://localhost:9443/rm/resources/_0b7af6d99f45484f9d20db5b263c5e34&project=Interoperability">http://localhost:31885/oslc/requirements/similar?uri=https://localhost:9443/rm/resources/_0b7af6d99f45484f9d20db5b263c5e34&project=Interoperability</a>
+                </td>
+				<td>Find a similar requirement by URI in a Jazz Project</td>
+                <td>Requirement Management</td>
+			</tr>
+
+            <tr>
+            	<td>
+                  ...
+                </td>
+				<td>...</td>
+                <td>Requirements Management</td>
+			</tr>
+
+
+			</tbody>
+		</table>
+
+	           <button id="Button1" type="button" onclick="getServiceProviderInfo();" class="btn btn-default">Show</button>
+                <button id="serviceProviderXmlBtn" type="button" onclick="hideServiceProviderXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="serviceProviderXml">  </pre>
+               </div>
+	  </div>
+      
+	  <hr/>
+
+
+	  <div>
+           <h2>Requirement resource shape...</h2>
+	           <button id="Button2" type="button" onclick="getResourceShape();" class="btn btn-default">Show</button>
+                <button id="resourceShapeXmlBtn" type="button" onclick="hideResourceShapeXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="resourceShapeXml">  </pre>
+               </div>
+	  </div>
+      
+	  <hr/>
+
+	  <div>
+           <h2>List all requirements...</h2>
+	       <table cellpadding="0" cellspacing="0" border="0" class="display" id="requirements"></table>
+           <div style="margin:1em">
+           <p>&nbsp;</p>
+                <button id="showRequirementsXmlBtn" type="button" onclick="showRequirementsXml();" class="btn btn-default">Show</button>
+                <button id="hideRequirementsXmlBtn" type="button" onclick="hideRequirementsXml();" class="btn btn-default" disabled>Hide</button>
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="requirementsXml">  </pre>
+              </div>
+            </div>
+	  </div>
+
+             <hr/>
+
+      	  <div style="margin:1em">
+            <h2>Describe a requirement...</h2>
+               <div class="ui-widget">
+                 <label for="requirementList">By Id: </label>
+                 <input id="requirementList" onkeyup="enableRequirementDescribe();" type="search">
+                
+                 <button id="describeRequirementBtn" type="button" onclick="getRequirementByID();" class="btn btn-default" disabled>Describe</button>
+                 <button type="button" class="btn btn-default" onclick="clearRequirementListItem();">Clear</button>
+                
+               </div>
+              
+               <div style="margin:1em">
+                   <pre  class="brush: xml;" id="requirementDescriptionXml">  </pre>
+               </div>
+    	  </div>
+           
+        <hr/>
+
+
+         <div>
+           <h2>Find similar requirements...</h2>
+           <div class="ui-widget">
+                 <label for="requirementTxtLabel">Enter a text requirement: </label>
+                 <input id="requirementTxt" onkeyup="enableSimilar();" type="search">
+                
+                 <button id="getSimilarBtn" type="button" onclick="getSuggestions();" class="btn btn-default" disabled>Find...</button>
+                 <button type="button" class="btn btn-default" onclick="clearTextRequirement();">Clear</button>
+          
+          </div>
+
+          <hr />
+          <div class="ui-widget">
+                 <label for="requirementUriLabel">Enter a requirement URI (OSLC-based): </label>
+                 <input id="requirementTxtUri" onkeyup="enableSimilarUri();" type="search">
+                  <button id="getSimilarUriBtn" type="button" onclick="getSuggestionsUri();" class="btn btn-default" disabled>Find...</button>
+                 <button type="button" class="btn btn-default" onclick="clearUriRequirement();">Clear</button>
+
+             </div>
+               
+
+                <hr />
+             <div class="ui-widget">
+                 <label for="requirementUriJazzLabel">Enter a requirement URI (Doors Next and OSLC-based): </label>
+                  <input id="requirementUriJazz" onkeyup="enableSimilarUriJazz();" type="search">
+                  <br />
+                  <label>Enter the Jazz project:</label>
+                  <br />
+                  <input id="projectJazz"  type="search">
+                  <button id="getSimilarUriJazzBtn" type="button" onclick="getSuggestionsUriJazz();" class="btn btn-default" disabled>Find...</button>
+                 <button type="button" class="btn btn-default" onclick="clearUriJazzRequirement();">Clear</button>
+
+             </div>
+
+
+            <div style="margin:1em">
+	            <table cellpadding="0" cellspacing="0" border="0" class="display" id="suggestions"></table>
+            </div>
+            </div>
+
+	 
+     <hr />
+
+    <!-- FOOTER -->
+       <div class="footer">
+		
+       
+      <p style="text-align:center">
+      The OSLC Adapter on top of <a href="http://www.reusecompany.com">The Reuse Company Inc.</a> tools is a 
+      joint effort in conjuction with the <a href="http://www.uc3m.es">Carlos III University of Madrid</a> and partially funded 
+      by the <a href="http://www.crystal-artemis.eu/">Crystal Project</a>.
+        </p>
+
+        <p style="text-align:center">The research leading to these results has received funding from the ARTEMIS 
+        Joint Undertaking under Grant Agreement N° 332830 and from specific national programs and / or funding authorities. 
+        </p>
+        <p style="text-align:center">
+            <img src="img/fp7.jpg" title="FP7" /> <img src="img/artemis.jpg"  title="ARTEMIS"/> <img src="img/europe.jpg" title="European Union"/>
+        </p>
+	
+
+	
+      </div>
+
+    </div> <!-- /container -->
+
+ 
+	 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/Scripts/bootstrap.min.js"></script>
+    <script src="/Scripts/holder.js"></script>
+  </body>
+
+
+</html>
