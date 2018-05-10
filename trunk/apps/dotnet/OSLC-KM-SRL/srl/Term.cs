@@ -5,23 +5,26 @@ using System.Web;
 using OSLC4Net.Core.Attribute;
 using OSLC4Net.Core.Model;
 using OSLC_KM_SRL.utils;
+using Newtonsoft.Json;
 
 namespace OSLC_KM_SRL.srl {
     [OslcNamespace(SRLShapeConstants.OSLC_KM_SRL_DOMAIN)]
     [OslcName(SRLShapeConstants.SRL_TERM)]
-    [OslcResourceShape(title = "Vocabulary (Minimal) Concept Resource Shape", describes = new string[] { 
+    [OslcResourceShape(title = "Vocabulary (Minimal) Concept Resource Shape", describes = new string[] {
         SKOS.CONCEPT })]
-    public class Term: AbstractResource {
+    public class Term : AbstractResource {
+        const string DEFAULT_TERM_TYPE = "NOUN";
 
         #region Properties for Term
-        
-        string prefLabel;
-        string lang;
-        Type type;
-
-        
+        [JsonProperty(PropertyName = "prefLabel")]
+        private string prefLabel;
+        [JsonProperty(PropertyName = "lang")]
+        private string lang;
+        [JsonProperty(PropertyName = "type")]
+        private Type type = new Type(DEFAULT_TERM_TYPE);
+        [JsonProperty(PropertyName = "semanticClusters")]
+        private List<string> semanticClusters = null;
         #endregion
-
 
         #region OSLC Core properties
 
@@ -31,25 +34,32 @@ namespace OSLC_KM_SRL.srl {
 
         #endregion
 
+        #region Constructors
         public Term() {
             // TODO Auto-generated constructor stub
+            init();
         }
 
         public Term(string label, string language, Type type) {
             this.prefLabel = label;
             this.lang = language;
             this.type = type;
+            init();
         }
 
         public Term(string label) {
             this.prefLabel = label;
+            init();
         }
-
         public Term(string label, string language) {
             this.prefLabel = label;
             this.lang = language;
+            init();
         }
-
+        private void init() {
+            semanticClusters = new List<string>();
+        }
+        #endregion
 
         #region Common OSLC methods
         [OslcDescription("The scope of a resource is a URI for the resource's OSLC Service Provider.")]
@@ -95,9 +105,7 @@ namespace OSLC_KM_SRL.srl {
 
         #endregion
 
-
-
-
+        #region Getters & Setters
         [OslcDescription("A preferred label for each element of the vocabulary. The tuple (literal, lang) should be unique.")]
         [OslcOccurs(Occurs.ZeroOrOne)]
         [OslcPropertyDefinition(SKOS.PREF_LABEL)]
@@ -114,7 +122,7 @@ namespace OSLC_KM_SRL.srl {
 
         [OslcDescription("The language of the term.")]
         [OslcOccurs(Occurs.ZeroOrOne)]
-        [OslcPropertyDefinition(XML.NAMESPACE+"lang")]
+        [OslcPropertyDefinition(XML.NAMESPACE + "lang")]
         [OslcReadOnly]
         [OslcTitle("A language")]
         [OslcName("lang")]
@@ -132,15 +140,13 @@ namespace OSLC_KM_SRL.srl {
         [OslcTitle("Term Type (syntax)")]
         [OslcName("type")]
         [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
-        public Type GetType() {
+        public Type GetTermType() {
             return this.type;
         }
 
-        public void SetType(Type type) {
+        public void GetTermType(Type type) {
             this.type = type;
         }
-
-
-
+        #endregion
     }
 }

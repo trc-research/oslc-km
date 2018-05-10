@@ -5,35 +5,34 @@ using System.Web;
 using OSLC4Net.Core.Attribute;
 using OSLC4Net.Core.Model;
 using OSLC_KM_SRL.utils;
+using Newtonsoft.Json;
 
 namespace OSLC_KM_SRL.srl {
     [OslcNamespace(SRLShapeConstants.OSLC_KM_SRL_DOMAIN)]
     [OslcName(SRLShapeConstants.SRL_TERM)]
     [OslcResourceShape(title = "Vocabulary (Minimal) Concept Resource Shape", describes = new string[] { SKOS.CONCEPT })]
-    public class Type:AbstractResource {
-       
+    public class Type : AbstractResource {
 
         #region Properties for Artifact
-
-        string name = string.Empty;
-
+        [JsonProperty(PropertyName = "name")]
+        private string name = string.Empty;
         #endregion
-
 
         #region OSLC Core properties
-
+        [JsonProperty(PropertyName = "identifier")]
         private string identifier = string.Empty;
+        [JsonProperty(PropertyName = "serviceProvider")]
         private Uri serviceProvider;
-        private Uri baseUri;
-
         #endregion
 
+        #region Constructors
         public Type() {
         }
 
         public Type(string name) {
             this.name = name;
         }
+        #endregion
 
         #region Common OSLC methods
         [OslcDescription("The scope of a resource is a URI for the resource's OSLC Service Provider.")]
@@ -79,7 +78,7 @@ namespace OSLC_KM_SRL.srl {
 
         #endregion
 
-
+        #region Getters & Setters
         [OslcDescription("Name of the artifact type.")]
         [OslcOccurs(Occurs.ExactlyOne)]
         [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "name")]
@@ -92,6 +91,7 @@ namespace OSLC_KM_SRL.srl {
         public void SetName(string name) {
             this.name = name;
         }
+        #endregion
 
     }
 }

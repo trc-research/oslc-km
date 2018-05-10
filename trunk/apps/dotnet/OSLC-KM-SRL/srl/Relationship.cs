@@ -2,38 +2,49 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 using OSLC4Net.Core.Attribute;
 using OSLC4Net.Core.Model;
 
 namespace OSLC_KM_SRL.srl {
     [OslcNamespace(SRLShapeConstants.OSLC_KM_SRL_DOMAIN)]
     [OslcName(SRLShapeConstants.SRL_RELATIONSHIP)]
-    [OslcResourceShape(title = "Relationship Resource Shape", describes = new string[] { 
+    [OslcResourceShape(title = "Relationship Resource Shape", describes = new string[] {
         SRLShapeConstants.SRL_RELATIONSHIP_URI })]
-    public class Relationship:AbstractResource {
-     
+    public class Relationship : AbstractResource {
+
+        const string DEFAULT_RSHP_TYPE = "UNKNOW RELATIONSHIP";
 
         #region Properties for Relationship
-
-        Artifact from; //FIXME: list
-        Artifact to; //FIXME: list
-        Type type;
-        Type subType;
-
+        [JsonProperty(PropertyName = "from")]
+        private Artifact from; //FIXME: list
+        [JsonProperty(PropertyName = "to")]
+        private Artifact to; //FIXME: list
+        [JsonProperty(PropertyName = "RshpType")]
+        private Type type;
+        [JsonProperty(PropertyName = "RshpSubType")]
+        private Type subType;
+        [JsonProperty(PropertyName = "name")]
+        private string name = null;
+        [JsonProperty(PropertyName = "InterfaceFrom")]
+        private string InterfaceFrom = "";
+        [JsonProperty(PropertyName = "InterfaceTo")]
+        private string InterfaceTo = "";
         #endregion
 
-
         #region OSLC Core properties
-       
+        [JsonProperty(PropertyName = "serviceProvider")]
         private Uri serviceProvider;
-        private Uri baseUri;
+        [JsonProperty(PropertyName = "identifier")]
         private string identifier = string.Empty;
 
         #endregion
 
+        #region Constructors
         public Relationship() {
-        
+            this.type = new Type(DEFAULT_RSHP_TYPE);
         }
+        #endregion
 
         #region Common OSLC methods
         [OslcDescription("The scope of a resource is a URI for the resource's OSLC Service Provider.")]
@@ -79,7 +90,7 @@ namespace OSLC_KM_SRL.srl {
 
         #endregion
 
-
+        #region Getters & Setters
         [OslcDescription("Relationship Type")]
         [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "type")]
         [OslcReadOnly]
@@ -87,15 +98,13 @@ namespace OSLC_KM_SRL.srl {
         [OslcTitle("Relationship Type")]
         [OslcName("type")]
         [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
-        public Type GetType() {
+        public Type GetRelationshipType() {
             return this.type;
         }
 
-        public void SetType(Type type) {
+        public void SetRelationshipType(Type type) {
             this.type = type;
         }
-
-
         [OslcDescription("Relationship Type")]
         [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "subtype")]
         [OslcReadOnly]
@@ -110,10 +119,6 @@ namespace OSLC_KM_SRL.srl {
         public void SetSubType(Type subType) {
             this.subType = subType;
         }
-
-
-
-
         [OslcDescription("Describes the set of sources that are on the one hand of the relationship.")]
         [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "from")]
         [OslcReadOnly]
@@ -142,7 +147,33 @@ namespace OSLC_KM_SRL.srl {
         public void SetTo(Artifact to) {
             this.to = to;
         }
+        [OslcDescription("Describes the semantics of the relationship .")]
+        [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "name")]
+        [OslcReadOnly]
+        [OslcRepresentation(Representation.Inline)]
+        [OslcTitle("Element with description of the meaning of the relationship")]
+        [OslcName("name")]
+        [OslcValueShape(OslcConstants.PATH_RESOURCE_SHAPES + "/" + OslcConstants.PATH_PUBLISHER)]
+        [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
+        public string GetName() {
+            return name;
+        }
+        public void SetName(string name) {
+            this.name = name;
+        }
+        public void SetInterfaceFrom(string InterfaceFrom) {
+            this.InterfaceFrom = InterfaceFrom;
+        }
+        public string GetInterfaceFrom() {
+            return this.InterfaceFrom;
+        }
+        public void SetInterfaceTo(string InterfaceTo) {
+            this.InterfaceTo = InterfaceTo;
+        }
+        public string GetInterfaceTo() {
+            return this.InterfaceTo;
+        }
+        #endregion
 
-        
     }
 }

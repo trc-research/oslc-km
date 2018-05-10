@@ -1,0 +1,632 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OSLC4Net.Client</name>
+    </assembly>
+    <members>
+        <member name="T:OSLC4Net.Client.Exceptions.JazzAuthFailedException">
+            <summary>
+            Exceptions indicating a Jazz authentication or credentials problem
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Client.Exceptions.OslcClientApplicationException">
+            <summary>
+             Base class for all application exceptions.
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Client.Oslc.Resources.QmResource">
+            <summary>
+            http://open-services.net/bin/view/Main/QmSpecificationV2
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Client.Oslc.Jazz.JazzRootServicesConstants">
+            <summary>
+            Constants for Jazz rootservices entries
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Client.ServiceProviderRegistryClient">
+            <summary>
+            This classs provides methods to register and deregister with an OSLC ServiceProvider Registry (not yet
+            implemented in OSLC4Net - see Eclipse Lyo for a Java implementation)
+            
+            It also provides methods to get a ServiceProviderCatalog and retrieve the ServiceProviders 
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="mediaType"></param>
+            <param name="uri"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="mediaType"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter})">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.registerServiceProvider(OSLC4Net.Core.Model.ServiceProvider)">
+            <summary>
+            Register a ServiceProvider
+            </summary>
+            <param name="serviceProviderToRegister"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.DeregisterServiceProvider(System.Uri)">
+            <summary>
+            Remove registration for a ServiceProvider.
+            </summary>
+            <param name="serviceProviderURI"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.getServiceProviderCatalog">
+            <summary>
+            If a {@link ServiceProviderCatalog} is being used, this will return that object.
+            Otherwise null will be returned.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.GetServiceProvider">
+            <summary>
+            If aServiceProvider is being used as a ServiceProvider registry without an owning ServiceProviderCatalog,
+            this will return the ServiceProvider.
+            Otherwise null will be returned.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.GetServiceProviders">
+            <summary>
+            Return the registered ServiceProvider's.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryClient.getClient">
+            <summary>
+            Get the OslcClient associated with this SerivceProviderRegistryClient
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Client.Oslc.OslcClient">
+            <summary>
+            An OSLC Client.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.#ctor">
+            <summary>
+            Initialize a new OslcClient, accepting all SSL certificates. 
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.#ctor(System.Net.Security.RemoteCertificateValidationCallback)">
+            <summary>
+            Initialize a new OslcClient.
+            </summary>
+            <param name="certCallback">optionally control SSL certificate management</param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.#ctor(System.Net.Security.RemoteCertificateValidationCallback,System.Net.Http.HttpMessageHandler)">
+            <summary>
+            Initialize a new OslcClient
+            </summary>
+            <param name="certCallback">optionally control SSL certificate management</param>
+            <param name="oauthHandler">optionally use OAuth</param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.CreateSSLHandler(System.Net.Security.RemoteCertificateValidationCallback)">
+            <summary>
+            Create an SSL Web Request Handler
+            </summary>
+            <param name="certCallback">optionally control SSL certificate management</param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.GetHttpClient">
+            <summary>
+            Returns the HTTP client associated with this OSLC Client
+            </summary>
+            <returns>the HTTP client</returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.GetResource(System.String,System.String)">
+            <summary>
+            Abstract method get an OSLC resource and return a HttpResponseMessage
+            </summary>
+            <param name="url"></param>
+            <param name="mediaType"></param>
+            <returns>the HttpResponseMessage</returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.DeleteResource(System.String)">
+            <summary>
+            Delete an OSLC resource and return a HttpResponseMessage
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.CreateResource(System.String,System.Object,System.String)">
+            <summary>
+            Create (POST) an artifact to a URL - usually an OSLC Creation Factory
+            </summary>
+            <param name="url"></param>
+            <param name="artifact"></param>
+            <param name="mediaType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.CreateResource(System.String,System.Object,System.String,System.String)">
+            <summary>
+            Create (POST) an artifact to a URL - usually an OSLC Creation Factory
+            </summary>
+            <param name="url"></param>
+            <param name="artifact"></param>
+            <param name="mediaType"></param>
+            <param name="acceptType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.UpdateResource(System.String,System.Object,System.String)">
+            <summary>
+            Update (PUT) an artifact to a URL - usually the URL for an existing OSLC artifact
+            </summary>
+            <param name="url"></param>
+            <param name="artifact"></param>
+            <param name="mediaType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.UpdateResource(System.String,System.Object,System.String,System.String)">
+            <summary>
+            Update (PUT) an artifact to a URL - usually the URL for an existing OSLC artifact
+            </summary>
+            <param name="url"></param>
+            <param name="artifact"></param>
+            <param name="mediaType"></param>
+            <param name="acceptType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.UpdateResource(System.String,System.Object,System.String,System.String,System.String)">
+            <summary>
+            Update (PUT) an artifact to a URL - usually the URL for an existing OSLC artifact
+            </summary>
+            <param name="url"></param>
+            <param name="artifact"></param>
+            <param name="mediaType"></param>
+            <param name="acceptType"></param>
+            <param name="ifMatch"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.LookupServiceProviderUrl(System.String,System.String)">
+            <summary>
+            Lookup the URL of a specific OSLC Service Provider in an OSLC Catalog using the service provider's title
+            </summary>
+            <param name="catalogUrl"></param>
+            <param name="serviceProviderTitle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.LookupQueryCapability(System.String,System.String,System.String)">
+            <summary>
+            Find the OSLC Query Capability URL for a given OSLC resource type.  If no resource type is given, returns
+            the default Query Capability, if it exists.
+            </summary>
+            <param name="serviceProviderUrl"></param>
+            <param name="oslcDomain"></param>
+            <param name="oslcResourceType">the resource type of the desired query capability.   This may differ from the OSLC artifact type.</param>
+            <returns>URL of requested Query Capablility or null if not found.</returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.LookupCreationFactory(System.String,System.String,System.String)">
+            <summary>
+            Find the OSLC Creation Factory URL for a given OSLC resource type.  If no resource type is given, returns
+            the default Creation Factory, if it exists.
+            </summary>
+            <param name="serviceProviderUrl"></param>
+            <param name="oslcDomain"></param>
+            <param name="oslcResourceType">the resource type of the desired query capability.   This may differ from the OSLC artifact type.</param>
+            <returns>URL of requested Creation Factory or null if not found.</returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.OslcClient.AcceptAllServerCertificates(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
+            <summary>
+            Handle SSL server certificate processing, accepting all certificates.
+            </summary>
+            <param name="sender"></param>
+            <param name="certificate"></param>
+            <param name="chain"></param>
+            <param name="errors"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Client.Oslc.OSLCConstants">
+            <summary>
+            General OSLC constants
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Client.Exceptions.ResourceNotFoundException">
+            <summary>
+            Exceptions indicating a Jazz authentication or credentials problem
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Client.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Client.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Client.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Client.Properties.Resources.JazzAuthErrorException">
+            <summary>
+              Looks up a localized string similar to OSLCC002: An error occurred attempting to login to the Jazz server.  Status code {0}.  Server location: {1}..
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Client.Properties.Resources.JazzAuthFailedException">
+            <summary>
+              Looks up a localized string similar to OSLCC001: Unable to authenticate user {0} with the Jazz server at {1}..
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Client.Properties.Resources.ResourceNotFoundException">
+            <summary>
+              Looks up a localized string similar to OSLCC004: The requested resource could not be found.  Resource: {0}  Value: {1}..
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Client.Properties.Resources.RootServicesException">
+            <summary>
+              Looks up a localized string similar to OSLCC003: An error occurred processing the root services document.  Server location: {0}..
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Client.OslcRestClient">
+            <summary>
+            A class providing client utilities to query/get, create, update and delete OSLC resources
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.String,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="uri"></param>
+            <param name="mediaType"></param>
+            <param name="readTimeout"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="uri"></param>
+            <param name="mediaType"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="uri"></param>
+            <param name="timeout"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.String)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="uri"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.Uri,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="uri"></param>
+            <param name="mediaType"></param>
+            <param name="readTimeout"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.Uri,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="uri"></param>
+            <param name="mediaType"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.Uri,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="uri"></param>
+            <param name="timeout"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.#ctor(System.Collections.Generic.ISet{System.Net.Http.Formatting.MediaTypeFormatter},System.Uri)">
+            <summary>
+            
+            </summary>
+            <param name="formatters"></param>
+            <param name="uri"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.GetFormatters">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.GetOslcResource``1">
+            <summary>
+            Retrieve an OSLC resource of the specified type.  The type must have an associated .NET class with OSLC4Net annotations.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.GetOslcResources``1">
+            <summary>
+            Get an array of OSLC resources of the specified type.  The type must have an associated .NET class with OSLC4Net annotations.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.AddOslcResource``1(``0)">
+            <summary>
+            Create an OSLC resource of the specified type.  The type must have an associated .NET class with OSLC4Net annotations.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="oslcResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.AddOslcResourceReturnClientResponse(System.Object)">
+            <summary>
+            Add an OSLC resource of the specified type and return an HttpResponseMessage.
+            The type must have an associated .NET class with OSLC4Net annotations.
+            </summary>
+            <param name="oslcResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.UpdateOslcResourceReturnClientResponse(System.Object)">
+            <summary>
+            Update an OSLC resource of the specified type and return an HttpResponseMessage.
+            The type must have an associated .NET class with OSLC4Net annotations.
+            </summary>
+            <param name="oslcResource"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.OslcRestClient.RemoveOslcResourceReturnClientResponse">
+            <summary>
+            Remove an OSLC resource
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Client.Oslc.Resources.OslcQueryResult">
+            <summary>
+            The results of an OSLC query. If the query was paged, subsequent pages can be retrieved using the Iterator interface.
+            
+            This class is not currently thread safe.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQueryResult.MoveNext">
+            <summary>
+            
+            </summary>
+            <returns>whether there is another page of results after this</returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQueryResult.GetRawResponse">
+            <summary>
+            Get the raw client response to a query.  
+            
+            NOTE:  Using this method and consuming the response will make other methods
+            which examine the response unavailable (Examples:  GetMemberUrls(), Current() and MoveNext()).
+            When this method is invoked, the consumer is responsible for OSLC page processing
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQueryResult.GetMembersUrls">
+             <summary>
+             Return the subject URLs of the query response.  The URLs are the location of all artifacts 
+             which satisfy the query conditions.
+            
+             NOTE:  Using this method consumes the query response and makes other methods
+             which examine the response unavailable (Example: GetRawResponse().
+             </summary>
+             <returns></returns>
+        </member>
+        <member name="P:OSLC4Net.Client.Oslc.Resources.OslcQueryResult.Current">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Client.Oslc.Jazz.JazzRootServicesHelper">
+            <summary>
+            Helper class to assist in retrieval of attributes from the IBM Rational
+            Jazz rootservices document
+            
+            This class is not currently thread safe.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzRootServicesHelper.#ctor(System.String,System.String)">
+            <summary>
+            Initialize Jazz rootservices-related URLs such as the catalog location and OAuth URLs
+            
+            rootservices is unprotected and access does not require authentication
+            </summary>
+            <param name="url">base URL of the Jazz server, no including /rootservices.  Example:  https://example.com:9443/ccm</param>
+            <param name="catalogDomain">Namespace of the OSLC domain to find the catalog for.  Example:  OSLCConstants.OSLC_CM</param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzRootServicesHelper.GetCatalogUrl">
+            <summary>
+            Get the OSLC Catalog URL
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzRootServicesHelper.InitOAuthClient(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Create an OAuth client
+            </summary>
+            <param name="consumerKey"></param>
+            <param name="secret"></param>
+            <param name="user"></param>
+            <param name="passwd"></param>
+            <param name="authUrl"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzRootServicesHelper.InitFormClient(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="userid"></param>
+            <param name="password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzRootServicesHelper.InitFormClient(System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="userid"></param>
+            <param name="password"></param>
+            <param name="authUrl">the base URL to use for authentication.  This is normally the 
+            application base URL for RQM and RTC and is the JTS application URL for fronting
+            applications like RRC and DM.</param>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Client.Oslc.Resources.OslcQuery">
+            <summary>
+            Represents an OSLC query (HTTP GET) request to be made of a remote system.
+            
+            Immutable.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQuery.#ctor(OSLC4Net.Client.Oslc.OslcClient,System.String)">
+            <summary>
+            Create an OSLC query that uses the remote system's default page size.
+            </summary>
+            <param name="oslcClient">the authenticated OSLC client</param>
+            <param name="capabilityUrl">the URL that is the base </param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQuery.#ctor(OSLC4Net.Client.Oslc.OslcClient,System.String,OSLC4Net.Client.Oslc.Resources.OslcQueryParameters)">
+            <summary>
+            Create an OSLC query with query parameters that uses the default page size
+            </summary>
+            <param name="oslcClient">the authenticated OSLC client</param>
+            <param name="capabilityUrl">capabilityUrl capabilityUrl the URL that is the base</param>
+            <param name="oslcQueryParams">an OslcQueryParameters object</param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQuery.#ctor(OSLC4Net.Client.Oslc.OslcClient,System.String,System.Int32)">
+            <summary>
+            Create an OSLC query that uses the given page size
+            </summary>
+            <param name="oslcClient">the authenticated OSLC client</param>
+            <param name="capabilityUrl">the URL that is the base</param>
+            <param name="pageSize">the number of results to include on each page (OslcQueryResult)</param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQuery.#ctor(OSLC4Net.Client.Oslc.OslcClient,System.String,System.Int32,OSLC4Net.Client.Oslc.Resources.OslcQueryParameters)">
+            <summary>
+            Create an OSLC query that uses OSLC query parameters and the given page size 
+            </summary>
+            <param name="oslcClient">the authenticated OSLC client</param>
+            <param name="capabilityUrl">the URL that is the base</param>
+            <param name="pageSize">the number of results to include on each page (OslcQueryResult)</param>
+            <param name="oslcQueryParams">an OslcQueryParameters object</param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQuery.GetPageSize">
+            @return the number of entries to return for each page, 
+            		if zero, the remote system's (or full query's) default is used
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQuery.GetCapabilityUrl">
+            @return the base query capability URL
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQuery.GetQueryUrl">
+            @return the complete query URL
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzOAuthClient.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Initialize an OAuthClient with the required OAuth URLs
+            </summary>
+            <param name="requestTokenURL"></param>
+            <param name="authorizationTokenURL"></param>
+            <param name="accessTokenURL"></param>
+            <param name="consumerKey"></param>
+            <param name="consumerSecret"></param>\
+            <param name="authUrl"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzOAuthClient.#ctor(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Initialize an OAuthClient with the required OAuth URLs
+            </summary>
+            <param name="requestTokenURL"></param>
+            <param name="authorizationTokenURL"></param>
+            <param name="accessTokenURL"></param>
+            <param name="consumerKey"></param>
+            <param name="consumerSecret"></param>
+            <param name="oauthRealmName"></param>
+            <param name="authUrl"></param>
+        </member>
+        <member name="T:OSLC4Net.Client.ServiceProviderRegistryURIs">
+            <summary>
+            This class calculates and store a ServiceProvider Registry URI.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.ServiceProviderRegistryURIs.getServiceProviderRegistryURI">
+            <summary>
+            Get the ServiceProviderRegistry URI
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Client.Oslc.Resources.OslcQueryParameters">
+            <summary>
+            A container for OSLC Query parameters which can be associated with an OslcQuery object.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Resources.OslcQueryParameters.#ctor(System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Initialize an OSLC Parameter using the supplied terms
+            </summary>
+            <param name="where"></param>
+            <param name="select"></param>
+            <param name="searchTerms"></param>
+            <param name="orderBy"></param>
+            <param name="prefix"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzFormAuthClient.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Create a new Jazz Form Auth client for the given URL, user and password
+            </summary>
+            <param name="url">the URL of the Jazz server, including the web app context</param>
+            <param name="user"></param>
+            <param name="password"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzFormAuthClient.#ctor(System.String,System.String,System.String,System.String)">
+            <summary>
+            Create a new Jazz Form Auth client for the given URL, user and password
+            </summary>
+            <param name="url">the URL of the Jazz server, including the web app context</param>
+            <param name="authUrl">the base URL to use for authentication.  This is normally the 
+            application base URL for RQM and RTC and is the JTS application URL for fronting
+            applications like RRC and DM.</param>
+            <param name="user"></param>
+            <param name="password"></param>
+        </member>
+        <member name="M:OSLC4Net.Client.Oslc.Jazz.JazzFormAuthClient.FormLogin">
+            <summary>
+            Execute the sequence of HTTP requests to perform a form login to a Jazz server
+            </summary>
+            <returns>The HTTP status code of the final request to verify login is successful</returns>
+        </member>
+        <member name="T:OSLC4Net.Client.Exceptions.MessageExtractor">
+            <summary>
+            Utility methods for retrieving messages
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Client.Exceptions.MessageExtractor.GetMessage(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Client.Exceptions.JazzAuthErrorException">
+            <summary>
+            Exceptions indicating a Jazz authentication or credentials problem
+            </summary>
+        </member>
+    </members>
+</doc>

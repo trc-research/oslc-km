@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 using OSLC4Net.Core.Attribute;
 using OSLC4Net.Core.Model;
 
@@ -9,39 +10,58 @@ using OSLC4Net.Core.Model;
 namespace OSLC_KM_SRL.srl {
     [OslcNamespace(SRLShapeConstants.OSLC_KM_SRL_DOMAIN)]
     [OslcName(SRLShapeConstants.SRL_METADATA)]
-    [OslcResourceShape(title = "Vocabulary (Minimal) Concept Resource Shape", describes = new string[] { 
+    [OslcResourceShape(title = "Vocabulary (Minimal) Concept Resource Shape", describes = new string[] {
         SRLShapeConstants.SRL_METADATA_URI })]
-    public class MetaData:AbstractResource {
+    public class MetaData : AbstractResource {
 
         #region Properties for Metadata
-
-        Artifact key;
-        Artifact value;
-        
+        [JsonProperty(PropertyName = "key")]
+        private Artifact key;
+        [JsonProperty(PropertyName = "value")]
+        private Artifact value;
+        [JsonProperty(PropertyName = "Complex key")]
+        private List<Artifact> complexKey;
+        [JsonProperty(PropertyName = "Complex value")]
+        private List<Artifact> complexValue;
+        [JsonProperty(PropertyName = "Table Metaproperties")]
+        private System.Data.DataTable tablesmMetaProperty;
+        [JsonProperty(PropertyName = "Value Type")]
+        private SrlValueType valueType = SrlValueType.String;
+        [JsonProperty(PropertyName = "Property Operation")]
+        private SrlOperator PropertyOperation = SrlOperator.Equal;
         #endregion
-
 
         #region OSLC Core properties
 
+        [JsonProperty(PropertyName = "identifier")]
         private string identifier = string.Empty;
+        [JsonProperty(PropertyName = "serviceProvider")]
         private Uri serviceProvider;
-        private Uri baseUri;
 
         #endregion
 
+        #region Constructor
         public MetaData() {
-        
+            init();
         }
         public MetaData(Artifact key, Artifact value) {
             this.key = key;
             this.value = value;
+            init();
         }
 
         public MetaData(string key, string value) {
             this.key = new Artifact(key);
             this.value = new Artifact(value);
+            init();
+        }
+        private void init() {
+            complexKey = new List<Artifact>();
+            complexValue = new List<Artifact>();
+
         }
 
+        #endregion
 
         #region Common OSLC methods
         [OslcDescription("The scope of a resource is a URI for the resource's OSLC Service Provider.")]
@@ -87,12 +107,13 @@ namespace OSLC_KM_SRL.srl {
 
         #endregion
 
+        #region Getters & Setters
 
-        [OslcDescription("Describes the value of the tag.")]
+        [OslcDescription("Describes the value of the metadata.")]
         [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "value")]
         [OslcReadOnly]
         [OslcRepresentation(Representation.Inline)]
-        [OslcTitle("Value of the tag")]
+        [OslcTitle("Value of the metadata")]
         [OslcValueShape(OslcConstants.PATH_RESOURCE_SHAPES + "/" + OslcConstants.PATH_PUBLISHER)]
         [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
         public Artifact GetValue() {
@@ -103,11 +124,11 @@ namespace OSLC_KM_SRL.srl {
             this.value = value;
         }
 
-         public void SetTag(Artifact tag) {
+        public void SetTag(Artifact tag) {
             this.key = tag;
         }
 
-        [OslcDescription("Describes the key.")]
+        [OslcDescription("Describes the key of the metadata.")]
         [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "key")]
         [OslcReadOnly]
         [OslcRepresentation(Representation.Inline)]
@@ -118,6 +139,71 @@ namespace OSLC_KM_SRL.srl {
             return this.key;
         }
 
-
+        [OslcDescription("Describes the complex key.")]
+        [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "key")]
+        [OslcReadOnly]
+        [OslcRepresentation(Representation.Inline)]
+        [OslcTitle("The key used as complex metadata.")]
+        [OslcValueShape(OslcConstants.PATH_RESOURCE_SHAPES + "/" + OslcConstants.PATH_PUBLISHER)]
+        [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
+        public List<Artifact> GetComplexTag() {
+            return this.complexKey;
+        }
+        public void SetComplexTag(List<Artifact> complexTag) {
+            this.complexKey = complexTag;
+        }
+        [OslcDescription("Describes the complex value.")]
+        [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "key")]
+        [OslcReadOnly]
+        [OslcRepresentation(Representation.Inline)]
+        [OslcTitle("The value used as complex metadata.")]
+        [OslcValueShape(OslcConstants.PATH_RESOURCE_SHAPES + "/" + OslcConstants.PATH_PUBLISHER)]
+        [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
+        public List<Artifact> GetComplexValue() {
+            return this.complexValue;
+        }
+        public void SetComplexValue(List<Artifact> complexValue) {
+            this.complexKey = complexValue;
+        }
+        [OslcDescription("Describes the table metadata.")]
+        [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "key")]
+        [OslcReadOnly]
+        [OslcRepresentation(Representation.Inline)]
+        [OslcTitle("The value used as table metadata.")]
+        [OslcValueShape(OslcConstants.PATH_RESOURCE_SHAPES + "/" + OslcConstants.PATH_PUBLISHER)]
+        [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
+        public System.Data.DataTable GetTableData() {
+            return this.tablesmMetaProperty;
+        }
+        public void SetTableData(System.Data.DataTable dataTableData) {
+            this.tablesmMetaProperty = dataTableData;
+        }
+        [OslcDescription("Describes operation for the metadata element.")]
+        [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "key")]
+        [OslcReadOnly]
+        [OslcRepresentation(Representation.Inline)]
+        [OslcTitle("The operation of the metadata.")]
+        [OslcValueShape(OslcConstants.PATH_RESOURCE_SHAPES + "/" + OslcConstants.PATH_PUBLISHER)]
+        [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
+        public SrlOperator GetOperator() {
+            return this.PropertyOperation;
+        }
+        public void SetOperator(SrlOperator propertyOperator) {
+            this.PropertyOperation = propertyOperator;
+        }
+        [OslcDescription("Describes value type for the metadata element.")]
+        [OslcPropertyDefinition(SRLShapeConstants.OSLC_KM_SRL_VOCAB + "key")]
+        [OslcReadOnly]
+        [OslcRepresentation(Representation.Inline)]
+        [OslcTitle("The value type of the metadata element.")]
+        [OslcValueShape(OslcConstants.PATH_RESOURCE_SHAPES + "/" + OslcConstants.PATH_PUBLISHER)]
+        [OslcValueType(OSLC4Net.Core.Model.ValueType.LocalResource)]
+        public SrlValueType GetValueType() {
+            return this.valueType;
+        }
+        public void SetValueType(SrlValueType valueType) {
+            this.valueType = valueType;
+        }
+        #endregion
     }
 }

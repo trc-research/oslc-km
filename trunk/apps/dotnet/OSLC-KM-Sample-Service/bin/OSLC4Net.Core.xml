@@ -1,0 +1,1051 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OSLC4Net.Core</name>
+    </assembly>
+    <members>
+        <member name="T:OSLC4Net.Core.Attribute.OslcQueryCapability">
+            <summary>
+            OSLC QueryCapability attribute
+            </summary>
+             <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcQueryCapability.title">
+            Title string that could be used for display
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcQueryCapability.label">
+            Very short label for use in menu items
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcQueryCapability.resourceShape">
+            Resource shapes
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcQueryCapability.resourceTypes">
+            Resource types
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcQueryCapability.usages">
+            Usages
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcDefaultValue">
+            <summary>
+            OSLC DefaultValue attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDefaultValue.value">
+            Description of the element.
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Dialog">
+            <summary>
+            OSLC Dialog resource
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.AbstractResource">
+            <summary>
+            This class represents and abstract OSLC resource.  It is normally the parent class for concrete OSLC resource types.
+            See the ChangeMangement.cs objec in the ChangeManagementCommon project
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:OSLC4Net.Core.Model.IExtendedResource" -->
+        <member name="T:OSLC4Net.Core.Model.IResource">
+            <summary>
+            Interface to represent an OSLC resource.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.IExtendedResource.GetTypes">
+            <summary>
+            Gets the RDF types of this resource. These types will be added to the
+            serialization of the resource in addition to the
+            OslcResourceShape#describes() annotation
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.IExtendedResource.SetTypes(System.Collections.Generic.ICollection{System.Uri})">
+            <summary>
+            Sets the RDF types of this resource. These types will be added to the
+            serialization of the resource in addition to the
+            OslcResourceShape#describes() annotation.
+            </summary>
+            <param name="types"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.IExtendedResource.AddType(System.Uri)">
+            <summary>
+            Adds an RDF type to this resource. These types will be added to the
+            serialization of the resource in addition to the
+            OslcResourceShape#describes() annotation.
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.IExtendedResource.SetExtendedProperties(System.Collections.Generic.IDictionary{OSLC4Net.Core.Model.QName,System.Object})">
+            <summary>
+             Sets extended properties not defined in the bean.
+            </summary>
+            <param name="properties"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.IExtendedResource.GetExtendedProperties">
+            <summary>
+            Gets back the list of extended properties not defined in this bean.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractResource.GetAbout">
+            <summary>
+            Get the subject URI
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractResource.SetAbout(System.Uri)">
+            <summary>
+            Set the subject URI
+            </summary>
+            <param name="about"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractResource.SetExtendedProperties(System.Collections.Generic.IDictionary{OSLC4Net.Core.Model.QName,System.Object})">
+            <param name="properties"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractResource.GetExtendedProperties">
+            <summary>
+            Get all extended properties
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractResource.GetTypes">
+            <summary>
+            Get the RDF types
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractResource.SetTypes(System.Collections.Generic.ICollection{System.Uri})">
+            <summary>
+            Set the RDF types
+            </summary>
+            <param name="types"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractResource.AddType(System.Uri)">
+            <summary>
+            Add an additional RDF type
+            </summary>
+            <param name="type"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcSchema">
+            <summary>
+            Describe the assembley schema
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcRepresentation">
+            <summary>
+            OSLC Representation attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcRepresentation.value">
+            Specify how the resource will be represented (for properties with a resource value-type).
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcPropertyDefinition">
+            <summary>
+            OSLC PropertyDefinition attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcPropertyDefinition.value">
+            URI of the property whose usage is being described.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcDialogs">
+            <summary>
+            OSLC Dialogs attribute
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.XmlNamespace">
+            <summary>
+            Predefined OSLC namespaces
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.XmlNamespace.GetNamespaces">
+            <summary>
+            Get common OSLC namespace definitions
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.ServiceProvider">
+            <summary>
+            OSLC ServiceProvider resource
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreInvalidPropertyTypeException">
+            <summary>
+            Exception thrown for an invalid property type
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreApplicationException">
+            <summary>
+            OSLC4Net Core exception
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreInvalidPropertyTypeException.#ctor(System.Type,System.Reflection.MethodInfo,System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="method"></param>
+            <param name="returnType"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreInvalidValueTypeException.#ctor(System.Type,System.Reflection.MethodInfo,OSLC4Net.Core.Model.ValueType)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="method"></param>
+            <param name="valueType"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.ResponseInfo`1">
+            <summary>
+            An OSLC ResponseInfo resource containg a single member resource
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.FilteredResource`1">
+            <summary>
+            Class representing a filtered OSLC resource.  That is, a representation of resource where some of the
+            attributes are not present (filtered using oslc.select or oslc.properties)
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:OSLC4Net.Core.Model.FilteredResource`1.Resource">
+            Resource.
+        </member>
+        <member name="P:OSLC4Net.Core.Model.FilteredResource`1.Properties">
+            properties
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResponseInfo`1.#ctor(`0,System.Collections.Generic.IDictionary{System.String,System.Object},System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="resource"></param>
+            <param name="properties"></param>
+            <param name="totalCount"></param>
+            <param name="nextPage"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResponseInfo`1.#ctor(`0,System.Collections.Generic.IDictionary{System.String,System.Object},System.Int32,System.Uri)">
+            <summary>
+            
+            </summary>
+            <param name="resource"></param>
+            <param name="properties"></param>
+            <param name="totalCount"></param>
+            <param name="nextPage"></param>
+        </member>
+        <member name="P:OSLC4Net.Core.Model.ResponseInfo`1.TotalCount">
+            Total count of resource
+        </member>
+        <member name="P:OSLC4Net.Core.Model.ResponseInfo`1.NextPage">
+            Next page in paged output
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcValueShape">
+            <summary>
+            OSLC ValueShape attribute
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcValueShape.value">
+            If the value-type is a resource type, then Property MAY provide a shape value
+            to indicate the Resource Shape that applies to the resource.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcMaxSize">
+            <summary>
+            OSLC MaxSize attribute 
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcMaxSize.value">
+            For String properties only, specifies maximum characters allowed.
+            If not set, then there is no maximum or maximum is specified elsewhere.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcHidden">
+            <summary>
+            OSLC Hidden attribute
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcHidden.value">
+            A hint that indicates that property MAY be hidden when presented in a user interface.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcNamespaceDefinition">
+            <summary>
+            The definition of an OSLC namespace attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcNamespaceDefinition.namespaceURI">
+            Namespace URI.
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcNamespaceDefinition.prefix">
+            Prefix for the namespace.
+        </member>
+        <member name="M:OSLC4Net.Core.Model.InheritedMethodAttributeHelper.GetAttribute``1(System.Reflection.MethodInfo)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="method"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Link">
+            <summary>
+            An OSLC link - inculdes a Uri and a label.
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.AbstractReifiedResource`1">
+            <summary>
+            An OSLC reified resource
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.IReifiedResource`1">
+            <summary>
+            This interface helps model RDF reified statements in plain old Java objects.
+            OSLC commonly uses reification to describe metadata on links, such as labels.
+            The  #getValue() and#setValue(Object) methods allow you to
+            set the actual object of the triple. All other properties in implementing
+            classes are statements about the statement. These additional properties
+            should have OslcName and OslcPropertyDefinition annotations.
+            See Link for an example.
+            
+            Note: The parameterized type T must be an URI to serialize to JSON due
+            to current limitations in the OSLC JSON format.
+             
+            @see AbstractReifiedResource
+            @see <a href="http://www.w3.org/TR/rdf-mt/#Reif">RDF Semantics: Reification</a>
+            @see <a href="http://www.w3.org/TR/rdf-primer/#reification">RDF Primer: Reification</a>
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.IReifiedResource`1.GetValue">
+            <summary>
+            Gets the object of the reified statement.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.IReifiedResource`1.SetValue(`0)">
+            <summary>
+            Sets the object of the reified statement.
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractReifiedResource`1.GetValue">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.AbstractReifiedResource`1.SetValue(`0)">
+            <summary>
+            
+            </summary>
+            <param name="value"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.Link.GetLabel">
+            <summary>
+            Gets the link label.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.Link.SetLabel(System.String)">
+            <summary>
+            Sets the link label.
+            </summary>
+            <param name="label"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreMisusedOccursException">
+            <summary>
+            Exception thrown for an incorrect use of the OSLC Occurs attribute
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMisusedOccursException.#ctor(System.Type,System.Reflection.MethodInfo)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="method"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreMissingSetMethodException">
+            <summary>
+            Exception thrown for beans without required setters
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingSetMethodException.#ctor(System.Type,System.Reflection.MethodInfo,System.Exception)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="getMethod"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingSetMethodException.#ctor(System.Type,System.Reflection.MethodInfo)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="getMethod"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreInvalidPropertyDefinitionException.#ctor(System.Type,System.Reflection.MethodInfo,OSLC4Net.Core.Attribute.OslcPropertyDefinition)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="method"></param>
+            <param name="oslcPropertyDefinition"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.ValueType">
+            <summary>
+            OSLC ValueType attribute
+            </summary>
+            <remarks>see http://open-services.net/bin/view/Main/OslcCoreSpecification#OSLC_Defined_Resources</remarks>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.InheritedGenericInterfacesHelper.ImplementsGenericInterface(System.Type,System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="genericType"></param>
+            <param name="typeToTest"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.CreationFactory">
+            <summary>
+            OSLC Resource Shape resource
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcDialog">
+            <summary>
+            OSLC Dialog attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDialog.title">
+            Title string that could be used for display
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDialog.label">
+            Very short label for use in menu items
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDialog.uri">
+            The URI of the dialog
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDialog.hintWidth">
+            Values MUST be expressed in relative length units.  Em and ex units are interpreted relative to the default system font (at 100% size).
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDialog.hintHeight">
+            Values MUST be expressed in relative length units.  Em and ex units are interpreted relative to the default system font (at 100% size).
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDialog.resourceTypes">
+            Resource types
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDialog.usages">
+            Usages
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreRegistrationException">
+            <summary>
+            Exception thrown for a service provider registration failure
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.ResponseInfoCollection`1">
+            <summary>
+            An OSLC ResponseInfo resource containg an IEnumerable collection of member resources
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResponseInfoCollection`1.Collection">
+            Collection of resources
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResponseInfoCollection`1.#ctor(System.Collections.Generic.ICollection{`0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="collection"></param>
+            <param name="properties"></param>
+            <param name="totalCount"></param>
+            <param name="nextPage"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResponseInfoCollection`1.#ctor(System.Collections.Generic.ICollection{`0},System.Collections.Generic.IDictionary{System.String,System.Object},System.Int32,System.Uri)">
+            <summary>
+            
+            </summary>
+            <param name="collection"></param>
+            <param name="properties"></param>
+            <param name="totalCount"></param>
+            <param name="nextPage"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.URI">
+            <summary>
+            A wrapper for a URI
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Model.URI.uri">
+            URI of element; used in enumerations
+        </member>
+        <member name="T:OSLC4Net.Core.Model.OslcConstants">
+            <summary>
+            General purpose OSLC constants
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcAllowedValue">
+            <summary>
+            OSLC AllowedValue attribute
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcAllowedValue.value">
+            A value allowed for property, inlined into property definition.
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Property">
+            <summary>
+            OSLC Property attributes
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+            
+        </member>
+        <member name="T:OSLC4Net.Core.Model.QueryCapability">
+            <summary>
+            OSLC QueryCapability resource
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.QueryCapability.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.QueryCapability.#ctor(System.String,System.Uri)">
+            <summary>
+            
+            </summary>
+            <param name="title"></param>
+            <param name="queryBase"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.TypeFactory">
+            <summary>
+            Static utilities to return the qualified name of a type
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.QName">
+            <summary>
+            Class representing namespace-qualified names
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.QName.#ctor(System.String)">
+            <summary>
+            Constructor with local part only
+            </summary>
+            <param name="localPart"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.QName.#ctor(System.String,System.String)">
+            <summary>
+            Constructior with namespace and local part
+            </summary>
+            <param name="namespaceURI"></param>
+            <param name="localPart"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.QName.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Constructor with namespace, local part and prefix/alias
+            </summary>
+            <param name="namespaceURI"></param>
+            <param name="localPart"></param>
+            <param name="prefix"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcTitle">
+            <summary>
+            OSLC Title attribute
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcTitle.value">
+            Title of the element.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcRange">
+            <summary>
+            OSLC Range attribute
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcRange.value">
+            Specify the range of possible resource types allowed (for properties with a resource value-type).
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcNamespace.value">
+            Namespace URI of the element.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcName">
+            <summary>
+            OSLC Name attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcName.value">
+            Name of the element.
+        </member>
+        <member name="T:OSLC4Net.Core.Model.ResourceShapeFactory">
+            <summary>
+            Factory for creating ResourceShape resources
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResourceShapeFactory.CreateResourceShape(System.String,System.String,System.String,System.Type)">
+            <summary>
+            Create an OSLC ResourceShape resource
+            </summary>
+            <param name="baseURI"></param>
+            <param name="resourceShapesPath"></param>
+            <param name="resourceShapePath"></param>
+            <param name="resourceType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.OslcMediaType">
+            <summary>
+            Constant strings and static MediaTypeHeaderValue representing OSLC media types
+            </summary>
+            <seealso cref="T:System.Net.Http.Headers.MediaTypeHeaderValue"/>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.OAuthConfiguration">
+            <summary>
+            An OSLC OAuth configuration resource
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.OAuthConfiguration.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.OAuthConfiguration.#ctor(System.Uri,System.Uri,System.Uri)">
+            <summary>
+            
+            </summary>
+            <param name="oauthRequestTokenURI"></param>
+            <param name="authorizationURI"></param>
+            <param name="oauthAccessTokenURI"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Preview">
+            <summary>
+            OSLC Preview attribute
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Compact">
+            <summary>
+            OSLC Compact resource representation
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ServiceProviderFactory.HandleResourceType(System.String,System.Type,OSLC4Net.Core.Model.Service,System.Collections.Generic.Dictionary{System.String,System.Object})">
+            <summary>
+            Examine service methods to determine URLs for QueryCapability, CreationFactory and Dialogs
+            For more info on how routing works on MVC 4:  http://www.asp.net/web-api/overview/web-api-routing-and-actions/routing-in-aspnet-web-api
+            </summary>
+            <param name="baseURI"></param>
+            <param name="resourceType"></param>
+            <param name="service"></param>
+            <param name="pathParameterValues"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.SingletonWildcardProperties">
+            <summary>
+            Marker interface applied to {@link Map}(String, Object> to
+            indicate that when selecting properties for output all immediate,
+            properties of the resource should be output
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.NestedWildcardProperties">
+            <summary>
+             Marker interface applied to a Map(String, Object> to
+             indicate that when selecting properties for output all immediate,
+             resource properties of the resource should be output with entries
+              in the {@link NestedWildcardProperties#commonNestedProperties()
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.NestedWildcardProperties.CommonNestedProperties">
+            @return map of all member properties of nested resources to be
+            output
+        </member>
+        <member name="T:OSLC4Net.Core.Model.ResourceShape">
+            <summary>
+            OSLC ResourceShape resource
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreMissingNamespaceDeclarationException">
+            <summary>
+            Exception thrown when a required OSLC attribute definition is missing.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingNamespaceDeclarationException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="ns"></param>
+            <param name="annotationType"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingNamespaceDeclarationException.GetNamespace">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Service">
+            <summary>
+            OSLC Service attribute
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.MessageExtractor">
+            <summary>
+            Utility methods for retrieving messages
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.MessageExtractor.GetMessage(System.String,System.Object[])">
+            <summary>
+            
+            </summary>
+            <param name="key"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreDuplicatePropertyDefinitionException">
+            <summary>
+            Exception thrown when a property is defined more than once
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreDuplicatePropertyDefinitionException.#ctor(System.Type,OSLC4Net.Core.Attribute.OslcPropertyDefinition)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="oslcPropertyDefinition"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreInvalidRepresentationException.#ctor(System.Type,System.Reflection.MethodInfo,OSLC4Net.Core.Model.Representation)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="method"></param>
+            <param name="representation"></param>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcRdfCollectionType.namespaceURI">
+            Namespace URI.
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcRdfCollectionType.collectionType">
+            Prefix for the namespace.
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Occurs">
+            <summary>
+            OSLC Occurs attribute
+            </summary>
+            <remarks>see http://open-services.net/bin/view/Main/OslcCoreSpecification#OSLC_Defined_Resources</remarks>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.PrefixDefinition">
+            <summary>
+            OSLC PrefixDefinition resource
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.AnyResource">
+            <summary>
+            Represents a resource of any (unknown) type, usually the object of a
+            statement in anIExtendedResource.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreDeregistrationException.#ctor(System.Uri,System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="serviceProviderURI"></param>
+            <param name="statusCode"></param>
+            <param name="responseMessage"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.ResponseInfoArray`1">
+            <summary>
+            An OSLC ResponseInfo resource containing an array of member resources
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResponseInfoArray`1.Array">
+            Array of resources
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResponseInfoArray`1.#ctor(`0[],System.Collections.Generic.IDictionary{System.String,System.Object},System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="array"></param>
+            <param name="properties"></param>
+            <param name="totalCount"></param>
+            <param name="nextPage"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Model.ResponseInfoArray`1.#ctor(`0[],System.Collections.Generic.IDictionary{System.String,System.Object},System.Int32,System.Uri)">
+            <summary>
+            
+            </summary>
+            <param name="array"></param>
+            <param name="properties"></param>
+            <param name="totalCount"></param>
+            <param name="nextPage"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcValueType">
+            <summary>
+            OSLC ValueType attribue
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcValueType.value">
+            Value-type of the property.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcService">
+            <summary>
+            OSLC Service attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcService.value">
+            Domain of the service.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcMemberProperty">
+            <summary>
+            OSLC Members attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcMemberProperty.value">
+            If set to true, this indicates that the property is a membership property.
+        </member>
+        <member name="T:OSLC4Net.Core.OSLC4NetConstants">
+            <summary>
+            Constants specific to OSLC4Net
+            </summary>
+            <seealso cref="!:Oslc4Net.Core.OslcConstants"/>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreInvalidOccursException.#ctor(System.Type,System.Reflection.MethodInfo,OSLC4Net.Core.Attribute.OslcOccurs)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="method"></param>
+            <param name="oslcOccurs"></param>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreInvalidAttributeException">
+            <summary>
+            Exception thrown when a required OSLC attribute definition is missing.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreInvalidAttributeException.#ctor(System.Type,System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="annotationType"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreInvalidAttributeException.GetAnnotationType">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreInvalidAttributeException.GetResourceType">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcDescription">
+            <summary>
+            OSLC Description attribute
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcDescription.value">
+            A default value for property, inlined into property definition.
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreMissingNamespacePrefixException">
+            <summary>
+            Exception thrown when a required OSLC attribute definition is missing.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingNamespacePrefixException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="prefix"></param>
+            <param name="annotationType"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingNamespacePrefixException.GetPrefix">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Representation">
+            <summary>
+            OSLC Representation attribute
+            </summary>
+            <remarks>see http://open-services.net/bin/view/Main/OslcCoreSpecification#OSLC_Defined_Resources</remarks>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcAllowedValues">
+            <summary>
+            OSLC AllowedValues (enumeration) attribute
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcAllowedValues.value">
+            Specify how the resource will be represented (for properties with a resource value-type).
+        </member>
+        <member name="T:OSLC4Net.Core.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.DeregistrationException">
+            <summary>
+              Looks up a localized string similar to OSLC001: Error unregistering Service Provider URI {0}. Returned error code is: {1}; error message is: {2}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.DuplicatePropertyDefinitionException">
+            <summary>
+              Looks up a localized string similar to OSLC002: Duplicate property definition annotation {1} for class {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.InvalidOccursException">
+            <summary>
+              Looks up a localized string similar to Invalid occurs annotation {2} for method {1} of class {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.InvalidPropertyDefinitionException">
+            <summary>
+              Looks up a localized string similar to OSLC004: Invalid property definition annotation {2} for method {1} of class {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.InvalidPropertyTypeException">
+            <summary>
+              Looks up a localized string similar to OSLC005: Invalid property type {2} returned by method {1} of class {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.InvalidRepresentationException">
+            <summary>
+              Looks up a localized string similar to OSLC006: Invalid representation {2} defined for method {1} of class {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.InvalidValueTypeException">
+            <summary>
+              Looks up a localized string similar to OSLC007: Invalid value type {2} defined for method {1} of class {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.MissingAnnotationException">
+            <summary>
+              Looks up a localized string similar to OSLC008: Missing mandatory OSLC annotation {1} for class {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.MissingNamespaceDeclarationException">
+            <summary>
+              Looks up a localized string similar to OSLC009: Namespace declaration not defined for namespace {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.MissingNamespacePrefixException">
+            <summary>
+              Looks up a localized string similar to OSLC010: Namespace declaration not defined for prefix {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.MissingSetMethodException">
+            <summary>
+              Looks up a localized string similar to OSLC011: Missing corresponding set method for method {1} of class {0}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.MisusedOccursException">
+            <summary>
+              Looks up a localized string similar to OSLC012: Multiple values for method {1} of class {0} that supports at most one value.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.RegistrationException">
+            <summary>
+              Looks up a localized string similar to OSLC013: Error registering Service Provider {0}. Returned error code is: {1}; error message is: {2}.
+            </summary>
+        </member>
+        <member name="P:OSLC4Net.Core.Properties.Resources.RelativeURIException">
+            <summary>
+              Looks up a localized string similar to OSLC014: Relative URI value {2} for method {1} of class {0}.
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcReadOnly">
+            <summary>
+            OSLC ReadOnly attribute
+            </summary>
+            <remarks>See http://open-services.net/bin/view/Main/OSLCCoreSpecAppendixA </remarks>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcReadOnly.value">
+            True if the property is read-only. If not set, or set to false, then the property is writable.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcCreationFactory">
+            <summary>
+            OSLC CreationFactory attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcCreationFactory.title">
+            Title string that could be used for display
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcCreationFactory.label">
+            Very short label for use in menu items
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcCreationFactory.resourceShapes">
+            Resource shapes
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcCreationFactory.resourceTypes">
+            Resource types
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcCreationFactory.usages">
+            Usages
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcResourceShape">
+            <summary>
+            OSLC Resource Shape attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcResourceShape.title">
+            Title string that could be used for display
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcResourceShape.describes">
+            Type or types of resource described by this shape.
+        </member>
+        <member name="T:OSLC4Net.Core.Attribute.OslcOccurs">
+            <summary>
+            OSLC Occurs attribute
+            </summary>
+        </member>
+        <member name="F:OSLC4Net.Core.Attribute.OslcOccurs.value">
+            Occurs of property.
+        </member>
+        <member name="T:OSLC4Net.Core.Model.Publisher">
+            <summary>
+            OSLC Publisher resource
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Model.ServiceProviderCatalog">
+            <summary>
+            OSLC Service Provider Catalog resource 
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreRelativeURIException">
+            <summary>
+            Exception thrown when relative URIs are encountered in an RDF model
+            </summary>
+        </member>
+        <member name="T:OSLC4Net.Core.Exceptions.OslcCoreMissingAttributeException">
+            <summary>
+            Exception thrown when a required OSLC attribute definition is missing.
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingAttributeException.#ctor(System.Type,System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="resourceType"></param>
+            <param name="annotationType"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingAttributeException.GetAnnotationType">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.Exceptions.OslcCoreMissingAttributeException.GetResourceType">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

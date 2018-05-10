@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OSLC4Net.Core.DotNetRdfProvider</name>
+    </assembly>
+    <members>
+        <member name="T:OSLC4Net.Core.DotNetRdfProvider.DotNetRdfHelper">
+            <summary>
+            A class to assist with serialization and de-serialization of RDF/XML from/to .NET objects
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.DotNetRdfHelper.CreateDotNetRdfGraph(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Create an RDF graph from a collection of .NET objects
+            </summary>
+            <param name="objects">A collection of .NET objects</param>
+            <returns>The RDF Graph representing the objects</returns>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.DotNetRdfHelper.CreateDotNetRdfGraph(System.String,System.String,System.String,System.Nullable{System.Int64},System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Create an RDF Graph from a collection of objects
+            </summary>
+            <param name="descriptionAbout">URL for entire collection</param>
+            <param name="responseInfoAbout">URL for current page of collection</param>
+            <param name="nextPageAbout">optional URL for next page in collection</param>
+            <param name="totalCount">optional total count of member across all pages; if null will use count of passed in members</param>
+            <param name="objects">members from this page</param>
+            <param name="properties">filtering list of properties for each member</param>
+            <returns>RDF graph of collection</returns>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.DotNetRdfHelper.FromDotNetRdfNode(VDS.RDF.IUriNode,System.Type)">
+            <summary>
+            Create a .NET object from an RDF Node
+            </summary>
+            <param name="resource"></param>
+            <param name="beanType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.DotNetRdfHelper.FromDotNetRdfGraph(VDS.RDF.IGraph,System.Type)">
+            <summary>
+            Create a .NET object from an RDF graph
+            </summary>
+            <param name="graph"></param>
+            <param name="beanType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.DotNetRdfHelper.GeneratePrefix(VDS.RDF.IGraph,System.String)">
+            Generates a prefix for unrecognized namespaces when reading in unknown
+            properties and content.
+            
+            @param graph
+                       the graph
+            @param ns
+                       the unrecognized namespace Uri that needs a prefix
+            @return the generated prefix (e.g., 'j.0')
+        </member>
+        <member name="T:OSLC4Net.Core.DotNetRdfProvider.RdfXmlMediaTypeFormatter">
+            <summary>
+            A class to 
+                - read RDF/XML from an input stream and create .NET objects.
+                - write .NET objects to an output stream as RDF/XML
+            </summary>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.RdfXmlMediaTypeFormatter.#ctor(System.Boolean)">
+            <summary>
+            Defauld RdfXml formatter
+            </summary>
+            <param name="graph"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.RdfXmlMediaTypeFormatter.#ctor(VDS.RDF.IGraph,System.Boolean)">
+            <summary>
+            RdfXml formatter which accepts a pre-built RDF Graph 
+            </summary>
+            <param name="graph"></param>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.RdfXmlMediaTypeFormatter.GetPerRequestFormatterInstance(System.Type,System.Net.Http.HttpRequestMessage,System.Net.Http.Headers.MediaTypeHeaderValue)">
+             <summary>
+             Save the HttpRequestMessage locally for use during serialization.
+             </summary>
+             <param name="type"></param>
+             <param name="request"></param>
+             <param name="mediaType"></param>
+             <returns></returns>
+            
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.RdfXmlMediaTypeFormatter.CanWriteType(System.Type)">
+            <summary>
+            Test the write-ability of a type
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.RdfXmlMediaTypeFormatter.WriteToStreamAsync(System.Type,System.Object,System.IO.Stream,System.Net.Http.HttpContent,System.Net.TransportContext)">
+            <summary>
+            Write a .NET object to an output stream
+            </summary>
+            <param name="type"></param>
+            <param name="value"></param>
+            <param name="writeStream"></param>
+            <param name="content"></param>
+            <param name="transportContext"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.RdfXmlMediaTypeFormatter.CanReadType(System.Type)">
+            <summary>
+            Test the readability of a type
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:OSLC4Net.Core.DotNetRdfProvider.RdfXmlMediaTypeFormatter.ReadFromStreamAsync(System.Type,System.IO.Stream,System.Net.Http.HttpContent,System.Net.Http.Formatting.IFormatterLogger)">
+            <summary>
+            Read RDF/XML from an HTTP input stream and convert to .NET objects
+            </summary>
+            <param name="type"></param>
+            <param name="readStream"></param>
+            <param name="content"></param>
+            <param name="formatterLogger"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
