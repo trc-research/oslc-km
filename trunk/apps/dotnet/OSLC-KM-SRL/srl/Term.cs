@@ -23,7 +23,7 @@ namespace OSLC_KM_SRL.srl {
         [JsonProperty(PropertyName = "type")]
         private Type type = new Type(DEFAULT_TERM_TYPE);
         [JsonProperty(PropertyName = "semanticClusters")]
-        private List<string> semanticClusters = null;
+        private List<Type> semanticClusters = null;
         #endregion
 
         #region OSLC Core properties
@@ -57,7 +57,7 @@ namespace OSLC_KM_SRL.srl {
             init();
         }
         private void init() {
-            semanticClusters = new List<string>();
+            semanticClusters = new List<Type>();
         }
         #endregion
 
