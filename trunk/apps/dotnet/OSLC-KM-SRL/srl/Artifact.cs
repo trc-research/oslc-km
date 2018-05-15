@@ -289,38 +289,7 @@ namespace OSLC_KM_SRL.srl {
         }
         #endregion
 
-        #region Json Management
-        public void Serialize(string path) {
-            using (System.IO.StreamWriter file = System.IO.File.CreateText(path)) {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, this);
-            }
-        }
-        public void SerializeToJson(string path) {
-            using (System.IO.StreamWriter file = System.IO.File.CreateText(path)) {
-                JsonSerializer serializer = new JsonSerializer();
-                serializer.Serialize(file, this);
-            }
-        }
-        public string SerializeToJson() {
-            string json = string.Empty;
-            json = JsonConvert.SerializeObject(this, Formatting.Indented);
-            return json;
-        }
-        public Artifact DeserializeFromJson(string filePath) {
-            Artifact result;
-            using (System.IO.StreamReader file = System.IO.File.OpenText(filePath)) {
-                JsonSerializer serializer = new JsonSerializer();
-                result = (Artifact)serializer.Deserialize(file, typeof(Artifact));
-            }
-            return result;
-        }
-        public Artifact DeserializeFromJsonString(string json) {
-            Artifact result;
-            result = JsonConvert.DeserializeObject<Artifact>(json);
-            return result;
-        }
-        #endregion
+   
 
 
     }

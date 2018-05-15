@@ -99,6 +99,7 @@
     <Compile Include="srl\MetaData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="srl\Relationship.cs" />
+    <Compile Include="utils\Json.cs" />
     <Compile Include="utils\SRLShapeConstants.cs" />
     <Compile Include="srl\Term.cs" />
     <Compile Include="utils\SKOS.cs" />
