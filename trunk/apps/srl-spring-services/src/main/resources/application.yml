@@ -1,0 +1,14 @@
+beans:
+  - id: dataAppServ
+    clazz: com.reusecompany.srl.appserv.DataAppServ
+
+spring:
+  - http.multipart.max-file-size: 1Mb
+  - http.multipart.max-request-size: 10Mb
+  - http.multipart.max-post-size: 10Mb
+  
+server:
+  - port: 8080
+  - context-path: /srl-spring-web
+
+

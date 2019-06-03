@@ -1,0 +1,15 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app>
+	<display-name>SRL Web Services Portal</display-name>
+		<!-- <filter> <filter-name>cross-origin</filter-name> <filter-class>org.eclipse.jetty.servlets.CrossOriginFilter</filter-class> 
+		</filter> <filter-mapping> <filter-name>cross-origin</filter-name> <url-pattern>/*</url-pattern> 
+		</filter-mapping> -->
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
