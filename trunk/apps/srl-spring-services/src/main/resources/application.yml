@@ -6,9 +6,10 @@ spring:
   - http.multipart.max-file-size: 1Mb
   - http.multipart.max-request-size: 10Mb
   - http.multipart.max-post-size: 10Mb
+  - application:
+     name: srl-web
   
 server:
   - port: 8080
-  - context-path: /srl-spring-web
-
-
+  - servlet:
+        contextPath: /srl-web
