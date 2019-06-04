@@ -20,6 +20,11 @@ public class Type {
 	}
 	
 
+	public Type(String name) {
+		this.name = name;
+	}
+
+
 	public String getId() {
 		return id;
 	}
