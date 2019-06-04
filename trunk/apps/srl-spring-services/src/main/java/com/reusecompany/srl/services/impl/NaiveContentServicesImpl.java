@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.reusecompany.srl.model.Artifact;
+import com.reusecompany.srl.model.Relationship;
 import com.reusecompany.srl.model.SRLModelUtils;
 import com.reusecompany.srl.model.Type;
 import com.reusecompany.srl.services.Content2SRL;
@@ -20,18 +21,53 @@ import com.reusecompany.srl.services.OperationServices;
 public class NaiveContentServicesImpl implements Content2SRL {
 	
 	private List<Artifact> staticList = createArtifactList();
-
+	private static Artifact rootArtifact;
 	
 	private static List<Artifact> createArtifactList(){
-		List<Artifact> artifacts = new LinkedList();
-		Artifact artifact;
-		for(int i = 0; i<5; i++){
-			artifact = new Artifact();
-			artifact.setId(""+i);
-			artifact.setName("Name of "+i);
-			artifact.setDescription("Description of "+i);
-			artifacts.add(artifact);
-		}
+		
+		rootArtifact = new Artifact();
+		rootArtifact.setId("1");
+		rootArtifact.setName("Project");
+		rootArtifact.setType(new Type("project"));
+
+		Artifact logicalModel = new Artifact();
+		logicalModel.setId("11");
+		logicalModel.setName("Logical model");
+		logicalModel.setType(new Type("Logical model"));
+		
+		Artifact classDiagram = new Artifact();
+		classDiagram.setId("111");
+		classDiagram.setName("Class diagram");
+		classDiagram.setType(new Type("Class diagram"));
+		
+		Type classBlock = new Type("classBlock");
+		Artifact classCar = new Artifact();
+		classCar.setId("1111");
+		classCar.setName("Car");
+		classCar.setType(classBlock);
+		
+		Artifact classWheel = new Artifact();
+		classWheel.setId("1112");
+		classWheel.setName("Wheel");
+		classWheel.setType(classBlock);
+		
+		Relationship rshp = new Relationship();
+		rshp.setFrom(classCar);
+		rshp.setTo(classWheel);
+		rshp.setMultiplicityToY(4);
+		
+		classDiagram.getOwnedArtifacts().add(classCar);
+		classDiagram.getOwnedArtifacts().add(classWheel);
+		classDiagram.getRelationships().add(rshp);
+		
+		logicalModel.getOwnedArtifacts().add(classDiagram);
+		rootArtifact.getOwnedArtifacts().add(logicalModel);
+		
+		List<Artifact> artifacts = new LinkedList<Artifact>();
+		artifacts.add(classCar);
+		artifacts.add(classWheel);
+		artifacts.add(classDiagram);
+		artifacts.add(logicalModel);
 		return artifacts;
 	}
 	
@@ -43,7 +79,9 @@ public class NaiveContentServicesImpl implements Content2SRL {
 
 	@Override
 	public List<Artifact> getRootArtifacts() {
-		return staticList;
+		List<Artifact> rootArtifacts = new LinkedList<Artifact>();
+		rootArtifacts.add(rootArtifact);
+		return rootArtifacts;
 	}
 
 	@Override
