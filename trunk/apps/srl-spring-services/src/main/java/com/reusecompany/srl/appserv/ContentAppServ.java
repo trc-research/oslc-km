@@ -1,6 +1,7 @@
 package com.reusecompany.srl.appserv;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,25 @@ public class ContentAppServ {
 		return this.contentServices.types();
 	}
 
+	public Type getTypeById(String id) {
+		List<Type> types = this.types();
+		return types.stream().filter(x -> id.equals(x.getId())).findAny().get();
+	}
 
+	public Type getTypeByName(String typeName) {
+		List<Type> types = this.types();
+		return types.stream().filter(x -> typeName.equals(x.getName())).findAny().get();
+	}
+	
+	public List<Artifact> getArtifactsByTypeName(String typeName) {
+		Type t = this.getTypeByName(typeName);
+		return this.getArtifactsByType(t);
+	}
+	
+	public List<Artifact> getArtifactsByTypeId(String id) {
+		Type t = this.getTypeById(id);
+		return this.getArtifactsByType(t);
+	}
 
 	public List<Artifact> getArtifactsByType(Type t) {
 		return this.contentServices.getArtifactsByType(t);
