@@ -2,6 +2,7 @@ package com.reusecompany.srl.appserv;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.reusecompany.srl.model.Artifact;
@@ -11,23 +12,24 @@ import com.reusecompany.srl.services.impl.NaiveDataServicesImpl;
 @Component
 public class DataAppServ {
 
-	DataServices ds;
+	@Autowired
+	DataServices dataServices;
 	
 	public DataAppServ(){
-		this.ds = new NaiveDataServicesImpl();
+		
 	}
 
 	public DataAppServ(DataServices ds){
 		if(ds != null){
-			this.ds = ds;
+			this.dataServices = ds;
 		}
 	}
 
 	public List<Artifact> list(){
-		return this.ds.list();
+		return this.dataServices.list();
 	}
 	public Artifact getById(String id){
-		return this.ds.getById(id);
+		return this.dataServices.getById(id);
 	}
 	
 }

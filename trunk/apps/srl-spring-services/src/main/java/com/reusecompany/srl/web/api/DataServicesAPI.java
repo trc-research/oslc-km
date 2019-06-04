@@ -30,14 +30,14 @@ public class DataServicesAPI {
 
 		}
 
-		@RequestMapping("/greeting")
+		@RequestMapping(value = "/greeting", method = RequestMethod.GET)
 		public String greeting() {
 			return "Hello!";
 		}
 
 
 		@RequestMapping(value = "/artifacts", method = RequestMethod.GET, produces = "application/json")
-		public List<Artifact> findAll() {
+		public List<Artifact> list() {
 			try{	
 				logger.debug("Getting all artifacts");
 				List<Artifact> clients =  dataAppServ.list();

@@ -3,9 +3,12 @@ package com.reusecompany.srl.services.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.reusecompany.srl.model.Artifact;
 import com.reusecompany.srl.services.DataServices;
 
+@Component
 public class NaiveDataServicesImpl implements DataServices {
 	
 	private List<Artifact> staticList = createArtifactList();
@@ -28,7 +31,7 @@ public class NaiveDataServicesImpl implements DataServices {
 		return staticList;
 	}
 
-	public Artifact getById(String id) {
+	public Artifact getById(final String id) {
 		Artifact searched = Artifact.EMPTY_ARTIFACT;
 		if(id != null){
 			searched = staticList.stream().filter(a -> a.getId().equals(id)).findAny().get();
