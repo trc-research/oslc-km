@@ -62,6 +62,7 @@ public class ContentServicesAPI {
 	@RequestMapping(value = "/artifacts/{id}", method = RequestMethod.GET, produces = "application/json")
 	public Artifact getById(@PathVariable(value = "id") String id){
 		try{
+			logger.debug("Getting artifacts with id: "+id);
 			return this.contentAppServ.getArtifactById(id);	
 		}catch(Exception e){
 			throw new ResponseStatusException(
@@ -75,6 +76,7 @@ public class ContentServicesAPI {
 	@RequestMapping(value = "/artifacts/root", method = RequestMethod.GET, produces = "application/json")
 	public List<Artifact> getRootArtifacts() {
 		try{
+			logger.debug("Getting root artifacts");
 			return this.contentAppServ.getRootArtifacts();
 		}catch(Exception e){
 			throw new ResponseStatusException(
@@ -87,6 +89,7 @@ public class ContentServicesAPI {
 	@RequestMapping(value = "/types", method = RequestMethod.GET, produces = "application/json")
 	public List<Type> types() {
 		try{
+			logger.debug("Getting types");
 			List<Type> types =  this.contentAppServ.types();
 			if (types==null){
 				types = Collections.EMPTY_LIST;
@@ -104,6 +107,7 @@ public class ContentServicesAPI {
 	@RequestMapping(value = "/artifacts/typeName", method = RequestMethod.GET, produces = "application/json")
 	public List<Artifact> getArtifactsByTypeName(@RequestParam String name) {
 		try{
+			logger.debug("Artifacts by type with name: "+name);
 			return this.contentAppServ.getArtifactsByTypeName(name);
 		}catch(Exception e){
 			throw new ResponseStatusException(
@@ -116,6 +120,7 @@ public class ContentServicesAPI {
 	@RequestMapping(value = "/artifacts/typeId", method = RequestMethod.GET, produces = "application/json")
 	public List<Artifact> getArtifactsByTypeId(@RequestParam String id) {
 		try{
+			logger.debug("Artifacts by type with id: "+id);
 			return this.contentAppServ.getArtifactsByTypeId(id);
 		}catch(Exception e){
 			throw new ResponseStatusException(
@@ -131,7 +136,9 @@ public class ContentServicesAPI {
 			@RequestParam String id, 
 			@RequestBody Artifact filterConditions) {
 		try{
+			logger.debug("Artifacts with parent id: "+id+ "and filter conditions: "+filterConditions);
 			Artifact parent = this.contentAppServ.getArtifactById(id);
+			logger.debug("Parent id has been found");
 			return this.contentAppServ.filterArtifacts(parent, filterConditions);
 		}catch(Exception e){
 			throw new ResponseStatusException(
@@ -145,6 +152,7 @@ public class ContentServicesAPI {
 	public Artifact getProductContent(@PathVariable(value = "id") String id, 
 			@RequestBody Artifact filterConditions) {
 		try{
+			logger.debug("Getting artifact with id: "+id);
 			Artifact artifact = this.contentAppServ.getArtifactById(id);
 			return this.contentAppServ.getProductContent(artifact, filterConditions);
 		}catch(Exception e){
@@ -200,6 +208,7 @@ public class ContentServicesAPI {
 	@RequestMapping(value = "/artifacts/{id}/operations", method = RequestMethod.GET, produces = "application/json")
 	public List<OperationServices> getSupportedOperations(@PathVariable(value = "id") String id) {
 		try{
+			logger.debug("Getting operations of artifact with id: "+id);
 			return this.contentAppServ.getSupportedOperations();	
 		}catch(Exception e){
 			throw new ResponseStatusException(
