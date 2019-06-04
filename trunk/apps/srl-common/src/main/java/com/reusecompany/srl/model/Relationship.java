@@ -20,4 +20,92 @@ public class Relationship {
 	private int multiplicityToY = 1;
 	private boolean isSymmetric = Boolean.FALSE;
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public Artifact getFrom() {
+		return from;
+	}
+	public void setFrom(Artifact from) {
+		this.from = from;
+	}
+	public Artifact getTo() {
+		return to;
+	}
+	public void setTo(Artifact to) {
+		this.to = to;
+	}
+	public Type getType() {
+		return type;
+	}
+	public void setType(Type type) {
+		this.type = type;
+	}
+	public Type getSubType() {
+		return subType;
+	}
+	public void setSubType(Type subType) {
+		this.subType = subType;
+	}
+	public String getInterfaceFrom() {
+		return interfaceFrom;
+	}
+	public void setInterfaceFrom(String interfaceFrom) {
+		this.interfaceFrom = interfaceFrom;
+	}
+	public String getInterfaceTo() {
+		return interfaceTo;
+	}
+	public void setInterfaceTo(String interfaceTo) {
+		this.interfaceTo = interfaceTo;
+	}
+	public int getMultiplicityFromX() {
+		return multiplicityFromX;
+	}
+	public void setMultiplicityFromX(int multiplicityFromX) {
+		this.multiplicityFromX = multiplicityFromX;
+	}
+	public int getMultiplicityFromY() {
+		return multiplicityFromY;
+	}
+	public void setMultiplicityFromY(int multiplicityFromY) {
+		this.multiplicityFromY = multiplicityFromY;
+	}
+	public int getMultiplicityToX() {
+		return multiplicityToX;
+	}
+	public void setMultiplicityToX(int multiplicityToX) {
+		this.multiplicityToX = multiplicityToX;
+	}
+	public int getMultiplicityToY() {
+		return multiplicityToY;
+	}
+	public void setMultiplicityToY(int multiplicityToY) {
+		this.multiplicityToY = multiplicityToY;
+	}
+	public boolean isSymmetric() {
+		return isSymmetric;
+	}
+	public void setSymmetric(boolean isSymmetric) {
+		this.isSymmetric = isSymmetric;
+	}
+	
+	
+	
+	
 }

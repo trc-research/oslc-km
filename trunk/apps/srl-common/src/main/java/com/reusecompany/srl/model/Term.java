@@ -1,6 +1,7 @@
 package com.reusecompany.srl.model;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Term {
@@ -13,8 +14,8 @@ public class Term {
     protected String classificationCode = SRLModelUtils.EMPTY_STRING;
     
     protected Type syntaxType = new Type("NOUN");
-    protected List<Type> semanticClusters = Collections.EMPTY_LIST;
-    protected List<Type> verbRelationships = Collections.EMPTY_LIST;
+    protected List<Type> semanticClusters = null;
+    protected List<Type> verbRelationships = null;
    
     
 	public Term() {
@@ -92,12 +93,18 @@ public class Term {
 		this.syntaxType = syntaxType;
 	}
 	public List<Type> getSemanticClusters() {
+		if(this.semanticClusters == null){
+			this.semanticClusters = new LinkedList<Type>();
+		}
 		return semanticClusters;
 	}
 	public void setSemanticClusters(List<Type> semanticClusters) {
 		this.semanticClusters = semanticClusters;
 	}
 	public List<Type> getVerbRelationships() {
+		if(this.verbRelationships == null){
+			this.verbRelationships = new LinkedList<Type>();
+		}
 		return verbRelationships;
 	}
 	public void setVerbRelationships(List<Type> verbRelationships) {

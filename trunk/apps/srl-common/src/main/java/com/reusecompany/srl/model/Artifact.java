@@ -1,6 +1,7 @@
 package com.reusecompany.srl.model;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Artifact {
@@ -17,11 +18,11 @@ public class Artifact {
   
     protected Term term;
     protected Type type;
-    protected List<Relationship> relationships = Collections.EMPTY_LIST;
-    protected List<MetaData> metadata = Collections.EMPTY_LIST;
-    protected List<Data> data = Collections.EMPTY_LIST;
-    protected List<Artifact> ownedArtifacts = Collections.EMPTY_LIST;
-    protected List<Term> ownedTerms = Collections.EMPTY_LIST;
+    protected List<Relationship> relationships = null;
+    protected List<MetaData> metadata = null;
+    protected List<Data> data = null;
+    protected List<Artifact> ownedArtifacts = null;
+    protected List<Term> ownedTerms = null;
 	
 	public Artifact() {
 		super();
@@ -101,6 +102,9 @@ public class Artifact {
 	}
 
 	public List<Relationship> getRelationships() {
+		if (this.relationships == null){
+			this.relationships = new LinkedList<Relationship>();
+		}
 		return relationships;
 	}
 
@@ -109,6 +113,9 @@ public class Artifact {
 	}
 
 	public List<MetaData> getMetadata() {
+		if (this.metadata == null){
+			this.metadata = new LinkedList<MetaData>();
+		}
 		return metadata;
 	}
 
@@ -117,6 +124,9 @@ public class Artifact {
 	}
 
 	public List<Data> getData() {
+		if (this.data == null){
+			this.data = new LinkedList<Data>();
+		}
 		return data;
 	}
 
@@ -125,6 +135,9 @@ public class Artifact {
 	}
 
 	public List<Artifact> getOwnedArtifacts() {
+		if(this.ownedArtifacts == null){
+			this.ownedArtifacts = new LinkedList<Artifact>();
+		}
 		return ownedArtifacts;
 	}
 
@@ -133,6 +146,9 @@ public class Artifact {
 	}
 
 	public List<Term> getOwnedTerms() {
+		if (this.ownedTerms == null){
+			this.ownedTerms = new LinkedList<Term>();
+		}
 		return ownedTerms;
 	}
 
