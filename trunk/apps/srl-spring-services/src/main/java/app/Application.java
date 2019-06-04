@@ -1,5 +1,6 @@
 package app;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,11 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import com.mongodb.MongoClient;
 import com.mongodb.WriteConcern;
 
+
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -49,7 +53,17 @@ class Application {
           .select()                                  
           .apis(RequestHandlerSelectors.any())              
           .paths(PathSelectors.any())                          
-          .build();                                           
+          .build().apiInfo(apiInfo());                                           
+    }
+    
+    private static ApiInfo apiInfo() {
+        return new ApiInfo(
+          "SRL REST API", 
+          "A Java implementation of the SRL APIs.", 
+          "API SRL", 
+          "Terms of service", 
+          new Contact("Jose María Alvarez", "http://www.josemalvarez.es", "josemaria.alvarez@uc3m.es"), 
+          "Apache 2.0", "http://www.apache.org/licenses/LICENSE-2.0", Collections.emptyList());
     }
 
 }

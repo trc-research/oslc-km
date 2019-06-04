@@ -1,7 +1,7 @@
 beans:
-  - id: dataAppServ
-    clazz: com.reusecompany.srl.appserv.DataAppServ
-  - id: dataServices
+  - id: contentAppServ
+    clazz: com.reusecompany.srl.appserv.ContentAppServ
+  - id: contentServices
     clazz: com.reusecompany.srl.services.impl.NaiveDataServicesImpl
 
 spring:
