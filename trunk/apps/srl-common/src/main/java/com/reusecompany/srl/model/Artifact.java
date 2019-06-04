@@ -1,38 +1,144 @@
 package com.reusecompany.srl.model;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Artifact {
-	
-	public static Artifact EMPTY_ARTIFACT = new Artifact();
-	
-	private String id = null;
-	private String title = null;
-	private String description = null;
-	
-	
+		
+	protected String id = SRLModelUtils.EMPTY_STRING;
+	protected String name = SRLModelUtils.EMPTY_STRING;
+    protected String description = SRLModelUtils.EMPTY_STRING;
+    protected String content = SRLModelUtils.EMPTY_STRING;
+    protected String snapShot = SRLModelUtils.EMPTY_STRING;
+	protected String physicalPath = SRLModelUtils.EMPTY_STRING;
+	protected String physicalName = SRLModelUtils.EMPTY_STRING;
+  
+    protected Term term;
+    protected Type type;
+    protected List<Relationship> relationships = Collections.EMPTY_LIST;
+    protected List<MetaData> metadata = Collections.EMPTY_LIST;
+    protected List<Data> data = Collections.EMPTY_LIST;
+    protected List<Artifact> ownedArtifacts = Collections.EMPTY_LIST;
+    protected List<Term> ownedTerms = Collections.EMPTY_LIST;
 	
 	public Artifact() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	public String getTitle() {
-		return title;
+
+	public String getName() {
+		return name;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+
+	public void setName(String name) {
+		this.name = name;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getSnapShot() {
+		return snapShot;
+	}
+
+	public void setSnapShot(String snapShot) {
+		this.snapShot = snapShot;
+	}
+
+	public String getPhysicalPath() {
+		return physicalPath;
+	}
+
+	public void setPhysicalPath(String physicalPath) {
+		this.physicalPath = physicalPath;
+	}
+
+	public String getPhysicalName() {
+		return physicalName;
+	}
+
+	public void setPhysicalName(String physicalName) {
+		this.physicalName = physicalName;
+	}
+
+	public Term getTerm() {
+		return term;
+	}
+
+	public void setTerm(Term term) {
+		this.term = term;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public List<Relationship> getRelationships() {
+		return relationships;
+	}
+
+	public void setRelationships(List<Relationship> relationships) {
+		this.relationships = relationships;
+	}
+
+	public List<MetaData> getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(List<MetaData> metadata) {
+		this.metadata = metadata;
+	}
+
+	public List<Data> getData() {
+		return data;
+	}
+
+	public void setData(List<Data> data) {
+		this.data = data;
+	}
+
+	public List<Artifact> getOwnedArtifacts() {
+		return ownedArtifacts;
+	}
+
+	public void setOwnedArtifacts(List<Artifact> ownedArtifacts) {
+		this.ownedArtifacts = ownedArtifacts;
+	}
+
+	public List<Term> getOwnedTerms() {
+		return ownedTerms;
+	}
+
+	public void setOwnedTerms(List<Term> ownedTerms) {
+		this.ownedTerms = ownedTerms;
+	}
+	
+	
 	
 	
 
