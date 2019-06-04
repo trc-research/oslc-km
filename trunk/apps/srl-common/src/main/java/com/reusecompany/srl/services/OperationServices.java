@@ -1,5 +1,12 @@
 package com.reusecompany.srl.services;
 
-public interface OperationServices {
+import java.util.List;
 
+import com.reusecompany.srl.model.Artifact;
+
+public interface OperationServices {
+	
+	public Artifact describeOperation();
+
+	public List<Artifact> execute(Artifact configutaion);
 }
