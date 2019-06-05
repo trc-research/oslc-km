@@ -40,7 +40,8 @@ public class NaiveContentServicesImpl implements Content2SRL {
 		classDiagram.setName("Class diagram");
 		classDiagram.setType(new Type("Class diagram"));
 		
-		Type classBlock = new Type("classBlock");
+		Type classBlock = new Type("Class Block");
+		classBlock.setId("111");
 		Artifact classCar = new Artifact();
 		classCar.setId("1111");
 		classCar.setName("Car");
@@ -176,8 +177,7 @@ public class NaiveContentServicesImpl implements Content2SRL {
 
 	@Override
 	public List<OperationServices> getSupportedOperations() {
-		// TODO Auto-generated method stub
-		return null;
+		return new LinkedList<OperationServices>();
 	}
 
 	@Override

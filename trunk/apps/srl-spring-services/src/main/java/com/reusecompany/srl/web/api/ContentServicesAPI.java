@@ -1,5 +1,6 @@
 package com.reusecompany.srl.web.api;
 
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
 
@@ -7,8 +8,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -162,35 +167,83 @@ public class ContentServicesAPI {
 
 		}
 	}
-	//
-	//
-	//	public byte add(Artifact artifact, Artifact parent) {
-	//		return this.contentAppServ.add(artifact, parent);
+
+
+	@PostMapping(value = "/artifacts", produces = "application/json")
+	public ResponseEntity <String> add(@RequestBody Artifact artifact,
+			@RequestParam String parentId) {
+		try{
+			Artifact parent = this.contentAppServ.getArtifactById(parentId);
+			if (parent != null){
+				this.contentAppServ.add(artifact, parent);
+				return ResponseEntity.status(HttpStatus.CREATED).build();	
+			}
+		}catch(Exception e){
+			logger.debug("Saving artifact: "+artifact);
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+
+
+	@DeleteMapping(value = "/artifacts/{id}")
+	public ResponseEntity <String> delete(@PathVariable String id) {
+		try{
+			Artifact artifact = this.contentAppServ.getArtifactById(id);
+			if (artifact != null){
+				if(this.contentAppServ.delete(artifact)==0){
+					return ResponseEntity.status(HttpStatus.OK).build();	
+				}
+			}
+		}catch(Exception e){
+			logger.debug("Removing artifact with id: "+id);
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+
+	//	@PostMapping(value = "/artifacts", produces = "application/json")
+	//	public ResponseEntity <String> deleteAll(@RequestBody List<Artifact> artifacts) {
+	//		try{
+	//			if(artifacts != null){
+	//				if(this.contentAppServ.deleteAll(artifacts)==0){
+	//					return ResponseEntity.status(HttpStatus.OK).build();	
+	//				}
+	//			}
+	//		}catch(Exception e){
+	//			logger.debug("Removing artifacts: "+artifacts);
+	//		}
+	//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	//	}
-	//
-	//
-	//	public byte delete(Artifact artifact) {
-	//		return this.contentAppServ.delete(artifact);
+
+	//	@PostMapping(value = "/artifacts", produces = "application/json")
+	//	public ResponseEntity <String> delete(@RequestBody List<String> artifactIds) {
+	//		try{
+	//			if(artifactIds != null){
+	//				if(this.contentAppServ.delete(artifactIds) == 0){
+	//					return ResponseEntity.status(HttpStatus.OK).build();	
+	//				}
+	//			}
+	//		}catch(Exception e){
+	//			logger.debug("Removing artifacts: "+ artifactIds);
+	//		}
+	//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	//	}
-	//
-	//
-	//	public byte delete(String id) {
-	//		return this.contentAppServ.delete(id);
-	//	}
-	//
-	//	public byte deleteAll(List<Artifact> artifacts) {
-	//		return this.contentAppServ.deleteAll(artifacts);
-	//	}
-	//
-	//	public byte delete(List<String> artifactIds) {
-	//		return this.contentAppServ.delete(artifactIds);
-	//	}
-	//
-	//
-	//	public byte update(Artifact artifact) {
-	//		return this.contentAppServ.update(artifact);
-	//	}
-	//
+
+
+	@PutMapping(value = "/artifacts/{id}", params = "id", produces = "application/json")
+	public ResponseEntity <String> update(@PathVariable String id, @RequestBody Artifact artifact) {
+		try{
+			Artifact exists = this.contentAppServ.getArtifactById(id);
+			if (exists!= null && artifact != null){
+				if(this.contentAppServ.update(artifact)==0){
+					return ResponseEntity.status(HttpStatus.OK).build();	
+				}
+			}
+		}catch(Exception e){
+			logger.debug("Removing artifact with id: "+id);
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	}
+
 	//
 	//	public byte updateAll(List<Artifact> artifacts) {
 	//		return this.contentAppServ.updateAll(artifacts);
@@ -200,9 +253,19 @@ public class ContentServicesAPI {
 	//		return this.contentAppServ.updateAllOnlyChanges(artifacts);
 	//	}
 	//
-	//	public byte[] plot(Artifact artifact) {
-	//		return this.contentAppServ.plot(artifact);	
-	//	}
+
+	@RequestMapping(value = "/artifacts/{id}/plot", method = RequestMethod.GET, produces = "application/json")
+	public byte[] plot(@PathVariable(value = "id") String id) {
+		try{
+			Artifact artifact = this.contentAppServ.getArtifactById(id);
+			if(artifact != null){
+				return this.contentAppServ.plot(artifact);
+			}
+		}catch(Exception e){
+			logger.debug("Plotting artifact with id: "+id);
+		}
+		return new byte [0];
+	}
 
 
 	@RequestMapping(value = "/artifacts/{id}/operations", method = RequestMethod.GET, produces = "application/json")
