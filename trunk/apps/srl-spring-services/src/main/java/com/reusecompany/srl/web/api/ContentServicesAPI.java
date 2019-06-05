@@ -153,20 +153,20 @@ public class ContentServicesAPI {
 		}
 	}
 
-	@RequestMapping(value = "/artifacts/{id}", params = "id", method = RequestMethod.GET, produces = "application/json")
-	public Artifact getProductContent(@PathVariable(value = "id") String id, 
-			@RequestBody Artifact filterConditions) {
-		try{
-			logger.debug("Getting artifact with id: "+id);
-			Artifact artifact = this.contentAppServ.getArtifactById(id);
-			return this.contentAppServ.getProductContent(artifact, filterConditions);
-		}catch(Exception e){
-			throw new ResponseStatusException(
-					HttpStatus.INTERNAL_SERVER_ERROR, 
-					"Problem getting types with cid: "+id, e);
-
-		}
-	}
+//	@RequestMapping(value = "/artifacts/{id}", params = "id", method = RequestMethod.GET, produces = "application/json")
+//	public Artifact getProductContent(@PathVariable(value = "id") String id, 
+//			@RequestBody Artifact filterConditions) {
+//		try{
+//			logger.debug("Getting artifact with id: "+id);
+//			Artifact artifact = this.contentAppServ.getArtifactById(id);
+//			return this.contentAppServ.getProductContent(artifact, filterConditions);
+//		}catch(Exception e){
+//			throw new ResponseStatusException(
+//					HttpStatus.INTERNAL_SERVER_ERROR, 
+//					"Problem getting types with cid: "+id, e);
+//
+//		}
+//	}
 
 
 	@PostMapping(value = "/artifacts", produces = "application/json")

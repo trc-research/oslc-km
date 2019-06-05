@@ -12,6 +12,6 @@ spring:
      name: srl-web
   
 server:
-  - port: 8080
+  - port: 5000
   - servlet:
         contextPath: /srl-web

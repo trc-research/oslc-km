@@ -12,8 +12,15 @@
 	</properties>
 
 	<dependencies>
-	<!--Commons-->
-	
+		<dependency>
+			<groupId>com.reusecompany.srl</groupId>
+			<artifactId>srl-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+
+		<!--Commons -->
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -22,49 +29,49 @@
 			<scope>test</scope>
 			<optional>true</optional>
 		</dependency>
-		
-<!-- https://mvnrepository.com/artifact/log4j/log4j -->
+
+		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
 
-	<!--SWAGGER-->
-	
-	<dependency>
-		<groupId>io.springfox</groupId>
-		<artifactId>springfox-swagger2</artifactId>
-		<version>2.9.2</version>
-	</dependency>
+		<!--SWAGGER -->
 
-	
-	<dependency>
-		<groupId>io.springfox</groupId>
-		<artifactId>springfox-swagger-ui</artifactId>
-		<version>2.9.2</version>
-	</dependency>
-	
-	
-	
-		
-	<!--Spring-->
-	
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+
+
+
+
+		<!--Spring -->
+
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-aop -->
-	<dependency>
-	    <groupId>org.springframework</groupId>
-	    <artifactId>spring-aop</artifactId>
-	    <version>5.1.2.RELEASE</version>
-	</dependency>
-	
-	
-	<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>5.1.2.RELEASE</version>
+		</dependency>
+
+
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<version>5.1.2.RELEASE</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-expression -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -80,14 +87,14 @@
 		</dependency>
 
 
-	<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-mongodb</artifactId>
 			<version>2.1.1.RELEASE</version>
 		</dependency>
 
-	<!--Mongo-->
+		<!--Mongo -->
 
 		<!-- https://mvnrepository.com/artifact/com.mysema.querydsl/querydsl-mongodb -->
 		<dependency>
@@ -96,8 +103,8 @@
 			<version>3.7.2</version>
 		</dependency>
 
-		<!--Spring Web-->
-		
+		<!--Spring Web -->
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -132,31 +139,53 @@
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<version>2.1.0.RELEASE</version>
 		</dependency>
-		
-		
+
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-test</artifactId>
-		    <version>2.1.0.RELEASE</version>
-		    <scope>test</scope>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>2.1.0.RELEASE</version>
+			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
 		<dependency>
-		    <groupId>org.springframework</groupId>
-		    <artifactId>spring-test</artifactId>
-		    <version>5.1.2.RELEASE</version>
-		    <scope>test</scope>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>5.1.2.RELEASE</version>
+			<scope>test</scope>
 		</dependency>
-				
 
-		
+
+
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>beanstalk</id>
+			<build>
+				<finalName>${project.name}-eb</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>**/cloud/config/*.java</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
-
-<!--Repositorios -->
+	<!--Repositorios -->
 	<repositories>
 		<repository>
 			<id>maven2-repository.dev.java.net</id>
@@ -169,22 +198,22 @@
 			<url>http://oss.sonatype.org/content/repositories/sourceforge-releases/</url>
 		</repository>
 	</repositories>
-	
-	<pluginRepositories>
-	
-	  <pluginRepository>  
-		<id>mc-release</id>  
-		<name>Local Maven repository of releases</name>  
-		<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>  
-		<snapshots>  
-		    <enabled>false</enabled>  
-		</snapshots>  
-		<releases>  
-		    <enabled>true</enabled>  
-		</releases>  
-	    </pluginRepository> 
 
-	  </pluginRepositories>
+	<pluginRepositories>
+
+		<pluginRepository>
+			<id>mc-release</id>
+			<name>Local Maven repository of releases</name>
+			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+
+	</pluginRepositories>
 	<licenses>
 		<license>
 			<name>Apache License, Version 2.0</name>
@@ -209,12 +238,12 @@
 			<properties />
 		</developer>
 	</developers>
-	
 
-<!--Build plugins -->
+
+	<!--Build plugins -->
 	<build>
 		<plugins>
-	
+
 			<plugin>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 			</plugin>
@@ -222,14 +251,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 					<encoding>utf-8</encoding>
 					<showDeprecation>true</showDeprecation>
 				</configuration>
 			</plugin>
-      
-      <!-- WEB -->
+
+			<!-- WEB -->
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>maven-jetty-plugin</artifactId>
@@ -244,30 +273,32 @@
 					</connectors>
 				</configuration>
 			</plugin>
-			
-		<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <version>2.3</version>
-            <executions>
-                <execution>
-                    <phase>package</phase>
-                    <goals><goal>copy</goal></goals>
-                    <configuration>
-                        <artifactItems>
-                            <artifactItem>
-                                <groupId>org.mortbay.jetty</groupId>
-                                <artifactId>jetty-runner</artifactId>
-                                <version>7.5.4.v20111024</version>
-                                <destFileName>jetty-runner.jar</destFileName>
-                            </artifactItem>
-                        </artifactItems>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-			
-			
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.3</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.mortbay.jetty</groupId>
+									<artifactId>jetty-runner</artifactId>
+									<version>7.5.4.v20111024</version>
+									<destFileName>jetty-runner.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
@@ -275,29 +306,6 @@
 			</plugin>
 
 
-			<plugin>
-			    <groupId>org.apache.maven.plugins</groupId>
-			    <artifactId>maven-dependency-plugin</artifactId>
-			    <version>2.4</version>
-			    <executions>
-				<execution>
-				    <phase>package</phase>
-				    <goals>
-					<goal>copy</goal>
-				    </goals>
-				    <configuration>
-					<artifactItems>
-					    <artifactItem>
-						<groupId>com.github.jsimone</groupId>
-						<artifactId>webapp-runner</artifactId>
-						<version>7.0.27.1</version>
-						<destFileName>webapp-runner.jar</destFileName>
-					    </artifactItem>
-					</artifactItems>
-				    </configuration>
-				</execution>
-			    </executions>
-			</plugin>
 		</plugins>
 	</build>
 </project>
