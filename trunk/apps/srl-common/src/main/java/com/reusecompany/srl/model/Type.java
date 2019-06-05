@@ -8,7 +8,7 @@ public class Type {
 	
 	public Type() {
 		super();
-		// TODO Auto-generated constructor stub
+		this.id = System.nanoTime()+"";
 	}
 	
 	
@@ -20,6 +20,39 @@ public class Type {
 	}
 	
 
+	
+
+	public Type(String name) {
+		this.name = name;
+		this.id = System.nanoTime()+"";
+	}
+
+
+	public Type(String id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public Type getParent() {
+		return parent;
+	}
+	public void setParent(Type parent) {
+		this.parent = parent;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -52,31 +85,5 @@ public class Type {
 		return true;
 	}
 
-
-	public Type(String name) {
-		this.name = name;
-	}
-
-
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Type getParent() {
-		return parent;
-	}
-	public void setParent(Type parent) {
-		this.parent = parent;
-	}
-	
-	
 	
 }

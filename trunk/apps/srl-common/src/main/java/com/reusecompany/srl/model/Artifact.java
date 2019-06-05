@@ -1,13 +1,10 @@
 package com.reusecompany.srl.model;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 public class Artifact {
 		
-
-
 	protected String id = SRLModelUtils.EMPTY_STRING;
 	protected String name = SRLModelUtils.EMPTY_STRING;
     protected String description = SRLModelUtils.EMPTY_STRING;

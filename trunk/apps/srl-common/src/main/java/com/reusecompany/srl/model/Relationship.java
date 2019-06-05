@@ -104,6 +104,80 @@ public class Relationship {
 	public void setSymmetric(boolean isSymmetric) {
 		this.isSymmetric = isSymmetric;
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((from == null) ? 0 : from.hashCode());
+		result = prime * result + ((interfaceFrom == null) ? 0 : interfaceFrom.hashCode());
+		result = prime * result + ((interfaceTo == null) ? 0 : interfaceTo.hashCode());
+		result = prime * result + (isSymmetric ? 1231 : 1237);
+		result = prime * result + multiplicityFromX;
+		result = prime * result + multiplicityFromY;
+		result = prime * result + multiplicityToX;
+		result = prime * result + multiplicityToY;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((subType == null) ? 0 : subType.hashCode());
+		result = prime * result + ((to == null) ? 0 : to.hashCode());
+		result = prime * result + ((type == null) ? 0 : type.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Relationship other = (Relationship) obj;
+		if (from == null) {
+			if (other.from != null)
+				return false;
+		} else if (!from.equals(other.from))
+			return false;
+		if (interfaceFrom == null) {
+			if (other.interfaceFrom != null)
+				return false;
+		} else if (!interfaceFrom.equals(other.interfaceFrom))
+			return false;
+		if (interfaceTo == null) {
+			if (other.interfaceTo != null)
+				return false;
+		} else if (!interfaceTo.equals(other.interfaceTo))
+			return false;
+		if (isSymmetric != other.isSymmetric)
+			return false;
+		if (multiplicityFromX != other.multiplicityFromX)
+			return false;
+		if (multiplicityFromY != other.multiplicityFromY)
+			return false;
+		if (multiplicityToX != other.multiplicityToX)
+			return false;
+		if (multiplicityToY != other.multiplicityToY)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (subType == null) {
+			if (other.subType != null)
+				return false;
+		} else if (!subType.equals(other.subType))
+			return false;
+		if (to == null) {
+			if (other.to != null)
+				return false;
+		} else if (!to.equals(other.to))
+			return false;
+		if (type == null) {
+			if (other.type != null)
+				return false;
+		} else if (!type.equals(other.type))
+			return false;
+		return true;
+	}
 	
 	
 	
